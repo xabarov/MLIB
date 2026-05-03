@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "linear-systems-hero-grid",
+      "filename_base": "hero_linear_systems",
+      "prompt": "16:9 abstract editorial illustration for a university linear algebra lecture on systems of linear equations and matrices. Visual metaphor: a soft orthogonal grid suggesting coordinates, faint intersecting bands suggesting simultaneous constraints meeting at a solution region, calm geometric order. Warm paper background #faf9f5, ink-like shapes #141413, dusty blue #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic magazine style, generous negative space. Absolutely no readable text, letters, digits, formulas, axis tick labels, or UI."
+    },
+    {
+      "slug": "linear-iterative-methods-metaphor",
+      "filename_base": "iterative_methods_metaphor",
+      "prompt": "16:9 abstract editorial illustration about iterative solvers (Jacobi / Gauss–Seidel): layered waves or stepping arcs gradually settling toward a stable horizontal alignment, suggesting successive approximation and convergence. Same restrained palette (#faf9f5, #141413, #6a9bcc, #d97757, #788c5d), diffuse light, subtle paper grain. No digits, no letters, no equations, no fake charts."
+    }
+  ]
+}
