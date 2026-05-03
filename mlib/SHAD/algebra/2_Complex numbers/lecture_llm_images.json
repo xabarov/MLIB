@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "complex-numbers-hero-argand",
+      "filename_base": "hero_complex_numbers",
+      "prompt": "16:9 abstract editorial illustration for a university lecture on complex numbers and the Argand plane. Visual metaphor: two perpendicular soft axes suggesting the real–imaginary plane, a gentle focal glow at the crossing, faint curved arcs suggesting rotation or phase. Warm paper background #faf9f5, ink-like shapes #141413, dusty blue accent #6a9bcc and terracotta #d97757, olive #788c5d. Premium academic magazine style, generous negative space. Absolutely no readable text, letters, digits, formulas, chart tick labels, or UI."
+    },
+    {
+      "slug": "complex-roots-unity-metaphor",
+      "filename_base": "roots_unity_metaphor",
+      "prompt": "16:9 abstract editorial illustration about roots of unity: a regular polygon softly inscribed in a faint circular orbit, evenly spaced luminous vertices suggesting the n solutions of z^n=1 on the unit circle. Same restrained palette (#faf9f5, #141413, #6a9bcc, #d97757, #788c5d), diffuse light, subtle paper grain. No digits, no letters, no equations, no fake charts."
+    }
+  ]
+}
