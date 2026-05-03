@@ -574,14 +574,12 @@ $$
 Тогда
 
 $$
+\begin{aligned}
 \frac{1-\cos x}{x^2}
-=
-\frac{2\sin^2(x/2)}{x^2}
-=
-\frac{1}{2}
-\left(
-\frac{\sin(x/2)}{x/2}
-\right)^2.
+&= \frac{2\sin^2(x/2)}{x^2}
+= \frac{2\sin^2(x/2)}{4(x/2)^2} \\
+&= \frac{1}{2}\left(\frac{\sin(x/2)}{x/2}\right)^2.
+\end{aligned}
 $$
 
 Следовательно,
