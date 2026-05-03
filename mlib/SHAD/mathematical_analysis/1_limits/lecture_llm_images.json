@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "limits-hero-convergence",
+      "filename_base": "hero_limits_sequences",
+      "prompt": "16:9 abstract editorial illustration for a university mathematical analysis lecture on limits of sequences. Visual metaphor: a calm horizontal flow suggesting the real line, a soft horizontal band suggesting an epsilon-neighborhood, and many tiny marks gradually gathering inside that band toward a focal point — convergence without literal graphs. Warm paper background #faf9f5, ink-like shapes #141413, dusty blue accent #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic magazine style, generous negative space. Absolutely no readable text, letters, digits, formulas, axis tick labels, or UI."
+    },
+    {
+      "slug": "limits-weierstrass-monotone-metaphor",
+      "filename_base": "monotone_limit_metaphor",
+      "prompt": "16:9 abstract editorial illustration for the Weierstrass theorem: a monotone bounded sequence converges. Visual metaphor: a gentle rising staircase or layered bars approaching but never crossing a soft horizontal ceiling, suggesting supremum and convergence from below. Same restrained palette (#faf9f5, #141413, #6a9bcc, #d97757, #788c5d), diffuse light, subtle paper grain. No digits, no letters, no equations, no fake charts."
+    }
+  ]
+}
