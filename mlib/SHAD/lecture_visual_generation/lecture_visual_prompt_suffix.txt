@@ -1,0 +1,15 @@
+
+Global style — MLIB / SHAD lecture visuals (Claude-inspired palette, not corporate branding):
+
+Background: warm paper off-white ~#faf9f5, subtle grain or very soft vignette optional.
+Primary ink / shapes: deep warm black ~#141413 (not pure #000).
+Secondary / dividers: muted warm gray ~#b0aea5; soft panels ~#e8e6dc.
+Accents (use 1–2 per image, not all at once): terracotta / coral ~#d97757; dusty blue ~#6a9bcc; sage ~#788c5d.
+
+Composition: generous whitespace, clear focal hierarchy, editorial / premium academic (think quality textbook or research magazine), minimal clutter.
+Lighting: soft diffuse; avoid harsh neon, cyberpunk holograms, glossy 3D “startup hero”, fake dashboards, stock “AI brain” clichés.
+
+Text policy (unless the user prompt explicitly requests captions):
+Prefer NO readable text. If labels are unavoidable, max a few very short words in a clean humanist or neutral sans style; no long sentences, no fake metrics, no watermarking logos.
+
+Aspect ratio: 16:9 unless the user prompt specifies otherwise.

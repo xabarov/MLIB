@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "substitutions-hero-symmetric-group",
+      "filename_base": "hero_symmetric_group",
+      "prompt": "16:9 abstract editorial illustration for a university abstract algebra lecture on permutations and the symmetric group S_n. Visual metaphor: a finite ring of numbered tokens or nodes connected by directed arcs suggesting bijections and rearrangement, warm paper background #faf9f5, ink-like shapes #141413, one terracotta accent #d97757 and one dusty blue accent #6a9bcc. Premium academic magazine style, generous negative space, single focal cluster. Absolutely no readable letters or digits, no formulas, no chart axes, no UI."
+    },
+    {
+      "slug": "substitutions-cycles-independence",
+      "filename_base": "cycles_disjoint_metaphor",
+      "prompt": "16:9 abstract editorial illustration about disjoint cycles in permutations: three separate gentle circular motifs in one composition, separated by whitespace, suggesting independent commuting pieces. Same palette as warm research paper (#faf9f5, #141413, #d97757, #6a9bcc, #788c5d). Soft diffuse light, subtle paper grain, no text, no numbers, no fake charts."
+    }
+  ]
+}

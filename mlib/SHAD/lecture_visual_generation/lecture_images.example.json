@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "example-lecture-hero-abstract",
+      "filename_base": "example_lecture_hero",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level mathematics lecture on vector spaces. Visual metaphor only: overlapping translucent planes suggesting subspaces, soft directional arrows as motion hints, no formulas. Warm paper background, deep ink shapes, one terracotta accent and one dusty blue accent. Premium academic magazine style, generous negative space, single clear focal area. Absolutely no readable text, no numbers, no chart axes."
+    }
+  ]
+}
