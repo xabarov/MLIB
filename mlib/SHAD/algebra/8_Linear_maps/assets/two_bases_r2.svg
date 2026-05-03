@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+<line x1="40" y1="200" x2="400" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="200" y1="40" x2="200" y2="460" stroke="#94a3b8" stroke-width="1.5"/>
+<defs>
+  <marker id="av" orient="auto" refX="8" refY="2.5" markerWidth="8" markerHeight="5">
+    <path d="M0,0 L8,2.5 L0,5 z" fill="#2563eb"/>
+  </marker>
+</defs>
+<line x1="200" y1="200" x2="255" y2="200" stroke="#2563eb" stroke-width="3" marker-end="url(#av)"/>
+<line x1="200" y1="200" x2="200" y2="145" stroke="#2563eb" stroke-width="3" marker-end="url(#av)"/>
+<line x1="200" y1="200" x2="238.5" y2="161.5" stroke="#7c3aed" stroke-width="2.5"/>
+<line x1="200" y1="200" x2="227.5" y2="227.5" stroke="#db2777" stroke-width="2.5"/>
+<text x="263" y="200" font-size="16" fill="#1d4ed8" font-weight="bold" font-style="italic">e₁</text>
+<text x="205" y="160" font-size="16" fill="#1d4ed8" font-weight="bold" font-style="italic">e₂</text>
+<text x="243.5" y="156.5" font-size="15" fill="#5b21b6" font-weight="bold" font-style="italic">f₁</text>
+<text x="235.5" y="232.5" font-size="15" fill="#be185d" font-weight="bold" font-style="italic">f₂</text>
+<rect x="20" y="20" width="330" height="64" fill="#f3f4f6" stroke="#9ca3af" rx="6"/>
+<text x="35" y="45" font-size="13" fill="#374151">Смена базиса не двигает векторы, меняет лишь координатную</text>
+<text x="35" y="64" font-size="13" fill="#374151">запись одного и того же оператора: B = C⁻¹AC.</text>
+<text x="250" y="12" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Два базиса на R² (стандартный и f)</text>
+</svg>
