@@ -60,22 +60,7 @@ $$
 
 ### Пример
 
-$$
-\begin{pmatrix}
-1 & 2 \\
-3 & 4
-\end{pmatrix}
-+
-\begin{pmatrix}
-5 & -1 \\
-0 & 2
-\end{pmatrix}
-=
-\begin{pmatrix}
-6 & 1 \\
-3 & 6
-\end{pmatrix}.
-$$
+$$\left(\begin{matrix}1&2\\3&4\end{matrix}\right)+\left(\begin{matrix}5&-1\\0&2\end{matrix}\right)=\left(\begin{matrix}6&1\\3&6\end{matrix}\right).$$
 
 ### Умножение на число
 
@@ -86,18 +71,7 @@ $$
 
 ### Пример
 
-$$
-2
-\begin{pmatrix}
-1 & -1 \\
-3 & 0
-\end{pmatrix}
-=
-\begin{pmatrix}
-2 & -2 \\
-6 & 0
-\end{pmatrix}.
-$$
+$$2\left(\begin{matrix}1&-1\\3&0\end{matrix}\right)=\left(\begin{matrix}2&-2\\6&0\end{matrix}\right).$$
 
 ### Свойства
 
@@ -160,18 +134,7 @@ B=
 $$
 
 Тогда
-$$
-AB=
-\begin{pmatrix}
-1\cdot 5 + 2\cdot 7 & 1\cdot 6 + 2\cdot 8 \\
-3\cdot 5 + 4\cdot 7 & 3\cdot 6 + 4\cdot 8
-\end{pmatrix}
-=
-\begin{pmatrix}
-19 & 22 \\
-43 & 50
-\end{pmatrix}.
-$$
+$$AB=\left(\begin{matrix}1\cdot5+2\cdot7&1\cdot6+2\cdot8\\3\cdot5+4\cdot7&3\cdot6+4\cdot8\end{matrix}\right)=\left(\begin{matrix}19&22\\43&50\end{matrix}\right).$$
 
 ---
 
@@ -759,38 +722,10 @@ $$
 $$
 
 Тогда
-$$
-A^{-1}=
-\frac{1}{-2}
-\begin{pmatrix}
-4 & -2 \\
--3 & 1
-\end{pmatrix}
-=
-\begin{pmatrix}
--2 & 1 \\
-\frac{3}{2} & -\frac{1}{2}
-\end{pmatrix}.
-$$
+$$A^{-1}=\frac{1}{-2}\left(\begin{matrix}4&-2\\-3&1\end{matrix}\right)=\left(\begin{matrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{matrix}\right).$$
 
 Проверка:
-$$
-A A^{-1}
-=
-\begin{pmatrix}
-1 & 2 \\
-3 & 4
-\end{pmatrix}
-\begin{pmatrix}
--2 & 1 \\
-\frac{3}{2} & -\frac{1}{2}
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 & 0 \\
-0 & 1
-\end{pmatrix}.
-$$
+$$AA^{-1}=\left(\begin{matrix}1&2\\3&4\end{matrix}\right)\left(\begin{matrix}-2&1\\\frac{3}{2}&-\frac{1}{2}\end{matrix}\right)=\left(\begin{matrix}1&0\\0&1\end{matrix}\right).$$
 
 ---
 
