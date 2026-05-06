@@ -172,25 +172,7 @@ $$
 
 ### Пример
 
-$$
-\det
-\begin{pmatrix}
-a+b & c \\
-d & e
-\end{pmatrix}
-=
-\det
-\begin{pmatrix}
-a & c \\
-d & e
-\end{pmatrix}
-+
-\det
-\begin{pmatrix}
-b & c \\
-d & e
-\end{pmatrix}.
-$$
+$$\det\!\big((a+b,\;c),\;(d,\;e)\big)=\det\!\big((a,\;c),\;(d,\;e)\big)+\det\!\big((b,\;c),\;(d,\;e)\big).$$
 
 ---
 
@@ -252,13 +234,7 @@ $$
 ### Почему
 
 Из линейности:
-$$
-\det(\dots, R_i+\lambda R_j,\dots)
-=
-\det(\dots, R_i,\dots)
-+
-\lambda \det(\dots,R_j,\dots).
-$$
+$$\det(\dots, R_i+\lambda R_j,\dots)=\det(\dots, R_i,\dots)+\lambda \det(\dots,R_j,\dots).$$
 
 Во втором определителе две строки совпадают, значит он равен нулю. Поэтому значение не меняется.
 
@@ -312,16 +288,7 @@ $$
 
 ### Пример
 
-$$
-\det
-\begin{pmatrix}
-2 & 1 & 3 \\
-0 & -1 & 4 \\
-0 & 0 & 5
-\end{pmatrix}
-=
-2\cdot (-1)\cdot 5=-10.
-$$
+$$\det\!\big((2,\;1,\;3),\;(0,\;-1,\;4),\;(0,\;0,\;5)\big)=2\cdot(-1)\cdot5=-10.$$
 
 ---
 
@@ -489,13 +456,7 @@ $$
 Знак зависит от чётности суммы индексов.
 
 Таблица знаков для матрицы $3\times 3$:
-$$
-\begin{pmatrix}
-+ & - & + \\
-- & + & - \\
-+ & - & +
-\end{pmatrix}.
-$$
+$$\text{знаки }3\times3:\ ((+,\;-,\;+),\;(-,\;+,\;-),\;(+,\;-,\;+)).$$
 
 Это удобно помнить как «шахматную доску».
 
