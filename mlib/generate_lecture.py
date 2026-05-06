@@ -404,6 +404,34 @@ def validate_qa_markdown(qa_md: str) -> List[str]:
     return errors
 
 
+def normalize_markdown_output(markdown_text: str) -> str:
+    lines = markdown_text.splitlines()
+    normalized: List[str] = []
+    in_math_block = False
+    block_indent: int | None = None
+
+    for line in lines:
+        stripped = line.lstrip()
+        indent = len(line) - len(stripped)
+
+        if stripped == "$$":
+            if not in_math_block:
+                in_math_block = True
+                block_indent = indent
+            else:
+                in_math_block = False
+            normalized.append("$$")
+            continue
+
+        if in_math_block and block_indent is not None and line.startswith(" " * block_indent):
+            normalized.append(line[block_indent:])
+            continue
+
+        normalized.append(line)
+
+    return "\n".join(normalized).strip()
+
+
 def request_markdown(
     *,
     model_name: str,
@@ -451,7 +479,7 @@ def request_markdown(
             except requests.exceptions.JSONDecodeError as exc:
                 raise RuntimeError(f"Невалидный JSON от OpenRouter: {exc}") from exc
 
-            text = extract_message_content(data)
+            text = normalize_markdown_output(extract_message_content(data))
             if not text:
                 raise RuntimeError("Модель вернула пустой текст.")
 

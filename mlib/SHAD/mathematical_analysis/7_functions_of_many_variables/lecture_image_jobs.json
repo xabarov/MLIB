@@ -1,0 +1,15 @@
+{
+  "append_style_suffix": true,
+  "jobs": [
+    {
+      "slug": "hero_multivariable_landscape",
+      "filename_base": "hero_multivariable_landscape",
+      "prompt": "Educational editorial illustration for a lecture on multivariable calculus. Show one smooth surface over an x-y plane on warm paper, with a highlighted point, a small tangent plane patch touching the surface, soft projected contour lines on the plane, and one clear arrow suggesting steepest ascent. The geometry should be calm, accurate in spirit, and visually clean. No readable text, no formulas, no fake axis numbers, no dashboard elements, no decorative clutter. One main idea: local linearization and gradient geometry of a function of two variables."
+    },
+    {
+      "slug": "implicit_function_local_patch",
+      "filename_base": "implicit_function_local_patch",
+      "prompt": "Educational editorial schematic for the implicit function theorem. Show a smooth curved surface or sheet in a small local neighborhood, with one highlighted regular point where the surface locally behaves like a clean graph over one horizontal direction. Include a subtle auxiliary plane or slice only if it helps clarify the local geometry. The scene should communicate local solvability and smooth dependence, not global complexity. No readable text, no equations, no numeric ticks, no unnecessary objects. Keep the composition minimal, academic, and easy to read beside lecture notes."
+    }
+  ]
+}
