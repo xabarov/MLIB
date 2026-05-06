@@ -1,16 +1,11 @@
 {
   "model": "google/gemini-3.1-flash-image-preview",
   "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
-  "generated_at_epoch": 1777844646,
+  "generated_at_epoch": 1778098116,
   "jobs": [
     {
       "slug": "func-limits-hero-epsilon-delta",
       "filename_base": "hero_function_limits",
-      "append_style_suffix": true
-    },
-    {
-      "slug": "func-limits-marvelous-metaphor",
-      "filename_base": "marvelous_limits_metaphor",
       "append_style_suffix": true
     }
   ],
