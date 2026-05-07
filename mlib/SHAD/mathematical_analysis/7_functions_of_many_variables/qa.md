@@ -122,8 +122,7 @@ f(x,0)=\frac{x^2}{\sqrt{|x|}}=|x|^{3/2}.
 $$
 Тогда
 $$
-f_x(0,0)=\lim_{h\to 0}\frac{f(h,0)-f(0,0)}{h}
-=\lim_{h\to 0}\frac{|h|^{3/2}}{h}.
+f_x(0,0)=\lim_{h\to 0}\frac{f(h,0)-f(0,0)}{h}=\lim_{h\to 0}\frac{|h|^{3/2}}{h}.
 $$
 
 Для $h>0$ это равно $\sqrt h$, для $h<0$ это равно $-\sqrt{|h|}$. В обоих случаях предел равен $0$. Значит,
@@ -147,11 +146,7 @@ $$
 
 Оценим отношение:
 $$
-\frac{f(x,y)}{\sqrt{x^2+y^2}}
-=
-\frac{x^2+y^2}{\sqrt{|x|+|y|}\,\sqrt{x^2+y^2}}
-=
-\frac{\sqrt{x^2+y^2}}{\sqrt{|x|+|y|}}.
+\frac{f(x,y)}{\sqrt{x^2+y^2}}=\frac{x^2+y^2}{\sqrt{|x|+|y|}\,\sqrt{x^2+y^2}}=\frac{\sqrt{x^2+y^2}}{\sqrt{|x|+|y|}}.
 $$
 
 Используем неравенство
@@ -165,8 +160,7 @@ $$
 
 Следовательно,
 $$
-0\le \frac{f(x,y)}{\sqrt{x^2+y^2}}
-\le \sqrt{|x|+|y|}\to 0.
+0\le \frac{f(x,y)}{\sqrt{x^2+y^2}}\le \sqrt{|x|+|y|}\to 0.
 $$
 
 Значит,
@@ -224,20 +218,12 @@ $$
 
 Подставляем:
 $$
-D_u f(1,-1)=(4,-6)\cdot \left(\frac35,\frac45\right)
-=\frac{12}{5}-\frac{24}{5}
-=-\frac{12}{5}.
+D_u f(1,-1)=(4,-6)\cdot \left(\frac35,\frac45\right)=\frac{12}{5}-\frac{24}{5}=-\frac{12}{5}.
 $$
 
 Направление наибольшего роста совпадает с направлением градиента. Значит, нужный единичный вектор:
 $$
-\frac{\nabla f(1,-1)}{\|\nabla f(1,-1)\|}
-=
-\frac{(4,-6)}{\sqrt{16+36}}
-=
-\frac{(4,-6)}{2\sqrt{13}}
-=
-\left(\frac{2}{\sqrt{13}},-\frac{3}{\sqrt{13}}\right).
+\frac{\nabla f(1,-1)}{\|\nabla f(1,-1)\|}=\frac{(4,-6)}{\sqrt{16+36}}=\frac{(4,-6)}{2\sqrt{13}}=\left(\frac{2}{\sqrt{13}},-\frac{3}{\sqrt{13}}\right).
 $$
 
 ### Ответ
@@ -249,6 +235,7 @@ $$
 D_{v}f(1,-1)=D_{(3/5,\,4/5)}f(1,-1)=-\frac{12}{5},
 $$
 направление наибольшего роста:
+
 $$
 \left(\frac{2}{\sqrt{13}},-\frac{3}{\sqrt{13}}\right).
 $$
@@ -463,8 +450,7 @@ $$
 
 Упростим:
 $$
-f(x,2-x)=x^2+4-4x+x^2-2x-8+4x
-=2x^2-2x-4.
+f(x,2-x)=x^2+4-4x+x^2-2x-8+4x=2x^2-2x-4.
 $$
 
 Исследуем на $[0,2]$:
@@ -478,10 +464,7 @@ y=\frac32,
 $$
 и
 $$
-f\left(\frac12,\frac32\right)
-=2\cdot \frac14-2\cdot \frac12-4
-=\frac12-1-4
-=-\frac92.
+f\left(\frac12,\frac32\right)=2\cdot \frac14-2\cdot \frac12-4=\frac12-1-4=-\frac92.
 $$
 
 Соберём все кандидаты:
@@ -498,6 +481,7 @@ $$
 f_{\min}=-\frac92
 $$
 в точке
+
 $$
 \left(\frac12,\frac32\right).
 $$
@@ -623,6 +607,7 @@ x=\frac{1}{2\lambda},\qquad y=\frac{1}{8\lambda}.
 $$
 
 Подставим в ограничение:
+
 $$
 \left(\frac{1}{2\lambda}\right)^2+4\left(\frac{1}{8\lambda}\right)^2=4.
 $$
@@ -673,6 +658,7 @@ $$
 \sqrt5
 $$
 в точке
+
 $$
 \left(\frac{4}{\sqrt5},\frac{1}{\sqrt5}\right).
 $$
@@ -682,6 +668,7 @@ $$
 -\sqrt5
 $$
 в точке
+
 $$
 \left(-\frac{4}{\sqrt5},-\frac{1}{\sqrt5}\right).
 $$
@@ -736,10 +723,7 @@ $$
 
 Тогда в точке $x=1$, $y=\varphi(1)=1$:
 $$
-\varphi'(1)=-\frac{F_x(1,1)}{F_y(1,1)}
-=-\frac{2\cdot 1+1}{1+2\cdot 1}
-=-\frac{3}{3}
-=-1.
+\varphi'(1)=-\frac{F_x(1,1)}{F_y(1,1)}=-\frac{2\cdot 1+1}{1+2\cdot 1}=-\frac{3}{3}=-1.
 $$
 
 ### Ответ

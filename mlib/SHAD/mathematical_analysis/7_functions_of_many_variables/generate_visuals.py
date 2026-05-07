@@ -232,6 +232,67 @@ def draw_lagrange_tangency(out_name: str = "lagrange_tangency_unit_circle.png") 
     plt.close(fig)
 
 
+def draw_conditional_extremum_constraint_curve(
+    out_name: str = "conditional_extremum_constraint_curve.png",
+) -> None:
+    _apply_style()
+    x = np.linspace(-1.55, 1.55, 500)
+    y = np.linspace(-1.55, 1.55, 500)
+    xx, yy = np.meshgrid(x, y)
+    levels_value = xx + yy
+
+    t = np.linspace(0, 2 * np.pi, 700)
+    x_curve = np.cos(t)
+    y_curve = np.sin(t)
+
+    p_max = np.array([1 / np.sqrt(2), 1 / np.sqrt(2)])
+    p_min = -p_max
+
+    fig, ax = plt.subplots(figsize=(7.7, 6.9))
+    levels = np.linspace(-1.8, 1.8, 10)
+    contour = ax.contour(xx, yy, levels_value, levels=levels, colors=C_BLUE, linewidths=1.25, alpha=0.85)
+    ax.clabel(contour, inline=True, fontsize=8, fmt="%.1f")
+
+    ax.plot(x_curve, y_curve, color=C_PURPLE, lw=2.7, label=r"ограничение $x^2+y^2=1$")
+    ax.scatter(
+        [p_max[0], p_min[0]],
+        [p_max[1], p_min[1]],
+        s=95,
+        color=[C_ORANGE, C_GREEN],
+        edgecolors=C_INK,
+        linewidths=1.1,
+        zorder=6,
+    )
+
+    tang_x = np.linspace(-1.45, 1.45, 100)
+    ax.plot(tang_x, np.sqrt(2) - tang_x, color=C_ORANGE, lw=2.2, ls="--", alpha=0.95, label=r"уровень $f(x,y)=x+y=\sqrt{2}$")
+    ax.plot(tang_x, -np.sqrt(2) - tang_x, color=C_GREEN, lw=2.2, ls="--", alpha=0.95, label=r"уровень $f(x,y)=x+y=-\sqrt{2}$")
+
+    ax.text(0.84, 0.94, "условный\nмаксимум", color=C_ORANGE, fontsize=10)
+    ax.text(-1.23, -1.12, "условный\nминимум", color=C_GREEN, fontsize=10)
+    ax.text(-1.42, 1.18, "линии уровня\n$f(x,y)=x+y$", color=C_BLUE, fontsize=10)
+    ax.text(-0.45, 1.32, "сравниваем значения\nтолько на окружности", color=C_INK, fontsize=10)
+
+    ax.axhline(0, color=C_GRAY, lw=0.9)
+    ax.axvline(0, color=C_GRAY, lw=0.9)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    ax.set_aspect("equal")
+    ax.set_xlabel(r"$x$")
+    ax.set_ylabel(r"$y$")
+    ax.set_title(
+        "Условный экстремум: максимум и минимум ищутся вдоль ограничения",
+        fontsize=12,
+        weight="bold",
+        color=C_INK,
+    )
+    ax.legend(loc="lower left", fontsize=9, framealpha=0.95)
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(ASSETS / out_name, dpi=180, bbox_inches="tight", facecolor=C_BG)
+    plt.close(fig)
+
+
 def gif_gradient_descent(out_name: str = "gif_gradient_descent_quadratic.gif", duration: float = 0.22) -> None:
     _apply_style()
     x = np.linspace(-2.2, 2.2, 320)
@@ -304,6 +365,7 @@ def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_tangent_plane_local_linearization()
     draw_gradient_level_sets()
+    draw_conditional_extremum_constraint_curve()
     draw_lagrange_tangency()
     gif_gradient_descent()
     print(f"Generated visuals in {ASSETS}")
