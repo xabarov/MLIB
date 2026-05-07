@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1778177680,
+  "jobs": [
+    {
+      "slug": "asymptotics-hero-dominant-term",
+      "filename_base": "hero_asymptotics_dominant_term",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "asymptotics-local-microscope",
+      "filename_base": "asymptotics_local_microscope",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}
