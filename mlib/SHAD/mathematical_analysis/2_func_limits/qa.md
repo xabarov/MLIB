@@ -28,31 +28,21 @@ $$
 Разобьём выражение на сумму:
 
 $$
-\frac{\sin(5x)-\sin(2x)}{x}
-=
-\frac{\sin(5x)}{x}-\frac{\sin(2x)}{x}.
+\frac{\sin(5x)-\sin(2x)}{x}=\frac{\sin(5x)}{x}-\frac{\sin(2x)}{x}.
 $$
 
 Теперь представим каждый член в виде, удобном для применения первого замечательного предела:
 
 $$
-\frac{\sin(5x)}{x}
-=
-5\cdot \frac{\sin(5x)}{5x},
+\frac{\sin(5x)}{x}=5\cdot \frac{\sin(5x)}{5x},
 \qquad
-\frac{\sin(2x)}{x}
-=
-2\cdot \frac{\sin(2x)}{2x}.
+\frac{\sin(2x)}{x}=2\cdot \frac{\sin(2x)}{2x}.
 $$
 
 Следовательно,
 
 $$
-\frac{\sin(5x)-\sin(2x)}{x}
-=
-5\cdot \frac{\sin(5x)}{5x}
--
-2\cdot \frac{\sin(2x)}{2x}.
+\frac{\sin(5x)-\sin(2x)}{x}=5\cdot \frac{\sin(5x)}{5x}-2\cdot \frac{\sin(2x)}{2x}.
 $$
 
 При $x \to 0$ имеем:
@@ -66,9 +56,7 @@ $$
 Значит,
 
 $$
-\lim_{x \to 0} \frac{\sin(5x)-\sin(2x)}{x}
-=
-5\cdot 1 - 2\cdot 1 = 3.
+\lim_{x \to 0} \frac{\sin(5x)-\sin(2x)}{x}=5\cdot 1 - 2\cdot 1 = 3.
 $$
 
 ### Ответ
@@ -140,32 +128,22 @@ $$
 Разделим выражение на множители:
 
 $$
-\frac{\tan(3x)\sin(2x)}{x^2}
-=
-\frac{\tan(3x)}{x}\cdot \frac{\sin(2x)}{x}.
+\frac{\tan(3x)\sin(2x)}{x^2}=\frac{\tan(3x)}{x}\cdot \frac{\sin(2x)}{x}.
 $$
 
 Теперь перепишем каждый множитель:
 
 $$
-\frac{\tan(3x)}{x}
-=
-3\cdot \frac{\tan(3x)}{3x},
+\frac{\tan(3x)}{x}=3\cdot \frac{\tan(3x)}{3x},
 \qquad
-\frac{\sin(2x)}{x}
-=
-2\cdot \frac{\sin(2x)}{2x}.
+\frac{\sin(2x)}{x}=2\cdot \frac{\sin(2x)}{2x}.
 $$
 
 Следовательно,
 
 $$
-\frac{\tan(3x)\sin(2x)}{x^2}
-=
-6\cdot
-\frac{\tan(3x)}{3x}
-\cdot
-\frac{\sin(2x)}{2x}.
+\frac{\tan(3x)\sin(2x)}{x^2}=6\cdot
+\frac{\tan(3x)}{3x}\cdot\frac{\sin(2x)}{2x}.
 $$
 
 Из первого замечательного предела следует:
@@ -177,9 +155,7 @@ $$
 Кроме того,
 
 $$
-\frac{\tan t}{t}
-=
-\frac{\sin t}{t\cos t}\to \frac{1}{1}=1.
+\frac{\tan t}{t}=\frac{\sin t}{t\cos t}\to \frac{1}{1}=1.
 $$
 
 Поэтому
@@ -193,9 +169,7 @@ $$
 Значит,
 
 $$
-\lim_{x \to 0} \frac{\tan(3x)\sin(2x)}{x^2}
-=
-6.
+\lim_{x \to 0} \frac{\tan(3x)\sin(2x)}{x^2}=6.
 $$
 
 ### Ответ
@@ -233,35 +207,25 @@ $$
 Тогда
 
 $$
-\frac{1-\cos(4x)}{x^2}
-=
-\frac{2\sin^2(2x)}{x^2}.
+\frac{1-\cos(4x)}{x^2}=\frac{2\sin^2(2x)}{x^2}.
 $$
 
 Представим это так:
 
 $$
-\frac{2\sin^2(2x)}{x^2}
-=
-2\left(\frac{\sin(2x)}{x}\right)^2.
+\frac{2\sin^2(2x)}{x^2}=2\left(\frac{\sin(2x)}{x}\right)^2.
 $$
 
 Далее:
 
 $$
-\frac{\sin(2x)}{x}
-=
-2\cdot \frac{\sin(2x)}{2x}.
+\frac{\sin(2x)}{x}=2\cdot \frac{\sin(2x)}{2x}.
 $$
 
 Следовательно,
 
 $$
-2\left(\frac{\sin(2x)}{x}\right)^2
-=
-2\left(2\cdot \frac{\sin(2x)}{2x}\right)^2
-=
-8\left(\frac{\sin(2x)}{2x}\right)^2.
+2\left(\frac{\sin(2x)}{x}\right)^2=2\left(2\cdot \frac{\sin(2x)}{2x}\right)^2=8\left(\frac{\sin(2x)}{2x}\right)^2.
 $$
 
 При $x \to 0$:
@@ -273,9 +237,7 @@ $$
 Значит,
 
 $$
-\lim_{x \to 0} \frac{1-\cos(4x)}{x^2}
-=
-8.
+\lim_{x \to 0} \frac{1-\cos(4x)}{x^2}=8.
 $$
 
 ### Ответ
@@ -307,9 +269,7 @@ $$
 Нужно привести наше выражение к похожему виду. Заметим:
 
 $$
-\left(1+\frac{3}{x}\right)^{2x}
-=
-\left[\left(1+\frac{3}{x}\right)^{x/3}\right]^6.
+\left(1+\frac{3}{x}\right)^{2x}=\left[\left(1+\frac{3}{x}\right)^{x/3}\right]^6.
 $$
 
 Действительно, поскольку
@@ -333,9 +293,7 @@ $$
 Следовательно,
 
 $$
-\left(1+\frac{3}{x}\right)^{x/3}
-=
-\left(1+\frac{1}{u}\right)^u \to e.
+\left(1+\frac{3}{x}\right)^{x/3}=\left(1+\frac{1}{u}\right)^u \to e.
 $$
 
 Значит,
@@ -373,9 +331,7 @@ $$
 Представим выражение так:
 
 $$
-\frac{\ln(1+2x)}{x}
-=
-2\cdot \frac{\ln(1+2x)}{2x}.
+\frac{\ln(1+2x)}{x}=2\cdot \frac{\ln(1+2x)}{2x}.
 $$
 
 Положим
@@ -399,9 +355,7 @@ $$
 Следовательно,
 
 $$
-\lim_{x \to 0} \frac{\ln(1+2x)}{x}
-=
-2\cdot 1=2.
+\lim_{x \to 0} \frac{\ln(1+2x)}{x}=2\cdot 1=2.
 $$
 
 ### Ответ
@@ -453,9 +407,7 @@ $$
 При этом
 
 $$
-\sin\frac{1}{x_n^2}
-=
-\sin\left(\frac{\pi}{2}+2\pi n\right)=1.
+\sin\frac{1}{x_n^2}=\sin\left(\frac{\pi}{2}+2\pi n\right)=1.
 $$
 
 Теперь возьмём последовательность $\{y_n\}$ из условия
@@ -479,9 +431,7 @@ $$
 Но
 
 $$
-\sin\frac{1}{y_n^2}
-=
-\sin\left(\frac{3\pi}{2}+2\pi n\right)=-1.
+\sin\frac{1}{y_n^2}=\sin\left(\frac{3\pi}{2}+2\pi n\right)=-1.
 $$
 
 Итак, вдоль одной последовательности значения функции равны $1$, а вдоль другой равны $-1$.
@@ -691,19 +641,13 @@ $$
 Преобразуем выражение:
 
 $$
-\frac{x\sin\frac{1}{x}}{\sqrt{|x|}}
-=
-\frac{x}{\sqrt{|x|}}\sin\frac{1}{x}.
+\frac{x\sin\frac{1}{x}}{\sqrt{|x|}}=\frac{x}{\sqrt{|x|}}\sin\frac{1}{x}.
 $$
 
 Заметим, что
 
 $$
-\left|\frac{x}{\sqrt{|x|}}\right|
-=
-\frac{|x|}{\sqrt{|x|}}
-=
-\sqrt{|x|}.
+\left|\frac{x}{\sqrt{|x|}}\right|=\frac{|x|}{\sqrt{|x|}}=\sqrt{|x|}.
 $$
 
 Тогда
@@ -711,9 +655,7 @@ $$
 $$
 \left|\frac{x\sin\frac{1}{x}}{\sqrt{|x|}}\right|
 \le
-\sqrt{|x|}\cdot 1
-=
-\sqrt{|x|}.
+\sqrt{|x|}\cdot 1=\sqrt{|x|}.
 $$
 
 Так как
@@ -1058,9 +1000,7 @@ $$
 Следовательно,
 
 $$
-x\sin\frac{1}{x}
-=
-\frac{\sin t}{t}.
+x\sin\frac{1}{x}=\frac{\sin t}{t}.
 $$
 
 Тогда искомый предел равен
@@ -1094,9 +1034,7 @@ $$
 Разделим числитель на $x$:
 
 $$
-\frac{\sin x - x}{x}
-=
-\frac{\sin x}{x}-1.
+\frac{\sin x - x}{x}=\frac{\sin x}{x}-1.
 $$
 
 По первому замечательному пределу
@@ -1136,42 +1074,25 @@ $$
 Запишем:
 
 $$
-\sin x-\tan x
-=
-\sin x-\frac{\sin x}{\cos x}
-=
-\sin x\left(1-\frac{1}{\cos x}\right).
+\sin x-\tan x=\sin x-\frac{\sin x}{\cos x}=\sin x\left(1-\frac{1}{\cos x}\right).
 $$
 
 Приведём к общему знаменателю:
 
 $$
-1-\frac{1}{\cos x}
-=
-\frac{\cos x-1}{\cos x}.
+1-\frac{1}{\cos x}=\frac{\cos x-1}{\cos x}.
 $$
 
 Тогда
 
 $$
-\sin x-\tan x
-=
-\sin x\cdot \frac{\cos x-1}{\cos x}
-=
--\sin x\cdot \frac{1-\cos x}{\cos x}.
+\sin x-\tan x=\sin x\cdot \frac{\cos x-1}{\cos x}=-\sin x\cdot \frac{1-\cos x}{\cos x}.
 $$
 
 Следовательно,
 
 $$
-\frac{\sin x-\tan x}{x^3}
-=
--
-\frac{\sin x}{x}
-\cdot
-\frac{1-\cos x}{x^2}
-\cdot
-\frac{1}{\cos x}.
+\frac{\sin x-\tan x}{x^3}=-\frac{\sin x}{x}\cdot\frac{1-\cos x}{x^2}\cdot\frac{1}{\cos x}.
 $$
 
 Теперь можно переходить к пределу по множителям:
@@ -1199,11 +1120,7 @@ $$
 Значит,
 
 $$
-\lim_{x \to 0} \frac{\sin x - \tan x}{x^3}
-=
--1\cdot \frac{1}{2}\cdot 1
-=
--\frac{1}{2}.
+\lim_{x \to 0} \frac{\sin x - \tan x}{x^3}=-1\cdot \frac{1}{2}\cdot 1=-\frac{1}{2}.
 $$
 
 ### Ответ
@@ -1235,17 +1152,13 @@ $$
 Тогда
 
 $$
-(1+x)^{3/x}
-=
-\left((1+x)^{1/x}\right)^3.
+(1+x)^{3/x}=\left((1+x)^{1/x}\right)^3.
 $$
 
 Переходя к пределу, получаем
 
 $$
-\lim_{x \to 0} (1+x)^{3/x}
-=
-e^3.
+\lim_{x \to 0} (1+x)^{3/x}=e^3.
 $$
 
 ### Ответ
@@ -1376,11 +1289,7 @@ $$
 Умножим числитель и знаменатель на сопряжённое выражение:
 
 $$
-\frac{\sqrt{1+x}-1}{x}
-\cdot
-\frac{\sqrt{1+x}+1}{\sqrt{1+x}+1}
-=
-\frac{(1+x)-1}{x(\sqrt{1+x}+1)}.
+\frac{\sqrt{1+x}-1}{x}\cdot\frac{\sqrt{1+x}+1}{\sqrt{1+x}+1}=\frac{(1+x)-1}{x(\sqrt{1+x}+1)}.
 $$
 
 В числителе получаем:
@@ -1392,11 +1301,7 @@ $$
 Значит,
 
 $$
-\frac{\sqrt{1+x}-1}{x}
-=
-\frac{x}{x(\sqrt{1+x}+1)}
-=
-\frac{1}{\sqrt{1+x}+1},
+\frac{\sqrt{1+x}-1}{x}=\frac{x}{x(\sqrt{1+x}+1)}=\frac{1}{\sqrt{1+x}+1},
 $$
 
 если $x\ne 0$.
@@ -1410,11 +1315,7 @@ $$
 Следовательно,
 
 $$
-\lim_{x \to 0} \frac{1}{\sqrt{1+x}+1}
-=
-\frac{1}{1+1}
-=
-\frac{1}{2}.
+\lim_{x \to 0} \frac{1}{\sqrt{1+x}+1}=\frac{1}{1+1}=\frac{1}{2}.
 $$
 
 Значит,

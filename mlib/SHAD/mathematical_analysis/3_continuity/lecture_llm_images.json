@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "continuity-hero-local-smoothness",
+      "filename_base": "hero_continuity_local_smoothness",
+      "prompt": "16:9 educational editorial illustration for a mathematical analysis lecture on continuity of a real function at a point. Show one smooth curve passing calmly through a highlighted point with a small local neighborhood window around that point, visually suggesting that small changes in x produce small changes in f(x). The composition should communicate local smoothness and no jump, not exact formulas. Warm paper background, restrained academic palette, lots of whitespace, premium textbook-magazine style. No readable text, no digits, no formulas, no fake charts, no dashboard elements."
+    },
+    {
+      "slug": "continuity-no-jump-metaphor",
+      "filename_base": "continuity_no_jump_metaphor",
+      "prompt": "Educational editorial metaphor for continuity on an interval: a single uninterrupted path or ribbon crossing a scene from left to right without breaks, tears, or teleporting gaps, suggesting that a continuous function cannot jump over intermediate values. Keep it minimal, rigorous in spirit, and visually quiet. Warm paper background, deep ink contours, dusty blue and terracotta accents, no readable text, no equations, no decorative clutter."
+    }
+  ]
+}
