@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "derivative-hero-local-tangent",
+      "filename_base": "hero_derivative_local_tangent",
+      "prompt": "16:9 educational editorial illustration for a lecture on the derivative of a real function. Show one smooth curve with a highlighted point and a clearly suggested tangent line touching it locally, emphasizing local change, slope, and instantaneous behavior. The composition should feel mathematically disciplined and visually calm, with one main idea only: the derivative as a local linear view of a curve. Warm paper background, deep ink contours, dusty blue, terracotta, sage accents, premium academic style, lots of whitespace. No readable text, no digits, no formulas, no fake axes labels, no UI elements."
+    },
+    {
+      "slug": "derivative-local-zoom",
+      "filename_base": "derivative_local_zoom",
+      "prompt": "Educational editorial illustration for the idea that a differentiable curve looks almost straight under a strong local zoom. Show a smooth curve, a highlighted point, and a magnified local neighborhood where the curve nearly coincides with a line segment. Minimal, rigorous in spirit, warm paper palette, no readable text, no equations, no decorative clutter."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1778187839,
+  "jobs": [
+    {
+      "slug": "derivative-hero-local-tangent",
+      "filename_base": "hero_derivative_local_tangent",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "derivative-local-zoom",
+      "filename_base": "derivative_local_zoom",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}
