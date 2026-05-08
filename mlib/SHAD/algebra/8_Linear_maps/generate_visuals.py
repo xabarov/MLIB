@@ -1,157 +1,201 @@
-"""Генерация SVG-иллюстраций для SHAD/algebra/8_Linear_maps/lesson.md.
-
-Работает на стандартной библиотеке Python 3 (без matplotlib). SVG — векторный
-формат, хорошо рендерится в GitLab и VS Code; при необходимости можно
-конвертировать в PNG.
-
-Запуск:
-    python3 generate_visuals.py
-"""
+"""Иллюстрации для лекции про линейные отображения и операторы."""
 
 from __future__ import annotations
 
-import math
 from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 ROOT = Path(__file__).resolve().parent
 ASSETS = ROOT / "assets"
 
-SVG_HEADER = '<?xml version="1.0" encoding="UTF-8"?>\n'
+C_BG = "#faf9f5"
+C_INK = "#141413"
+C_GRAY = "#b0aea5"
+C_ORANGE = "#d97757"
+C_BLUE = "#6a9bcc"
+C_GREEN = "#788c5d"
+C_PURPLE = "#7c6ccf"
 
 
-def save_linear_map_schematic() -> str:
-    return """<svg xmlns="http://www.w3.org/2000/svg" width="580" height="250" viewBox="0 0 580 250">
-<defs>
-  <marker id="end" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-    <path d="M0,0 L0,6 L8,3 z" fill="#0f766e"/>
-  </marker>
-</defs>
-<rect x="40" y="70" width="150" height="120" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
-<rect x="400" y="70" width="150" height="120" rx="16" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
-<text x="115" y="145" text-anchor="middle" font-size="34" font-weight="bold" font-family="Georgia,serif" fill="#1e3a8a">V</text>
-<text x="475" y="145" text-anchor="middle" font-size="34" font-weight="bold" font-family="Georgia,serif" fill="#5b21b6">W</text>
-<line x1="200" y1="130" x2="390" y2="130" stroke="#0f766e" stroke-width="4" marker-end="url(#end)"/>
-<text x="290" y="115" text-anchor="middle" font-size="24" font-weight="bold" fill="#0f766e" font-style="italic">φ</text>
-<text x="115" y="215" text-anchor="middle" font-size="14" fill="#374151">область определения</text>
-<text x="475" y="215" text-anchor="middle" font-size="14" fill="#374151">область значений</text>
-<text x="290" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Схема: линейное отображение между пространствами</text>
-</svg>
-"""
+def _apply_style() -> None:
+    plt.rcParams.update(
+        {
+            "figure.facecolor": C_BG,
+            "axes.facecolor": C_BG,
+            "axes.edgecolor": C_GRAY,
+            "axes.labelcolor": C_INK,
+            "text.color": C_INK,
+            "xtick.color": C_INK,
+            "ytick.color": C_INK,
+            "grid.color": C_GRAY,
+            "grid.alpha": 0.28,
+            "font.size": 11,
+        }
+    )
 
 
-def save_rotation_r2() -> str:
-    c, s = math.cos(0.95), math.sin(0.95)
-    vx, vy = 1.55, 0.4
-    wx, wy = c * vx - s * vy, s * vx + c * vy
-    ax0, ay0 = 0.35, 0.0
-    ax1, ay1 = 0.35 * math.cos(0.45), -0.35 * math.sin(0.45)
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="-2.5 -2.5 5 5">
-<line x1="-2.2" y1="0" x2="2.2" y2="0" stroke="#64748b" stroke-width="0.04"/>
-<line x1="0" y1="-2.2" x2="0" y2="2.2" stroke="#64748b" stroke-width="0.04"/>
-<defs>
-  <marker id="a" orient="auto" markerWidth="8" markerHeight="8" refX="7" refY="2.5" markerUnits="strokeWidth">
-    <path d="M0,0 L0,5 L7,2.5 z" fill="currentColor"/>
-  </marker>
-</defs>
-<g stroke-linecap="round" stroke-width="0.08" marker-end="url(#a)">
-<line x1="0" y1="0" x2="{vx}" y2="{-vy}" stroke="#2563eb"/>
-<line x1="0" y1="0" x2="{wx}" y2="{-wy}" stroke="#ef4444"/>
-</g>
-<text x="{vx*1.12}" y="{-vy*1.12}" font-size="0.22" fill="#1d4ed8" font-weight="bold" font-style="italic">v</text>
-<text x="{wx*1.12}" y="{-wy*1.12}" font-size="0.22" fill="#b91c1c" font-weight="bold" font-style="italic">φ(v)</text>
-<path d="M {ax0} {ay0} A 0.35 0.35 0 0 1 {ax1} {ay1}" fill="none" stroke="#0f766e" stroke-width="0.05"/>
-<text x="0.42" y="-0.12" font-size="0.16" fill="#0f766e" font-style="italic">α</text>
-<text x="0" y="2" text-anchor="middle" font-size="0.18" fill="#111827" font-weight="bold">Поворот плоскости (линейный оператор)</text>
-</svg>
-"""
+def _save(fig: plt.Figure, name: str) -> None:
+    ASSETS.mkdir(parents=True, exist_ok=True)
+    fig.savefig(ASSETS / name, dpi=180, bbox_inches="tight", facecolor=C_BG)
+    plt.close(fig)
 
 
-def save_projection_r3() -> str:
-    return """<svg xmlns="http://www.w3.org/2000/svg" width="480" height="360" viewBox="0 0 480 360">
-<defs>
-  <marker id="mred" markerWidth="8" markerHeight="8" refX="6" refY="2" orient="auto">
-    <path d="M0,0 L0,4 L6,2 z" fill="#b91c1c"/>
-  </marker>
-  <marker id="mgreen" markerWidth="8" markerHeight="8" refX="6" refY="2" orient="auto">
-    <path d="M0,0 L0,4 L6,2 z" fill="#16a34a"/>
-  </marker>
-</defs>
-<polygon points="40,300 200,200 400,200 400,300" fill="#bfdbfe" fill-opacity="0.45" stroke="#3b82f6" stroke-width="2"/>
-<text x="50" y="255" font-size="12" fill="#1d4ed8">плоскость z = 0</text>
-<line x1="80" y1="90" x2="220" y2="170" stroke="#b91c1c" stroke-width="3" marker-end="url(#mred)"/>
-<line x1="80" y1="90" x2="220" y2="256" stroke="#16a34a" stroke-width="3" marker-end="url(#mgreen)"/>
-<line x1="220" y1="170" x2="220" y2="256" stroke="#64748b" stroke-width="2" stroke-dasharray="6,5"/>
-<text x="230" y="165" font-size="14" fill="#b91c1c" font-style="italic">(x, y, z)</text>
-<text x="230" y="268" font-size="14" fill="#166534" font-style="italic">(x, y, 0)</text>
-<text x="255" y="220" font-size="12" fill="#64748b">проекция</text>
-<text x="240" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Проекция на плоскость Oxy: φ(x, y, z) = (x, y, 0)</text>
-</svg>
-"""
+def _setup_2d(ax: plt.Axes, lim: float = 2.6) -> None:
+    ax.set_xlim(-lim, lim)
+    ax.set_ylim(-lim, lim)
+    ax.set_aspect("equal")
+    ax.axhline(0, color=C_GRAY, lw=0.9)
+    ax.axvline(0, color=C_GRAY, lw=0.9)
+    ax.grid(True, alpha=0.28)
+    for spine in ax.spines.values():
+        spine.set_color(C_GRAY)
 
 
-def save_kernel_line() -> str:
-    return """<svg xmlns="http://www.w3.org/2000/svg" width="500" height="400" viewBox="0 0 500 400">
-<line x1="100" y1="320" x2="400" y2="80" stroke="#2563eb" stroke-width="4"/>
-<circle cx="250" cy="200" r="5" fill="#111827"/>
-<text x="262" y="198" font-size="13" fill="#111827">0</text>
-<text x="330" y="100" font-size="14" fill="#b45309" font-style="italic">(−1, 1, −1)</text>
-<text x="200" y="130" font-size="13" fill="#2563eb" font-style="italic">ker φ</text>
-<polygon points="60,100 200,200 200,300 40,200" fill="#a78bfa" fill-opacity="0.2" stroke="#5b21b6" stroke-width="1" stroke-dasharray="4,3"/>
-<text x="95" y="155" font-size="11" fill="#5b21b6">x + y = 0 (набросок</text>
-<text x="95" y="170" font-size="11" fill="#5b21b6">плоскости в уравнении)</text>
-<text x="250" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#111827">Прямая — ядро: ker φ = span(−1, 1, −1)</text>
-</svg>
-"""
+def _arrow(ax: plt.Axes, start: np.ndarray, end: np.ndarray, color: str, label: str, lw: float = 2.5) -> None:
+    ax.annotate("", xy=(end[0], end[1]), xytext=(start[0], start[1]), arrowprops=dict(arrowstyle="->", lw=lw, color=color))
+    ax.text(end[0] * 1.04 + 0.03, end[1] * 1.04 + 0.03, label, color=color, fontsize=11)
 
 
-def save_two_bases_r2() -> str:
-    ox, oy = 200, 200
-    s = 55
+def draw_linear_map_scheme() -> None:
+    _apply_style()
+    fig, ax = plt.subplots(figsize=(7.2, 3.4))
+    ax.axis("off")
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 4)
 
-    def p(x, y):
-        return ox + s * x, oy - s * y
+    left = plt.Rectangle((0.7, 1.0), 2.2, 1.8, facecolor="#eef3f9", edgecolor=C_BLUE, linewidth=2.2)
+    right = plt.Rectangle((7.1, 1.0), 2.2, 1.8, facecolor="#f2edf9", edgecolor=C_PURPLE, linewidth=2.2)
+    ax.add_patch(left)
+    ax.add_patch(right)
+    ax.text(1.8, 1.9, "V", fontsize=24, weight="bold", color=C_BLUE, ha="center", va="center")
+    ax.text(8.2, 1.9, "W", fontsize=24, weight="bold", color=C_PURPLE, ha="center", va="center")
+    ax.annotate("", xy=(6.7, 1.9), xytext=(3.2, 1.9), arrowprops=dict(arrowstyle="->", lw=2.8, color=C_GREEN))
+    ax.text(4.95, 2.18, r"$\varphi$", fontsize=18, color=C_GREEN, ha="center")
+    ax.text(1.8, 0.65, "область определения", fontsize=10, ha="center", color=C_INK)
+    ax.text(8.2, 0.65, "область значений", fontsize=10, ha="center", color=C_INK)
+    ax.text(5.0, 3.45, "Линейное отображение между двумя пространствами", fontsize=13, weight="bold", ha="center", color=C_INK)
+    _save(fig, "linear_map_V_to_W.png")
 
-    x1, y1 = p(1, 0)
-    x2, y2 = p(0, 1)
-    fx1, fy1 = p(0.7, 0.7)
-    fx2, fy2 = p(0.5, -0.5)
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
-<line x1="40" y1="200" x2="400" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
-<line x1="200" y1="40" x2="200" y2="460" stroke="#94a3b8" stroke-width="1.5"/>
-<defs>
-  <marker id="av" orient="auto" refX="8" refY="2.5" markerWidth="8" markerHeight="5">
-    <path d="M0,0 L8,2.5 L0,5 z" fill="#2563eb"/>
-  </marker>
-</defs>
-<line x1="200" y1="200" x2="{x1}" y2="{y1}" stroke="#2563eb" stroke-width="3" marker-end="url(#av)"/>
-<line x1="200" y1="200" x2="{x2}" y2="{y2}" stroke="#2563eb" stroke-width="3" marker-end="url(#av)"/>
-<line x1="200" y1="200" x2="{fx1}" y2="{fy1}" stroke="#7c3aed" stroke-width="2.5"/>
-<line x1="200" y1="200" x2="{fx2}" y2="{fy2}" stroke="#db2777" stroke-width="2.5"/>
-<text x="{x1+8}" y="{y1}" font-size="16" fill="#1d4ed8" font-weight="bold" font-style="italic">e₁</text>
-<text x="{x2+5}" y="{y2+15}" font-size="16" fill="#1d4ed8" font-weight="bold" font-style="italic">e₂</text>
-<text x="{fx1+5}" y="{fy1-5}" font-size="15" fill="#5b21b6" font-weight="bold" font-style="italic">f₁</text>
-<text x="{fx2+8}" y="{fy2+5}" font-size="15" fill="#be185d" font-weight="bold" font-style="italic">f₂</text>
-<rect x="20" y="20" width="330" height="64" fill="#f3f4f6" stroke="#9ca3af" rx="6"/>
-<text x="35" y="45" font-size="13" fill="#374151">Смена базиса не двигает векторы, меняет лишь координатную</text>
-<text x="35" y="64" font-size="13" fill="#374151">запись одного и того же оператора: B = C⁻¹AC.</text>
-<text x="250" y="12" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">Два базиса на R² (стандартный и f)</text>
-</svg>
-"""
+
+def draw_rotation() -> None:
+    _apply_style()
+    fig, ax = plt.subplots(figsize=(5.6, 5.2))
+    _setup_2d(ax, lim=2.4)
+    v = np.array([1.6, 0.45])
+    alpha = 0.95
+    rot = np.array([[np.cos(alpha), -np.sin(alpha)], [np.sin(alpha), np.cos(alpha)]])
+    w = rot @ v
+    _arrow(ax, np.zeros(2), v, C_BLUE, r"$v$")
+    _arrow(ax, np.zeros(2), w, C_ORANGE, r"$\varphi(v)$")
+    theta = np.linspace(0, alpha, 80)
+    ax.plot(0.45 * np.cos(theta), 0.45 * np.sin(theta), color=C_GREEN, lw=2)
+    ax.text(0.52, 0.15, r"$\alpha$", color=C_GREEN, fontsize=11)
+    ax.set_title("Поворот плоскости: линейный оператор", fontsize=12, weight="bold")
+    _save(fig, "rotation_r2.png")
+
+
+def draw_projection() -> None:
+    _apply_style()
+    fig = plt.figure(figsize=(7.0, 5.6))
+    fig.subplots_adjust(top=0.83)
+    ax = fig.add_subplot(111, projection="3d")
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+
+    x = np.linspace(-1.7, 1.7, 12)
+    y = np.linspace(-1.7, 1.7, 12)
+    X, Y = np.meshgrid(x, y)
+    Z = np.zeros_like(X)
+    ax.plot_surface(X, Y, Z, color=C_BLUE, alpha=0.20, linewidth=0)
+
+    v = np.array([0.9, 1.0, 1.4])
+    p = np.array([0.9, 1.0, 0.0])
+    ax.quiver(0, 0, 0, *v, color=C_ORANGE, linewidth=2.8, arrow_length_ratio=0.11)
+    ax.quiver(0, 0, 0, *p, color=C_GREEN, linewidth=2.8, arrow_length_ratio=0.11)
+    ax.plot([v[0], p[0]], [v[1], p[1]], [v[2], p[2]], color=C_GRAY, lw=1.8, ls="--")
+    ax.text(*(v + np.array([0.08, 0.08, 0.08])), r"$(x,y,z)$", color=C_ORANGE, fontsize=10)
+    ax.text(*(p + np.array([0.08, 0.08, 0.08])), r"$(x,y,0)$", color=C_GREEN, fontsize=10)
+    ax.text2D(0.05, 0.89, r"$\varphi(x,y,z)=(x,y,0)$", transform=ax.transAxes, fontsize=14, color=C_INK, bbox=dict(boxstyle="round,pad=0.3", facecolor="#edf7ea", edgecolor=C_GREEN))
+    ax.text2D(0.05, 0.72, "Вертикальная компонента исчезает,\nточка падает на плоскость Oxy", transform=ax.transAxes, fontsize=11, color=C_INK)
+    ax.set_title("Проекция на координатную плоскость", fontsize=12, weight="bold", pad=16)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    ax.view_init(elev=22, azim=34)
+    ax.set_box_aspect((1.2, 1.2, 0.8))
+    _save(fig, "projection_r3_to_xy.png")
+
+
+def draw_kernel_line() -> None:
+    _apply_style()
+    fig = plt.figure(figsize=(7.2, 5.7))
+    fig.subplots_adjust(top=0.82)
+    ax = fig.add_subplot(111, projection="3d")
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+
+    t = np.linspace(-2.0, 2.0, 100)
+    x = -t
+    y = t
+    z = -t
+    ax.plot(x, y, z, color=C_ORANGE, lw=3.4)
+    ax.scatter([0], [0], [0], color=C_INK, s=28)
+
+    plane_x = np.linspace(-2.2, 2.2, 10)
+    plane_y = np.linspace(-2.2, 2.2, 10)
+    PX, PY = np.meshgrid(plane_x, plane_y)
+    PZ = -PX - PY
+    ax.plot_surface(PX, PY, PZ, color=C_PURPLE, alpha=0.10, linewidth=0)
+
+    ax.text(-1.9, 1.8, -1.9, r"$\ker\varphi$", color=C_ORANGE, fontsize=11)
+    ax.text2D(0.04, 0.89, r"$\ker\varphi=\mathrm{span}\{(-1,1,-1)\}$", transform=ax.transAxes, fontsize=14, color=C_INK, bbox=dict(boxstyle="round,pad=0.3", facecolor="#f8f3dc", edgecolor=C_ORANGE))
+    ax.text2D(0.04, 0.72, "Ядро всегда является подпространством:\nздесь это прямая через начало", transform=ax.transAxes, fontsize=11, color=C_INK)
+    ax.set_title("Геометрия ядра линейного отображения", fontsize=12, weight="bold", pad=16)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    ax.view_init(elev=22, azim=38)
+    ax.set_box_aspect((1.2, 1.1, 1.1))
+    _save(fig, "kernel_line_r3.png")
+
+
+def draw_two_bases() -> None:
+    _apply_style()
+    fig, ax = plt.subplots(figsize=(6.5, 5.8))
+    _setup_2d(ax, lim=2.2)
+
+    e1 = np.array([1.0, 0.0])
+    e2 = np.array([0.0, 1.0])
+    f1 = np.array([1.0, 1.0])
+    f2 = np.array([1.0, -1.0])
+    v = np.array([1.4, 0.9])
+
+    _arrow(ax, np.zeros(2), e1, C_BLUE, r"$e_1$")
+    _arrow(ax, np.zeros(2), e2, C_BLUE, r"$e_2$")
+    _arrow(ax, np.zeros(2), f1 / 1.3, C_PURPLE, r"$f_1$", lw=2.2)
+    _arrow(ax, np.zeros(2), f2 / 1.3, C_GREEN, r"$f_2$", lw=2.2)
+    _arrow(ax, np.zeros(2), v, C_ORANGE, r"$v$", lw=2.8)
+
+    ax.text(-2.0, 1.85, r"$A=[\varphi]_e,\quad B=[\varphi]_f=C^{-1}AC$", fontsize=12, color=C_INK, bbox=dict(boxstyle="round,pad=0.25", facecolor="#eef3f9", edgecolor=C_BLUE))
+    ax.text(-2.0, 1.3, "Оператор тот же,\nменяется только координатная запись", fontsize=11, color=C_INK)
+    ax.set_title("Одна плоскость, два базиса", fontsize=12, weight="bold")
+    _save(fig, "two_bases_r2.png")
 
 
 def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
-    out = {
-        "linear_map_V_to_W.svg": save_linear_map_schematic(),
-        "rotation_r2.svg": save_rotation_r2(),
-        "projection_r3_to_xy.svg": save_projection_r3(),
-        "kernel_line_r3.svg": save_kernel_line(),
-        "two_bases_r2.svg": save_two_bases_r2(),
-    }
-    for name, content in out.items():
-        p = ASSETS / name
-        p.write_text(SVG_HEADER + content, encoding="utf-8")
-        print(f"Wrote {p}")
+    draw_linear_map_scheme()
+    draw_rotation()
+    draw_projection()
+    draw_kernel_line()
+    draw_two_bases()
+    print(f"Generated visuals in {ASSETS}")
 
 
 if __name__ == "__main__":

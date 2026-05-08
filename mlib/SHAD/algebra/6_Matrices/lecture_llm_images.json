@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "matrices-hero-operations",
+      "filename_base": "hero_matrix_operations",
+      "prompt": "16:9 editorial illustration for a university linear algebra lecture on matrix operations, matrix multiplication, rank of a product, determinant of a product, and inverse matrices. Show a calm mathematical scene with rectangular matrix blocks, arrows suggesting composition of transformations, and one highlighted reversible mapping motif; the image should feel explanatory and structured, not abstract decoration. Warm paper background #faf9f5, ink-like accents #141413, dusty blue #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic style, spacious layout, no readable text, no digits, no formulas, no UI."
+    }
+  ]
+}

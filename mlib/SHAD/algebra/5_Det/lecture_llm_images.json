@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "determinant-hero-geometry",
+      "filename_base": "hero_determinant_geometry",
+      "prompt": "16:9 editorial illustration for a university linear algebra lecture on determinants. Show a clean geometric scene where two or three vectors generate a parallelogram or parallelepiped with clear sense of signed area or volume scaling; also suggest matrix structure or row-column organization in the background without readable symbols. The image should feel explanatory and mathematically precise, not abstract decoration. Warm paper background #faf9f5, ink-like accents #141413, dusty blue #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic style, spacious layout, no readable text, no digits, no formulas, no UI."
+    }
+  ]
+}
