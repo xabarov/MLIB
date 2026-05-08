@@ -4,12 +4,7 @@
     {
       "slug": "rank-hero-linear-dependence",
       "filename_base": "hero_rank_linear_dependence",
-      "prompt": "16:9 abstract editorial illustration for a university linear algebra lecture on linear dependence, basis, and matrix rank. Visual metaphor: several geometric vectors where some align into a shared plane while one stands independent, conveying dependent vs independent directions. Warm paper background #faf9f5, ink-like forms #141413, dusty blue #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic magazine style, restrained composition, generous negative space. Absolutely no readable text, letters, digits, formulas, chart axes, or UI."
-    },
-    {
-      "slug": "rank-kronecker-capelli-metaphor",
-      "filename_base": "kronecker_capelli_metaphor",
-      "prompt": "16:9 abstract editorial illustration about the Kronecker-Capelli criterion: two layered geometric structures, one case where dimensions match and lock together, and another where an extra offset layer causes incompatibility. Subtle split-scene composition suggesting consistent vs inconsistent linear systems. Same restrained palette (#faf9f5, #141413, #6a9bcc, #d97757, #788c5d), diffuse light, soft paper grain. No digits, no letters, no equations, no fake charts."
+      "prompt": "16:9 editorial illustration for a university lecture on linear dependence, basis, and matrix rank. Show several vectors from a common origin, with two or three clearly lying in one shared plane and one highlighted as redundant or dependent; nearby suggest a calm matrix or pivot structure without readable symbols. The scene should feel mathematically precise and explanatory, not decorative abstraction. Warm paper background #faf9f5, ink-like accents #141413, dusty blue #6a9bcc, terracotta #d97757, olive #788c5d. Premium academic style, spacious composition, no readable text, no digits, no formulas, no UI."
     }
   ]
 }
