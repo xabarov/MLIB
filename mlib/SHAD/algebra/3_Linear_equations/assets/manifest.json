@@ -1,16 +1,11 @@
 {
   "model": "google/gemini-3.1-flash-image-preview",
   "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
-  "generated_at_epoch": 1777845820,
+  "generated_at_epoch": 1778273805,
   "jobs": [
     {
       "slug": "linear-systems-hero-grid",
       "filename_base": "hero_linear_systems",
-      "append_style_suffix": true
-    },
-    {
-      "slug": "linear-iterative-methods-metaphor",
-      "filename_base": "iterative_methods_metaphor",
       "append_style_suffix": true
     }
   ],
