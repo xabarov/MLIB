@@ -56,9 +56,7 @@ $$
 
 Проверим условие:
 $$
-(\alpha x_1+\beta x_2)-2(\alpha y_1+\beta y_2)+(\alpha z_1+\beta z_2)
-$$
-$$=\alpha(x_1-2y_1+z_1)+\beta(x_2-2y_2+z_2)=0.
+(\alpha x_1+\beta x_2)-2(\alpha y_1+\beta y_2)+(\alpha z_1+\beta z_2)=\alpha(x_1-2y_1+z_1)+\beta(x_2-2y_2+z_2)=0.
 $$
 
 Значит,
