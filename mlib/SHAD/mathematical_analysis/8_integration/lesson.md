@@ -401,29 +401,21 @@ $$
 
 Разложим:
 $$
-\frac{1}{x^2-1}=\frac{1}{(x-1)(x+1)}
-=\frac{1}{2}\cdot \frac{1}{x-1} - \frac{1}{2}\cdot \frac{1}{x+1}.
+\frac{1}{x^2-1}=\frac{1}{(x-1)(x+1)}=\frac{1}{2}\cdot \frac{1}{x-1} - \frac{1}{2}\cdot \frac{1}{x+1}.
 $$
 
 Значит,
 $$
-\int \frac{dx}{x^2-1}
-=
-\frac{1}{2}\int\frac{dx}{x-1}
--\frac{1}{2}\int\frac{dx}{x+1}
+\int \frac{dx}{x^2-1}=\frac{1}{2}\int\frac{dx}{x-1}-\frac{1}{2}\int\frac{dx}{x+1}.
 $$
 и
 $$
-\int \frac{dx}{x^2-1}
-=
-\frac{1}{2}\ln|x-1|-\frac{1}{2}\ln|x+1|+C.
+\int \frac{dx}{x^2-1}=\frac{1}{2}\ln|x-1|-\frac{1}{2}\ln|x+1|+C.
 $$
 
 Можно записать и компактнее:
 $$
-\int \frac{dx}{x^2-1}
-=
-\frac{1}{2}\ln\left|\frac{x-1}{x+1}\right|+C.
+\int \frac{dx}{x^2-1}=\frac{1}{2}\ln\left|\frac{x-1}{x+1}\right|+C.
 $$
 
 ### Ещё полезные идеи
@@ -480,9 +472,7 @@ $$
 
 Тогда
 $$
-\iint\limits_D f(x,y)\,dA
-=
-\int_0^2\left(\int_0^x f(x,y)\,dy\right)dx.
+\iint\limits_D f(x,y)\,dA=\int_0^2\left(\int_0^x f(x,y)\,dy\right)dx.
 $$
 
 ![Точная схема: двойной интеграл по области и соответствующий повторный интеграл](assets/double_integral_region_iterated.png)
@@ -497,29 +487,17 @@ $$
 
 Тогда
 $$
-\iint\limits_D (x+y)\,dA
-=
-\int_0^2\left(\int_0^x (x+y)\,dy\right)dx.
+\iint\limits_D (x+y)\,dA=\int_0^2\left(\int_0^x (x+y)\,dy\right)dx.
 $$
 
 Сначала считаем внутренний интеграл:
 $$
-\int_0^x (x+y)\,dy
-=
-xy+\frac{y^2}{2}\Big|_0^x
-=
-x^2+\frac{x^2}{2}
-=
-\frac{3x^2}{2}.
+\int_0^x (x+y)\,dy=xy+\frac{y^2}{2}\Big|_0^x=x^2+\frac{x^2}{2}=\frac{3x^2}{2}.
 $$
 
 Теперь внешний:
 $$
-\int_0^2 \frac{3x^2}{2}\,dx
-=
-\frac{3}{2}\cdot \frac{x^3}{3}\Big|_0^2
-=
-4.
+\int_0^2 \frac{3x^2}{2}\,dx=\frac{3}{2}\cdot \frac{x^3}{3}\Big|_0^2=4.
 $$
 
 ### Почему порядок бывает важен
@@ -586,13 +564,7 @@ $$
 
 Поэтому
 $$
-\iint\limits_{x^2+y^2\le R^2} 1\,dx\,dy
-=
-\int_0^{2\pi}\int_0^R r\,dr\,d\varphi
-=
-\int_0^{2\pi}\frac{R^2}{2}\,d\varphi
-=
-\pi R^2.
+\iint\limits_{x^2+y^2\le R^2} 1\,dx\,dy=\int_0^{2\pi}\int_0^R r\,dr\,d\varphi=\int_0^{2\pi}\frac{R^2}{2}\,d\varphi=\pi R^2.
 $$
 
 ### Что важно
@@ -639,15 +611,11 @@ x=x(t),\qquad y=y(t),\qquad t\in[\alpha,\beta],
 $$
 то
 $$
-\int_\gamma f\,ds
-=
-\int_\alpha^\beta f(x(t),y(t))\sqrt{(x'(t))^2+(y'(t))^2}\,dt
+\int_\gamma f\,ds=\int_\alpha^\beta f(x(t),y(t))\sqrt{(x'(t))^2+(y'(t))^2}\,dt
 $$
 и
 $$
-\int_\gamma P\,dx+Q\,dy
-=
-\int_\alpha^\beta \Big(P(x(t),y(t))x'(t)+Q(x(t),y(t))y'(t)\Big)\,dt.
+\int_\gamma P\,dx+Q\,dy=\int_\alpha^\beta \Big(P(x(t),y(t))x'(t)+Q(x(t),y(t))y'(t)\Big)\,dt.
 $$
 
 ![Точная схема: криволинейный интеграл как накопление работы поля вдоль траектории](assets/line_integral_work_curve.png)
@@ -670,12 +638,7 @@ $$
 
 Следовательно,
 $$
-\int_\gamma y\,dx + x\,dy
-=
-\int_0^1 \bigl(t^2\cdot 1 + t\cdot 2t\bigr)\,dt
-=
-\int_0^1 3t^2\,dt
-=1.
+\int_\gamma y\,dx + x\,dy=\int_0^1 \bigl(t^2\cdot 1 + t\cdot 2t\bigr)\,dt=\int_0^1 3t^2\,dt=1.
 $$
 
 ---
