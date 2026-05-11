@@ -269,11 +269,10 @@ $$
 \int f(\varphi(x))\varphi'(x)\,dx = \int f(u)\,du.
 $$
 
-Для определённого интеграла:
+Для определённого интеграла верна формула:
+
 $$
-\int_a^b f(\varphi(x))\varphi'(x)\,dx
-=
-\int_{\varphi(a)}^{\varphi(b)} f(u)\,du.
+\int_a^b f(\varphi(x))\varphi'(x)\,dx = \int_{\varphi(a)}^{\varphi(b)} f(u)\,du.
 $$
 
 ![Точная схема: замена переменной как переобозначение и растяжение оси интегрирования](assets/substitution_interval_map.png)
@@ -336,6 +335,7 @@ $$
 $$
 
 Для определённого интеграла:
+
 $$
 \int_a^b u(x)v'(x)\,dx = u(x)v(x)\Big|_a^b - \int_a^b u'(x)v(x)\,dx.
 $$
