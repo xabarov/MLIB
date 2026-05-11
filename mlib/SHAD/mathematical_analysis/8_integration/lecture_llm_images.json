@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "integration-hero-accumulation-geometry",
+      "filename_base": "hero_integration_geometry",
+      "prompt": "16:9 educational editorial illustration for a lecture on integration. Show one smooth graph over a horizontal axis with a clearly highlighted accumulated area under the curve, plus a subtle suggestion of partitioning into thin strips or rectangles that merge into one continuous area. The main idea should be accumulation from local pieces, not decorative abstraction. Warm paper background, deep ink structure, dusty blue curve, terracotta area accent, sage secondary accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no UI elements."
+    }
+  ]
+}
