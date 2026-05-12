@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "hamilton-cayley-jordan-hero",
+      "filename_base": "hero_hamilton_cayley_jordan",
+      "prompt": "16:9 educational editorial illustration for a lecture on the Hamilton-Cayley theorem, nilpotent operators, and Jordan form. Show a calm abstract linear-algebra scene where a matrix-like operator decomposes a space into a few clean chain-like blocks, suggesting Jordan chains and block structure. The image should communicate ordered algebraic structure, repeated eigenvalue behavior, and a nilpotent shift along chains. Warm paper background, deep ink outlines, dusty blue, terracotta, sage and muted violet accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no decorative clutter."
+    }
+  ]
+}
