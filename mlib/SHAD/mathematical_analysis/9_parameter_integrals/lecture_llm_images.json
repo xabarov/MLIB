@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "parameter-integrals-hero-family-area",
+      "filename_base": "hero_parameter_integrals",
+      "prompt": "16:9 educational editorial illustration for a lecture on parameter-dependent integrals. Show a calm family of smooth curves over a horizontal axis, with one highlighted area under a representative curve and subtle visual suggestion that changing a parameter deforms the whole family and changes the accumulated area. One main idea only: the integral depends on a parameter through a changing family of graphs. Warm paper background, deep ink structure, dusty blue and terracotta accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no UI elements."
+    },
+    {
+      "slug": "parameter-integrals-beta-gamma-editorial",
+      "filename_base": "beta_gamma_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on Beta and Gamma functions. Show a clean mathematical scene in the first quadrant with a soft geometric transformation motif: rays or diagonals suggesting scale, and a smooth bounded shape suggesting a reduction from a two-variable positive quadrant to a one-dimensional proportion on the interval. One main idea only: two special functions are linked by a geometric change of variables. Warm paper palette, deep ink contours, dusty blue, terracotta, sage accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake charts, no UI."
+    }
+  ]
+}
