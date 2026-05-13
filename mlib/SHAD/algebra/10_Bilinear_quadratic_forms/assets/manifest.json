@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1778670451,
+  "jobs": [
+    {
+      "slug": "bilinear-quadratic-forms-hero",
+      "filename_base": "hero_bilinear_quadratic_forms",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "bilinear-quadratic-inertia-geometry",
+      "filename_base": "inertia_geometry_editorial",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

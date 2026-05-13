@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "bilinear-quadratic-forms-hero",
+      "filename_base": "hero_bilinear_quadratic_forms",
+      "prompt": "16:9 educational editorial illustration for a lecture on bilinear and quadratic forms. Show two abstract vector-like directions feeding into one structured algebraic interaction, with a subtle transition toward a signed geometric surface or contour motif that suggests a quadratic form. One main idea only: a bilinear pairing produces a scalar and induces a geometry with positive and negative directions. Warm paper background, deep ink contours, dusty blue, terracotta, sage and muted violet accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no decorative clutter."
+    },
+    {
+      "slug": "bilinear-quadratic-inertia-geometry",
+      "filename_base": "inertia_geometry_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on the law of inertia of real quadratic forms. Show a calm mathematical scene suggesting several geometric regimes determined by sign pattern: one compact bowl-like region, one saddle-like region, and one flat degenerate direction, all presented as abstract but mathematically disciplined surface fragments. One main idea only: the signature of a quadratic form determines its geometry. Warm paper palette, deep ink outlines, dusty blue, terracotta, sage accents, premium academic style, lots of whitespace. No readable text, no formulas, no digits, no UI."
+    }
+  ]
+}
