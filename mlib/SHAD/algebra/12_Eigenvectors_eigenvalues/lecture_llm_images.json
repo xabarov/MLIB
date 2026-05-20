@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "eigenvectors-eigenvalues-hero",
+      "filename_base": "hero_eigenvectors_eigenvalues",
+      "prompt": "16:9 educational editorial illustration for a lecture on eigenvectors and eigenvalues. Show an abstract linear transformation acting on a plane: most directions bend or shift, while two clean highlighted directions keep their line and are only stretched. One main idea only: eigenvectors are invariant directions of a linear operator. Warm paper background, deep ink contours, dusty blue and terracotta accents, premium academic style, generous whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    },
+    {
+      "slug": "eigenbasis-diagonalization-editorial",
+      "filename_base": "eigenbasis_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on diagonalization. Show several independent invariant directions forming a complete basis, with a matrix-like operator resolving into separate simple scaling channels. One main idea only: diagonalization means there are enough eigenvectors to form a basis. Warm paper palette, deep ink lines, dusty blue, sage and small terracotta accents, premium textbook editorial style, lots of whitespace. No readable text, no formulas, no digits, no chart axes, no decorative clutter."
+    }
+  ]
+}
