@@ -9,8 +9,7 @@
 
 Пусть
 $$
-A=
-\begin{pmatrix}
+A=\begin{pmatrix}
 3 & 1\\
 0 & 2
 \end{pmatrix}.
@@ -22,28 +21,21 @@ $$
 
 Вычислим:
 $$
-\begin{aligned}
-Av
-&=
-\begin{pmatrix}
+Av=\begin{pmatrix}
 3 & 1\\
 0 & 2
 \end{pmatrix}
 \begin{pmatrix}
 1\\
 0
-\end{pmatrix}\\
-&=
-\begin{pmatrix}
+\end{pmatrix}=\begin{pmatrix}
 3\\
 0
-\end{pmatrix}
-=3
+\end{pmatrix}=3
 \begin{pmatrix}
 1\\
 0
 \end{pmatrix}.
-\end{aligned}
 $$
 
 Значит,
@@ -61,8 +53,7 @@ $$
 
 Найдите собственные значения матрицы
 $$
-A=
-\begin{pmatrix}
+A=\begin{pmatrix}
 1 & 4 & 2\\
 0 & 3 & 5\\
 0 & 0 & -2
@@ -90,8 +81,7 @@ $$
 
 Для матрицы
 $$
-A=
-\begin{pmatrix}
+A=\begin{pmatrix}
 2 & 1\\
 0 & 3
 \end{pmatrix}
@@ -107,8 +97,7 @@ $$
 
 Для $\lambda=2$:
 $$
-A-2I=
-\begin{pmatrix}
+A-2I=\begin{pmatrix}
 0 & 1\\
 0 & 1
 \end{pmatrix}.
@@ -121,8 +110,7 @@ $$
 
 Для $\lambda=3$:
 $$
-A-3I=
-\begin{pmatrix}
+A-3I=\begin{pmatrix}
 -1 & 1\\
 0 & 0
 \end{pmatrix}.
@@ -147,8 +135,7 @@ $$
 
 Проверьте, диагонализируема ли матрица
 $$
-B=
-\begin{pmatrix}
+B=\begin{pmatrix}
 2 & 1\\
 0 & 2
 \end{pmatrix}.
@@ -165,8 +152,7 @@ $$
 
 Найдём собственное подпространство:
 $$
-B-2I=
-\begin{pmatrix}
+B-2I=\begin{pmatrix}
 0 & 1\\
 0 & 0
 \end{pmatrix}.
@@ -198,8 +184,7 @@ $$
 
 Для матрицы
 $$
-A=
-\begin{pmatrix}
+A=\begin{pmatrix}
 2 & 1\\
 0 & 3
 \end{pmatrix}
@@ -222,8 +207,7 @@ $$
 
 Тогда
 $$
-C=
-\begin{pmatrix}
+C=\begin{pmatrix}
 1 & 1\\
 0 & 1
 \end{pmatrix}.
@@ -231,8 +215,7 @@ $$
 
 В том же порядке ставим собственные значения на диагональ:
 $$
-D=
-\begin{pmatrix}
+D=\begin{pmatrix}
 2 & 0\\
 0 & 3
 \end{pmatrix}.
@@ -246,14 +229,12 @@ $$
 ### Ответ
 
 $$
-C=
-\begin{pmatrix}
+C=\begin{pmatrix}
 1 & 1\\
 0 & 1
 \end{pmatrix},
 \qquad
-D=
-\begin{pmatrix}
+D=\begin{pmatrix}
 2 & 0\\
 0 & 3
 \end{pmatrix}.
@@ -265,8 +246,7 @@ $$
 
 Для каких значений $a$ матрица
 $$
-A_a=
-\begin{pmatrix}
+A_a=\begin{pmatrix}
 1 & a\\
 0 & 2
 \end{pmatrix}
@@ -380,8 +360,7 @@ $$
 $$
 A=CDC^{-1},
 \qquad
-D=
-\begin{pmatrix}
+D=\begin{pmatrix}
 2 & 0\\
 0 & 5
 \end{pmatrix}.
@@ -398,8 +377,7 @@ $$
 
 Так как $D$ диагональна,
 $$
-D^n=
-\begin{pmatrix}
+D^n=\begin{pmatrix}
 2^n & 0\\
 0 & 5^n
 \end{pmatrix}.
@@ -407,25 +385,19 @@ $$
 
 Следовательно,
 $$
-A^n=
-C
-\begin{pmatrix}
+A^n=C\begin{pmatrix}
 2^n & 0\\
 0 & 5^n
-\end{pmatrix}
-C^{-1}.
+\end{pmatrix}C^{-1}.
 $$
 
 ### Ответ
 
 $$
-A^n=
-C
-\begin{pmatrix}
+A^n=C\begin{pmatrix}
 2^n & 0\\
 0 & 5^n
-\end{pmatrix}
-C^{-1}.
+\end{pmatrix}C^{-1}.
 $$
 
 ---
@@ -434,8 +406,7 @@ $$
 
 Пусть
 $$
-A=
-\begin{pmatrix}
+A=\begin{pmatrix}
 2 & 1\\
 1 & 2
 \end{pmatrix}.
@@ -447,13 +418,10 @@ $$
 
 Характеристический многочлен:
 $$
-\chi_A(t)=
-\det
-\begin{pmatrix}
+\chi_A(t)=\det\begin{pmatrix}
 t-2 & -1\\
 -1 & t-2
-\end{pmatrix}
-=(t-2)^2-1.
+\end{pmatrix}=(t-2)^2-1.
 $$
 
 Получаем:
@@ -468,8 +436,7 @@ $$
 
 Для $\lambda=3$:
 $$
-A-3I=
-\begin{pmatrix}
+A-3I=\begin{pmatrix}
 -1 & 1\\
 1 & -1
 \end{pmatrix}.
@@ -482,8 +449,7 @@ $$
 
 Для $\lambda=1$:
 $$
-A-I=
-\begin{pmatrix}
+A-I=\begin{pmatrix}
 1 & 1\\
 1 & 1
 \end{pmatrix}.
