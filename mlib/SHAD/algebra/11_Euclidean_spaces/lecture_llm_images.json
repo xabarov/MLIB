@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "euclidean-spaces-hero",
+      "filename_base": "hero_euclidean_spaces",
+      "prompt": "16:9 educational editorial illustration for a lecture on Euclidean spaces. Show a calm abstract vector space becoming measurable: a few clean vectors, a soft distance arc, and a perpendicular projection motif, all integrated into one spacious mathematical composition. One main idea only: scalar product turns a vector space into geometry with length, angle and orthogonality. Warm paper background, deep ink contours, dusty blue and sage accents with a small terracotta focus, premium academic style, generous whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    },
+    {
+      "slug": "euclidean-spaces-gram-volume",
+      "filename_base": "gram_volume_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on Gram determinants in Euclidean spaces. Show two or three clean vectors spanning a translucent parallelogram or parallelepiped, with a subtle geometric sense of area or volume emerging from their mutual angles. One main idea only: inner products assemble into a Gram matrix whose determinant measures area or volume. Warm paper palette, deep ink lines, dusty blue and terracotta accents, restrained sage shadows, premium academic textbook style, lots of whitespace. No readable text, no formulas, no digits, no chart axes, no decorative clutter."
+    }
+  ]
+}

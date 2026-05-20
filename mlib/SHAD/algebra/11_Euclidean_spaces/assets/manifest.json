@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779295315,
+  "jobs": [
+    {
+      "slug": "euclidean-spaces-hero",
+      "filename_base": "hero_euclidean_spaces",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "euclidean-spaces-gram-volume",
+      "filename_base": "gram_volume_editorial",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}
