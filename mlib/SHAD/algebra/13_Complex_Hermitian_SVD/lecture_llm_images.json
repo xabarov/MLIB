@@ -1,0 +1,17 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "complex-hermitian-svd-hero",
+      "filename_base": "hero_complex_hermitian_svd",
+      "prompt": "16:9 educational editorial illustration for a linear algebra lecture on complex vector spaces, Hermitian forms, self-adjoint operators, and singular value decomposition. Show an abstract complex vector space with unitary axes, a glowing Hermitian matrix motif, and a clean SVD transformation decomposed into rotation, axis stretch, rotation. One main idea only: complex inner-product geometry turns operators into measurable orthogonal directions and singular stretches. Warm paper background, deep ink structure, dusty blue, muted violet, terracotta and sage accents, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    }
+  ],
+  "generated_assets": [
+    {
+      "filename": "assets/hero_complex_hermitian_svd.png",
+      "source": "built-in image_gen",
+      "source_path": "/home/roman/.codex/generated_images/019e59f4-c477-71f3-9144-4da7e3741df7/ig_06e10112f28f8df5016a12f02155d4819982922803cc69940d.png"
+    }
+  ]
+}

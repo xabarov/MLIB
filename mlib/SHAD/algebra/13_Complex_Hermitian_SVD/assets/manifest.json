@@ -1,0 +1,40 @@
+{
+  "generated": [
+    {
+      "file": "hero_complex_hermitian_svd.png",
+      "type": "generated_image",
+      "source": "built-in image_gen",
+      "description": "Editorial hero illustration for complex Hermitian geometry and SVD."
+    },
+    {
+      "file": "hermitian_pairing_conjugation.png",
+      "type": "code_png",
+      "source": "../generate_visuals.py",
+      "description": "Hermitian pairing and complex conjugation."
+    },
+    {
+      "file": "jacobi_sylvester_minors.png",
+      "type": "code_png",
+      "source": "../generate_visuals.py",
+      "description": "Leading principal minors for Jacobi method and Sylvester criterion."
+    },
+    {
+      "file": "self_adjoint_orthogonal_eigenbasis.png",
+      "type": "code_png",
+      "source": "../generate_visuals.py",
+      "description": "Self-adjoint operator and orthogonal eigenbasis."
+    },
+    {
+      "file": "svd_unit_circle_to_ellipse.png",
+      "type": "code_png",
+      "source": "../generate_visuals.py",
+      "description": "SVD as unitary transformations plus diagonal stretching."
+    },
+    {
+      "file": "gif_svd_circle_to_ellipse.gif",
+      "type": "code_gif",
+      "source": "../generate_visuals.py",
+      "description": "Animated deformation from unit circle to singular ellipse."
+    }
+  ]
+}
