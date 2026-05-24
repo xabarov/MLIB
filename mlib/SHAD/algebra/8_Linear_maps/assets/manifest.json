@@ -1,0 +1,27 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779644819,
+  "jobs": [
+    {
+      "slug": "linear-maps-hero",
+      "filename_base": "hero_linear_maps",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "linear-maps-kernel-image",
+      "filename_base": "kernel_image_editorial",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "linear-operators-change-basis",
+      "filename_base": "change_basis_operator_editorial",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

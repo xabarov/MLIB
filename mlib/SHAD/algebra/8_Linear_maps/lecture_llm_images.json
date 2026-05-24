@@ -1,0 +1,20 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "linear-maps-hero",
+      "filename_base": "hero_linear_maps",
+      "prompt": "16:9 educational editorial illustration for a university linear algebra lecture on linear maps and linear operators. Show two abstract vector spaces as calm translucent geometric regions, with a structured bundle of arrows carrying vectors from the first space to the second while preserving linear structure. One main idea only: a linear map transports linear combinations between vector spaces. Warm paper background, deep ink contours, dusty blue source space, muted sage target space, small terracotta focal vector, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    },
+    {
+      "slug": "linear-maps-kernel-image",
+      "filename_base": "kernel_image_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on kernel, image, and the rank-nullity theorem. Show one translucent source-like geometric region on the left where a thin terracotta subspace collapses toward a central zero point, while other dusty-blue directions flow into a lower-dimensional sage image region on the right. One main idea only: the domain splits conceptually into invisible kernel directions and visible image directions. Use only geometry: arrows, planes, points, soft shadows. Absolutely no readable text, no words, no letters, no labels, no symbols, no formulas, no digits, no chart axes, no watermark. Warm paper palette, deep ink lines, premium academic style, lots of whitespace."
+    },
+    {
+      "slug": "linear-operators-change-basis",
+      "filename_base": "change_basis_operator_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on linear operators, change of basis, and similar matrices. Show one geometric transformation of a plane or grid seen through two different coordinate frames, with the underlying transformed shape visually unchanged but the coordinate frames different. One main idea only: changing basis changes the description, not the operator itself. Use only geometry: grids, arrows, translucent shapes, soft motion curves. Absolutely no readable text, no words, no letters, no symbols, no formulas, no digits, no matrix brackets, no fake axis labels, no UI. Warm paper background, deep ink contours, dusty blue and terracotta coordinate frames, muted sage transformed shape, premium academic textbook style, generous whitespace."
+    }
+  ]
+}

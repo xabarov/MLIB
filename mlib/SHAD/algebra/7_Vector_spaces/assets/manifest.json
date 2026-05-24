@@ -1,0 +1,27 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779644504,
+  "jobs": [
+    {
+      "slug": "vector-spaces-hero",
+      "filename_base": "hero_vector_spaces",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "vector-spaces-span-subspace",
+      "filename_base": "span_subspace_editorial",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "vector-spaces-basis-dimension",
+      "filename_base": "basis_dimension_editorial",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "vector-spaces-hero",
+      "filename_base": "hero_vector_spaces",
+      "prompt": "16:9 educational editorial illustration for a university linear algebra lecture on vector spaces, bases, coordinates and subspaces. Show a calm geometric scene with a few clean vectors from a common origin, one translucent plane suggesting a subspace, and a subtle coordinate-grid motif fading into the background. One main idea only: vector spaces organize linear combinations, coordinates and subspaces. Warm paper background, deep ink contours, dusty blue and sage accents with a small terracotta focus, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    },
+    {
+      "slug": "vector-spaces-span-subspace",
+      "filename_base": "span_subspace_editorial",
+      "prompt": "16:9 educational editorial illustration for a linear algebra lecture on linear span and subspaces. Show several arrows from a common origin, with many arrows lying on one shared translucent plane to suggest all linear combinations, and one contrasting terracotta arrow outside that plane. One main idea only: span is the smallest subspace containing the chosen vectors. Use only geometry: arrows, plane, soft shadows, no labels. Absolutely no readable text, no words, no letters, no symbols, no formulas, no digits, no chart axes, no captions, no watermark. Warm paper background, deep ink lines, dusty blue main structure, terracotta contrast arrow, restrained sage shadows, premium academic style, no decorative clutter."
+    },
+    {
+      "slug": "vector-spaces-basis-dimension",
+      "filename_base": "basis_dimension_editorial",
+      "prompt": "16:9 educational editorial illustration for a lecture on basis and dimension in vector spaces. Show a translucent plane with exactly two strong independent direction arrows forming a clean coordinate frame, plus a faint redundant arrow lying in the same plane. One main idea only: a basis is an independent set that spans, and its size is the dimension. Warm paper palette, deep ink contours, dusty blue and terracotta basis arrows, muted sage plane, premium academic textbook style, lots of whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    }
+  ]
+}
