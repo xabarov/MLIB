@@ -244,16 +244,10 @@ $$
 
 ### Решение
 По формуле Муавра:
-$$
-\left(\cos\frac{\pi}{12}+i\sin\frac{\pi}{12}\right)^{12}
-=
-\cos\pi+i\sin\pi=-1.
-$$
+$$\left(\cos\frac{\pi}{12}+i\sin\frac{\pi}{12}\right)^{12}=\cos\pi+i\sin\pi=-1.$$
 
 ### Ответ
-$$
--1.
-$$
+$$-1.$$
 
 ---
 
