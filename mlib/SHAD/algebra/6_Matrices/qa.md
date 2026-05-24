@@ -8,16 +8,10 @@
 Даны матрицы
 $$
 A=
-\begin{pmatrix}
-1 & 2 \\
-0 & 1
-\end{pmatrix},
+\begin{pmatrix}1 & 2 \\ 0 & 1\end{pmatrix},
 \qquad
 B=
-\begin{pmatrix}
-2 & 0 \\
-3 & 1
-\end{pmatrix}.
+\begin{pmatrix}2 & 0 \\ 3 & 1\end{pmatrix}.
 $$
 
 1. Найти $AB$ и $BA$.  
@@ -33,102 +27,76 @@ $$
 Имеем:
 $$
 AB=
-\begin{pmatrix}
-1 & 2 \\
-0 & 1
-\end{pmatrix}
-\begin{pmatrix}
-2 & 0 \\
-3 & 1
-\end{pmatrix}.
+\begin{pmatrix}1 & 2 \\ 0 & 1\end{pmatrix}
+\begin{pmatrix}2 & 0 \\ 3 & 1\end{pmatrix}.
 $$
 
 Элементы произведения:
 
 - первая строка, первый столбец:
-  $$
-  1\cdot 2 + 2\cdot 3 = 2+6=8;
-  $$
+$$
+1\cdot 2 + 2\cdot 3 = 2+6=8;
+$$
 - первая строка, второй столбец:
-  $$
-  1\cdot 0 + 2\cdot 1 = 2;
-  $$
+$$
+1\cdot 0 + 2\cdot 1 = 2;
+$$
 - вторая строка, первый столбец:
-  $$
-  0\cdot 2 + 1\cdot 3 = 3;
-  $$
+$$
+0\cdot 2 + 1\cdot 3 = 3;
+$$
 - вторая строка, второй столбец:
-  $$
-  0\cdot 0 + 1\cdot 1 = 1.
-  $$
+$$
+0\cdot 0 + 1\cdot 1 = 1.
+$$
 
 Значит,
 $$
 AB=
-\begin{pmatrix}
-8 & 2 \\
-3 & 1
-\end{pmatrix}.
+\begin{pmatrix}8 & 2 \\ 3 & 1\end{pmatrix}.
 $$
 
 Теперь вычислим
 $$
 BA.
 $$
-
 $$
 BA=
-\begin{pmatrix}
-2 & 0 \\
-3 & 1
-\end{pmatrix}
-\begin{pmatrix}
-1 & 2 \\
-0 & 1
-\end{pmatrix}.
+\begin{pmatrix}2 & 0 \\ 3 & 1\end{pmatrix}
+\begin{pmatrix}1 & 2 \\ 0 & 1\end{pmatrix}.
 $$
 
 Элементы:
 
 - первая строка, первый столбец:
-  $$
+$$
   2\cdot 1 + 0\cdot 0 = 2;
-  $$
+$$
 - первая строка, второй столбец:
-  $$
+$$
   2\cdot 2 + 0\cdot 1 = 4;
-  $$
+$$
 - вторая строка, первый столбец:
-  $$
+$$
   3\cdot 1 + 1\cdot 0 = 3;
-  $$
+$$
 - вторая строка, второй столбец:
-  $$
+$$
   3\cdot 2 + 1\cdot 1 = 7.
-  $$
-
+$$
 Следовательно,
 $$
 BA=
-\begin{pmatrix}
-2 & 4 \\
-3 & 7
-\end{pmatrix}.
+\begin{pmatrix}2 & 4 \\ 3 & 7\end{pmatrix}.
 $$
 
 Сравниваем:
 $$
 AB=
-\begin{pmatrix}
-8 & 2 \\
-3 & 1
-\end{pmatrix},
+\begin{pmatrix}8 & 2 \\ 3 & 1\end{pmatrix},
 \qquad
 BA=
-\begin{pmatrix}
-2 & 4 \\
-3 & 7
-\end{pmatrix}.
+\begin{pmatrix}2 & 4 \\ 3 & 7\end{pmatrix}.
 $$
 
 Они не равны.
@@ -136,16 +104,10 @@ $$
 ### Ответ
 $$
 AB=
-\begin{pmatrix}
-8 & 2 \\
-3 & 1
-\end{pmatrix},
+\begin{pmatrix}8 & 2 \\ 3 & 1\end{pmatrix},
 \qquad
 BA=
-\begin{pmatrix}
-2 & 4 \\
-3 & 7
-\end{pmatrix},
+\begin{pmatrix}2 & 4 \\ 3 & 7\end{pmatrix},
 \qquad
 AB\ne BA.
 $$
@@ -157,16 +119,10 @@ $$
 Даны матрицы
 $$
 A=
-\begin{pmatrix}
-1 & 2 \\
-3 & 4
-\end{pmatrix},
+\begin{pmatrix}1 & 2 \\ 3 & 4\end{pmatrix},
 \qquad
 B=
-\begin{pmatrix}
-5 & 1 \\
-2 & 0
-\end{pmatrix}.
+\begin{pmatrix}5 & 1 \\ 2 & 0\end{pmatrix}.
 $$
 
 Найти матрицу $X$, если
@@ -190,84 +146,45 @@ $$
 
 Значит, матрица обратима, и
 $$
-A^{-1}=\frac{1}{-2}
-\begin{pmatrix}
-4 & -2 \\
--3 & 1
-\end{pmatrix}
-=
-\begin{pmatrix}
--2 & 1 \\
-\frac{3}{2} & -\frac{1}{2}
-\end{pmatrix}.
+A^{-1}=
+\begin{pmatrix}-2 & 1 \\ \frac{3}{2} & -\frac{1}{2}\end{pmatrix}.
 $$
 
-Теперь вычислим:
-$$
-X=A^{-1}B=
-\begin{pmatrix}
--2 & 1 \\
-\frac{3}{2} & -\frac{1}{2}
-\end{pmatrix}
-\begin{pmatrix}
-5 & 1 \\
-2 & 0
-\end{pmatrix}.
-$$
+Теперь вычислим $X=A^{-1}B$ по элементам.
 
 Считаем элементы:
 
 - первая строка, первый столбец:
-  $$
+$$
   -2\cdot 5 + 1\cdot 2 = -10+2=-8;
-  $$
+$$
 - первая строка, второй столбец:
-  $$
+$$
   -2\cdot 1 + 1\cdot 0 = -2;
-  $$
+$$
 - вторая строка, первый столбец:
-  $$
+$$
   \frac{3}{2}\cdot 5 - \frac{1}{2}\cdot 2
   = \frac{15}{2} - 1
   = \frac{13}{2};
-  $$
+$$
 - вторая строка, второй столбец:
-  $$
+$$
   \frac{3}{2}\cdot 1 - \frac{1}{2}\cdot 0
   = \frac{3}{2}.
-  $$
-
+$$
 Следовательно,
 $$
 X=
-\begin{pmatrix}
--8 & -2 \\
-\frac{13}{2} & \frac{3}{2}
-\end{pmatrix}.
+\begin{pmatrix}-8 & -2 \\ \frac{13}{2} & \frac{3}{2}\end{pmatrix}.
 $$
 
 ### Проверка
 
-Вычислим $AX$:
+Вычислим $AX$ по элементам:
+
 $$
-\begin{pmatrix}
-1 & 2 \\
-3 & 4
-\end{pmatrix}
-\begin{pmatrix}
--8 & -2 \\
-\frac{13}{2} & \frac{3}{2}
-\end{pmatrix}
-=
-\begin{pmatrix}
--8+13 & -2+3 \\
--24+26 & -6+6
-\end{pmatrix}
-=
-\begin{pmatrix}
-5 & 1 \\
-2 & 0
-\end{pmatrix}.
+AX=\begin{pmatrix}5 & 1 \\ 2 & 0\end{pmatrix}=B.
 $$
 
 Верно.
@@ -275,10 +192,7 @@ $$
 ### Ответ
 $$
 X=
-\begin{pmatrix}
--8 & -2 \\
-\frac{13}{2} & \frac{3}{2}
-\end{pmatrix}.
+\begin{pmatrix}-8 & -2 \\ \frac{13}{2} & \frac{3}{2}\end{pmatrix}.
 $$
 
 ---
@@ -288,17 +202,10 @@ $$
 Даны матрицы
 $$
 A=
-\begin{pmatrix}
-1 & 0 & 1 \\
-0 & 1 & 1
-\end{pmatrix},
+\begin{pmatrix}1 & 0 & 1 \\ 0 & 1 & 1\end{pmatrix},
 \qquad
 B=
-\begin{pmatrix}
-1 & 2 \\
-2 & 4 \\
-0 & 0
-\end{pmatrix}.
+\begin{pmatrix}1 & 2 \\ 2 & 4 \\ 0 & 0\end{pmatrix}.
 $$
 
 1. Найти $AB$.  
@@ -315,43 +222,32 @@ $$
 Вычислим:
 $$
 AB=
-\begin{pmatrix}
-1 & 0 & 1 \\
-0 & 1 & 1
-\end{pmatrix}
-\begin{pmatrix}
-1 & 2 \\
-2 & 4 \\
-0 & 0
-\end{pmatrix}.
+\begin{pmatrix}1 & 0 & 1 \\ 0 & 1 & 1\end{pmatrix}
+\begin{pmatrix}1 & 2 \\ 2 & 4 \\ 0 & 0\end{pmatrix}.
 $$
 
 Элементы:
 
 - первая строка, первый столбец:
-  $$
+$$
   1\cdot 1 + 0\cdot 2 + 1\cdot 0 = 1;
-  $$
+$$
 - первая строка, второй столбец:
-  $$
+$$
   1\cdot 2 + 0\cdot 4 + 1\cdot 0 = 2;
-  $$
+$$
 - вторая строка, первый столбец:
-  $$
+$$
   0\cdot 1 + 1\cdot 2 + 1\cdot 0 = 2;
-  $$
+$$
 - вторая строка, второй столбец:
-  $$
+$$
   0\cdot 2 + 1\cdot 4 + 1\cdot 0 = 4.
-  $$
-
+$$
 Значит,
 $$
 AB=
-\begin{pmatrix}
-1 & 2 \\
-2 & 4
-\end{pmatrix}.
+\begin{pmatrix}1 & 2 \\ 2 & 4\end{pmatrix}.
 $$
 
 ### Найдём ранги
@@ -371,13 +267,9 @@ $$
 
 Столбцы:
 $$
-\begin{pmatrix}
-1\\2\\0
-\end{pmatrix},
+\begin{pmatrix}1\\2\\0\end{pmatrix},
 \qquad
-\begin{pmatrix}
-2\\4\\0
-\end{pmatrix}.
+\begin{pmatrix}2\\4\\0\end{pmatrix}.
 $$
 
 Второй столбец в $2$ раза больше первого, значит столбцы линейно зависимы. Но первый столбец ненулевой, значит
@@ -386,13 +278,9 @@ $$
 $$
 
 #### Ранг матрицы $AB$
-
 $$
 AB=
-\begin{pmatrix}
-1 & 2 \\
-2 & 4
-\end{pmatrix}.
+\begin{pmatrix}1 & 2 \\ 2 & 4\end{pmatrix}.
 $$
 
 Вторая строка в $2$ раза больше первой, значит
@@ -413,10 +301,7 @@ $$
 ### Ответ
 $$
 AB=
-\begin{pmatrix}
-1 & 2 \\
-2 & 4
-\end{pmatrix},
+\begin{pmatrix}1 & 2 \\ 2 & 4\end{pmatrix},
 $$
 $$
 \operatorname{rank}(A)=2,\qquad
@@ -540,10 +425,7 @@ $$
 Найти матрицу, обратную к
 $$
 A=
-\begin{pmatrix}
-2 & 3 \\
-1 & 4
-\end{pmatrix}.
+\begin{pmatrix}2 & 3 \\ 1 & 4\end{pmatrix}.
 $$
 
 ### Решение
@@ -551,10 +433,7 @@ $$
 Для матрицы
 $$
 A=
-\begin{pmatrix}
-a & b \\
-c & d
-\end{pmatrix}
+\begin{pmatrix}a & b \\ c & d\end{pmatrix}
 $$
 при
 $$
@@ -562,11 +441,8 @@ ad-bc\ne 0
 $$
 имеем
 $$
-A^{-1}=\frac{1}{ad-bc}
-\begin{pmatrix}
-d & -b \\
--c & a
-\end{pmatrix}.
+A^{-1}=
+\begin{pmatrix}\frac{d}{ad-bc} & -\frac{b}{ad-bc}\\ -\frac{c}{ad-bc} & \frac{a}{ad-bc}\end{pmatrix}.
 $$
 
 В нашем случае:
@@ -581,48 +457,20 @@ $$
 
 Значит,
 $$
-A^{-1}=\frac{1}{5}
-\begin{pmatrix}
-4 & -3 \\
--1 & 2
-\end{pmatrix}.
-$$
-
-То есть
-$$
 A^{-1}=
-\begin{pmatrix}
-\frac45 & -\frac35 \\
--\frac15 & \frac25
-\end{pmatrix}.
+\begin{pmatrix}\frac45 & -\frac35 \\ -\frac15 & \frac25\end{pmatrix}.
 $$
 
 ### Проверка
 
 $$
-AA^{-1}=
-\begin{pmatrix}
-2 & 3 \\
-1 & 4
-\end{pmatrix}
-\begin{pmatrix}
-\frac45 & -\frac35 \\
--\frac15 & \frac25
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 & 0 \\
-0 & 1
-\end{pmatrix}.
+AA^{-1}=I.
 $$
 
 ### Ответ
 $$
 A^{-1}=
-\begin{pmatrix}
-\frac45 & -\frac35 \\
--\frac15 & \frac25
-\end{pmatrix}.
+\begin{pmatrix}\frac45 & -\frac35 \\ -\frac15 & \frac25\end{pmatrix}.
 $$
 
 ---
@@ -632,10 +480,7 @@ $$
 Найти обратную матрицу к
 $$
 A=
-\begin{pmatrix}
-1 & 1 \\
-2 & 3
-\end{pmatrix}
+\begin{pmatrix}1 & 1 \\ 2 & 3\end{pmatrix}
 $$
 методом Гаусса.
 
@@ -644,10 +489,7 @@ $$
 Записываем расширенную матрицу:
 $$
 \left[
-\begin{array}{cc|cc}
-1 & 1 & 1 & 0 \\
-2 & 3 & 0 & 1
-\end{array}
+\begin{array}{cc|cc}1 & 1 & 1 & 0 \\ 2 & 3 & 0 & 1\end{array}
 \right].
 $$
 
@@ -663,10 +505,7 @@ $$
 Получаем:
 $$
 \left[
-\begin{array}{cc|cc}
-1 & 1 & 1 & 0 \\
-0 & 1 & -2 & 1
-\end{array}
+\begin{array}{cc|cc}1 & 1 & 1 & 0 \\ 0 & 1 & -2 & 1\end{array}
 \right].
 $$
 
@@ -680,47 +519,25 @@ $$
 Получаем:
 $$
 \left[
-\begin{array}{cc|cc}
-1 & 0 & 3 & -1 \\
-0 & 1 & -2 & 1
-\end{array}
+\begin{array}{cc|cc}1 & 0 & 3 & -1 \\ 0 & 1 & -2 & 1\end{array}
 \right].
 $$
 
 Слева получилась единичная матрица, значит справа стоит обратная:
 $$
 A^{-1}=
-\begin{pmatrix}
-3 & -1 \\
--2 & 1
-\end{pmatrix}.
+\begin{pmatrix}3 & -1 \\ -2 & 1\end{pmatrix}.
 $$
 
 ### Проверка
-
 $$
-\begin{pmatrix}
-1 & 1 \\
-2 & 3
-\end{pmatrix}
-\begin{pmatrix}
-3 & -1 \\
--2 & 1
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 & 0 \\
-0 & 1
-\end{pmatrix}.
+AA^{-1}=I.
 $$
 
 ### Ответ
 $$
 A^{-1}=
-\begin{pmatrix}
-3 & -1 \\
--2 & 1
-\end{pmatrix}.
+\begin{pmatrix}3 & -1 \\ -2 & 1\end{pmatrix}.
 $$
 
 ---
@@ -730,10 +547,7 @@ $$
 При каких значениях параметра $a$ матрица
 $$
 A=
-\begin{pmatrix}
-1 & a \\
-2 & 3
-\end{pmatrix}
+\begin{pmatrix}1 & a \\ 2 & 3\end{pmatrix}
 $$
 обратима?  
 Найти $A^{-1}$ при тех значениях $a$, когда она существует.
@@ -758,11 +572,8 @@ $$
 
 Теперь найдём обратную матрицу по формуле:
 $$
-A^{-1}=\frac{1}{3-2a}
-\begin{pmatrix}
-3 & -a \\
--2 & 1
-\end{pmatrix},
+A^{-1}=
+\begin{pmatrix}\frac{3}{3-2a} & -\frac{a}{3-2a}\\ -\frac{2}{3-2a} & \frac{1}{3-2a}\end{pmatrix},
 \qquad a\ne \frac32.
 $$
 
@@ -775,11 +586,8 @@ $$
 
 При этих значениях
 $$
-A^{-1}=\frac{1}{3-2a}
-\begin{pmatrix}
-3 & -a \\
--2 & 1
-\end{pmatrix}.
+A^{-1}=
+\begin{pmatrix}\frac{3}{3-2a} & -\frac{a}{3-2a}\\ -\frac{2}{3-2a} & \frac{1}{3-2a}\end{pmatrix}.
 $$
 
 ---
@@ -807,28 +615,12 @@ $$
 
 Тогда
 $$
-(AB)(B^{-1}A^{-1})
-=
-A(BB^{-1})A^{-1}
-=
-AIA^{-1}
-=
-AA^{-1}
-=
-I.
+(AB)(B^{-1}A^{-1})=A(BB^{-1})A^{-1}=AIA^{-1}=AA^{-1}=I.
 $$
 
 Теперь проверим слева:
 $$
-(B^{-1}A^{-1})(AB)
-=
-B^{-1}(A^{-1}A)B
-=
-B^{-1}IB
-=
-B^{-1}B
-=
-I.
+(B^{-1}A^{-1})(AB)=B^{-1}(A^{-1}A)B=B^{-1}IB=B^{-1}B=I.
 $$
 
 Обе проверки выполнены. Следовательно,
@@ -925,39 +717,38 @@ $$
 - Нужно быстро проверять согласованность размеров.
 - Нужно уверенно считать элементы произведения.
 - Нужно помнить, что обычно
-  $$
-  AB\ne BA.
-  $$
+$$
+AB\ne BA.
+$$
 
 ## 2. По рангу произведения
 - Главная оценка:
-  $$
-  \operatorname{rank}(AB)\le \min(\operatorname{rank}(A),\operatorname{rank}(B)).
-  $$
+$$
+\operatorname{rank}(AB)\le \min(\operatorname{rank}(A),\operatorname{rank}(B)).
+$$
 - Часто этого уже достаточно, даже без вычисления самого произведения.
 
 ## 3. По определителям
 - Главная формула:
-  $$
-  \det(AB)=\det(A)\det(B).
-  $$
+$$
+\det(AB)=\det(A)\det(B).
+$$
 - Отсюда быстро выводятся:
-  $$
-  \det(A^{-1})=\frac{1}{\det A},
+$$
+\det(A^{-1})=\frac{1}{\det A},
   \qquad
   \det(A^T)=\det A.
-  $$
+$$
 
 ## 4. По обратной матрице
 - Для $2\times 2$ нужно знать формулу наизусть.
 - Для общей матрицы надо уметь использовать схему
-  $$
-  [A\mid I]\to[I\mid A^{-1}].
-  $$
+$$
+[A\mid I]\to[I\mid A^{-1}].
+$$
 - Нужно помнить:
-  $$
-  (AB)^{-1}=B^{-1}A^{-1}.
-  $$
+$$
+(AB)^{-1}=B^{-1}A^{-1}.
+$$
 
 </details>
-
