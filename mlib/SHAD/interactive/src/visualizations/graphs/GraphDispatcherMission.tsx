@@ -60,7 +60,9 @@ function GraphDispatcherLevel({
   })
   const mascotMessage = missionMessage(mascotState, {
     success: activeLevel.successText,
-    warning: 'Инвариант очереди или стека нарушен. Сбрось уровень и возьми верхний элемент границы.',
+    warning:
+      activeLevel.mistakeFeedback?.[0] ??
+      'Инвариант очереди или стека нарушен. Сбрось уровень и возьми верхний элемент границы.',
     hint: activeLevel.hint,
     thinking: `Следующий ход: ${required ?? 'граница пуста'}.`,
     idle: 'Кликай вершину, которая стоит первой в очереди или на вершине стека.',

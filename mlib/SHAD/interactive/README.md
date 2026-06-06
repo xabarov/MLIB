@@ -6,7 +6,10 @@
 Игровой план развития: [gameplay_roadmap.md](gameplay_roadmap.md).
 План закрытого игрового среза: [next_stage_plan.md](next_stage_plan.md).
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
-План следующего этапа: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
+План этапа карты и trace-механики: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
+Текущий следующий этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
+Guide для новых миссий: [mission_authoring_guide.md](mission_authoring_guide.md).
+Checklist качества миссии: [mission_quality_checklist.md](mission_quality_checklist.md).
 
 ## Стек
 
@@ -71,16 +74,18 @@ make compose-down
 ## Добавление миссии
 
 1. Описать `MissionDefinition` и уровни в `src/game/missions.ts`.
-2. Вынести предметную логику в чистый model module рядом со сценой.
-3. Добавить `*.test.ts` для model-функций.
-4. Сделать компонент сцены в `src/visualizations/<topic>/`.
-5. Обернуть сцену в `MissionShell` и использовать `useMissionRuntime`.
-6. Подключить запись в `src/visualizations/missionRegistry.ts`.
-7. Подключить lazy import в `src/visualizations/routeLoaders.ts`.
-8. Добавить пункт навигации в `src/visualizations/navigation.ts`.
-9. Добавить устойчивые `data-testid` для Playwright.
-10. Выполнить `make interactive-quality`.
-11. Обновить ссылку в `lesson.md` только после успешной сборки.
+2. Добавить тему в `src/game/curriculumGraph.ts`.
+3. Вынести предметную логику в чистый model module рядом со сценой.
+4. Добавить `*.test.ts` для model-функций и curriculum validation.
+5. Сделать компонент сцены в `src/visualizations/<topic>/`.
+6. Обернуть сцену в `MissionShell` и использовать `useMissionRuntime`.
+7. Подключить запись в `src/visualizations/missionRegistry.ts`.
+8. Подключить lazy import в `src/visualizations/routeLoaders.ts`.
+9. Добавить пункт навигации в `src/visualizations/navigation.ts`.
+10. Добавить устойчивые `data-testid` для Playwright.
+11. Пройти [mission_quality_checklist.md](mission_quality_checklist.md).
+12. Выполнить проверки.
+13. Обновить ссылку в `lesson.md` только после успешной сборки.
 
 ## Архитектура
 
@@ -88,6 +93,8 @@ make compose-down
   типы миссий и UI-компоненты.
 - `src/game/courseMap.ts` - маршрут миссий, recommended next step и progress
   helpers для первого экрана.
+- `src/game/curriculumGraph.ts` - учебный граф тем, prerequisites, лекции и
+  связь с playable missions.
 - `src/game/components/trace/` - очередь/стек, visited set, trace steps и
   инвариантные проверки для алгоритмических миссий.
 - `src/visualizations/*/*Model.ts` - чистая математика без React/DOM.
@@ -97,6 +104,10 @@ make compose-down
 - `src/store/progressStore.ts` - persistent progress с migration/reset для тестов.
 - `TraceStep` в `src/game/missionTypes.ts` - минимальный контракт для будущих
   algorithm/programming/data-analysis миссий без преждевременного code editor.
+- [accessibility_baseline.md](accessibility_baseline.md) - minimum viable
+  accessibility для новых миссий.
+- [performance_budget.md](performance_budget.md) - build/assets budget.
+- [deploy_link_policy.md](deploy_link_policy.md) - policy ссылок и публикации.
 
 ## Playwright screenshots
 

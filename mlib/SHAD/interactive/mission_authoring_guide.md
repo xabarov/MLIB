@@ -1,0 +1,149 @@
+# SHAD Interactive: authoring guide для миссий
+
+Этот guide нужен перед созданием новой миссии. Его цель - быстро решить, стоит
+ли тема интерактива, и затем провести миссию через одинаковый production flow:
+curriculum graph, authoring schema, model tests, UI, smoke и ссылки из лекций.
+
+## Когда миссия нужна
+
+Миссию стоит делать, если выполняются три условия:
+
+- пользователь может изменить состояние руками;
+- есть инвариант, ошибка или стоимость, которую можно проверить автоматически;
+- после действия возникает понимание, которого не дает статичная картинка.
+
+Не делаем миссию, если:
+
+- это просто иллюстрация формулы;
+- единственное действие - покрутить камеру;
+- для понимания достаточно текста/картинки в лекции;
+- успех нельзя проверить без субъективной оценки.
+
+## Authoring brief
+
+Перед кодом заполнить короткий brief:
+
+```text
+Тема:
+Лекция/QA:
+Игровой инвариант:
+Механика: geometry-lab | state-machine | structure-builder | sampler | model-arena | code-trace
+Что пользователь делает:
+Что приложение проверяет:
+Что пользователь должен унести в лекцию:
+Почему это не статичная картинка:
+Какие assets нужны:
+Какие tests нужны:
+```
+
+## Curriculum entry
+
+Каждая миссия должна быть привязана к `src/game/curriculumGraph.ts`.
+
+Минимально:
+
+- `id` темы;
+- `section`;
+- `lessonPaths`;
+- `prerequisites`;
+- `missionIds`;
+- `takeaway`;
+- `status`.
+
+Если миссия не помещается в curriculum graph, значит сначала не хватает
+продуктового решения: где она стоит в маршруте и зачем нужна.
+
+## MissionDefinition
+
+Основной контракт миссии живет в `src/game/missionTypes.ts`.
+
+Для новой миссии заполнить:
+
+- `id`, `route`, `title`;
+- `domain`, `mechanic`, `difficulty`;
+- `lessonPath`;
+- `summaryTitle`, `summaryText`;
+- `reflectionPrompt`, `transferTask`;
+- `qualityTags`;
+- `estimatedMinutes`;
+- `levels`.
+
+Для каждого уровня:
+
+- `objective` - одно действие, не лекционный абзац;
+- `hint` - первая мягкая подсказка;
+- `hintLevels` - 2-3 подсказки от мягкой к почти следующему ходу;
+- `mistakeFeedback` - 1-2 объяснения типовой ошибки;
+- `successConditionLabel` - что именно проверяет модель;
+- `successText` - короткая реакция после успеха;
+- `takeaway` - учебный вывод;
+- `lectureAnchor` - место в лекции;
+- `nextPrompt` - зачем идти дальше.
+
+## Уровни
+
+Хорошая миссия имеет 3-5 уровней:
+
+1. `попробуй` - базовое действие;
+2. `сломай` - пользователь видит границу/ошибку;
+3. `почини` - восстановление инварианта;
+4. `обобщи` - перенос идеи на новый случай.
+
+Уровень должен быть коротким. Если цель уровня нельзя прочитать за несколько
+секунд, она слишком большая.
+
+## Model first
+
+Предметная логика должна жить в `src/visualizations/<topic>/*Model.ts`.
+
+React-компонент отвечает за ввод/вывод. Model отвечает за:
+
+- состояние;
+- допустимые операции;
+- вычисление инвариантов;
+- success condition;
+- ошибки/стоимость.
+
+Для model обязателен `*.test.ts`.
+
+## UI
+
+Использовать общий `MissionShell`.
+
+Новая сцена должна:
+
+- иметь крупное игровое поле;
+- показывать badges состояния;
+- использовать `MissionTakeaway`, `MissionSummary`, `MissionReflection`;
+- иметь `data-testid` для Playwright;
+- иметь mobile layout без горизонтального overflow;
+- иметь keyboard/input fallback, если основной ввод drag-heavy.
+
+## Связь с лекцией
+
+Ссылку в `lesson.md` добавляем только после успешных проверок.
+
+Формат ссылки в исходниках:
+
+```markdown
+[Название миссии](../../interactive/#/section/topic/mission)
+```
+
+Для опубликованной статической сборки см. [deploy_link_policy.md](deploy_link_policy.md).
+
+## Проверки перед завершением
+
+Перед завершением пройти [mission_quality_checklist.md](mission_quality_checklist.md).
+
+Минимальный набор команд:
+
+```bash
+make lint-python
+make lint-js
+make test-js
+make interactive-build
+SHAD_INTERACTIVE_URL=http://127.0.0.1:5173 .venv/bin/python SHAD/interactive/scripts/smoke_playwright.py
+```
+
+Если dev stack не поднят, можно использовать `make interactive-smoke`, но он
+поднимает и гасит свой Vite-процесс.

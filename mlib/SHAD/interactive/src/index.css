@@ -62,3 +62,15 @@ input {
 .reward-key-success {
   animation: reward-key-pop 520ms ease-out;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .reward-key-success {
+    animation: none;
+  }
+}

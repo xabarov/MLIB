@@ -7,7 +7,8 @@
 
 Закрытый план первого игрового среза: [next_stage_plan.md](next_stage_plan.md).
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
-Текущий следующий этап: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
+План этапа карты и trace-механики: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
+Текущий следующий этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
 
 ## Текущее состояние
 
@@ -20,8 +21,15 @@
 - Техническая база подходит для расширения: Vite, React, TypeScript, React
   Three Fiber, Zustand, HashRouter, Tailwind CSS, KaTeX, Vitest и Playwright
   smoke.
-- Следующий содержательный фокус после графового trace - расширять
-  алгоритмические и data-analysis механики, не теряя связность карты курса.
+- Следующий содержательный фокус после графового trace - система производства
+  миссий: curriculum graph, authoring schema, QA checklist, accessibility,
+  performance и deploy/link policy.
+- Authoring flow фиксируется отдельными документами:
+  [mission_authoring_guide.md](mission_authoring_guide.md),
+  [mission_quality_checklist.md](mission_quality_checklist.md),
+  [accessibility_baseline.md](accessibility_baseline.md),
+  [performance_budget.md](performance_budget.md),
+  [deploy_link_policy.md](deploy_link_policy.md).
 
 ## Ревизия под оставшиеся разделы
 

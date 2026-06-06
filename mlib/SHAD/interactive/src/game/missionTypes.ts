@@ -33,7 +33,10 @@ export type MissionLevel = {
   title: string
   objective: string
   hint: string
+  hintLevels?: string[]
+  mistakeFeedback?: string[]
   successText: string
+  successConditionLabel?: string
   takeaway: string
   lectureAnchor?: string
   nextPrompt?: string
@@ -49,6 +52,10 @@ export type MissionDefinition = {
   difficulty: 1 | 2 | 3
   summaryTitle?: string
   summaryText?: string
+  reflectionPrompt?: string
+  transferTask?: string
+  qualityTags?: string[]
+  estimatedMinutes?: number
   nextMissionRoute?: string
   nextMissionLabel?: string
   dataContract?: MissionDataContract

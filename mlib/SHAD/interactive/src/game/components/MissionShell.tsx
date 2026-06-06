@@ -6,6 +6,7 @@ import { InvariantBadge } from './InvariantBadge'
 import { LevelStepper } from './LevelStepper'
 import { MascotCoach } from './MascotCoach'
 import { MissionHeader } from './MissionHeader'
+import { MissionReflection } from './MissionReflection'
 import { MissionSummary } from './MissionSummary'
 import { MissionTakeaway } from './MissionTakeaway'
 import { RewardMeter } from './RewardMeter'
@@ -104,6 +105,7 @@ export function MissionShell({
         )}
         <MissionTakeaway level={activeLevel} success={levelSuccess} />
         <MissionSummary definition={definition} completedLevelIds={completedLevels} />
+        <MissionReflection definition={definition} completedLevelIds={completedLevels} />
         <MascotCoach state={mascotState} message={mascotMessage} />
       </aside>
     </div>

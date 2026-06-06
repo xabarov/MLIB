@@ -1,57 +1,33 @@
-import {
-  determinantForgeMission,
-  graphDispatcherMission,
-  kernelHuntMission,
-  matrixMachineMission,
-  substitutionWorkshopMission,
-} from './missions'
+import { curriculumGraph } from './curriculumGraph'
+import type { CurriculumNode, CurriculumSection } from './curriculumTypes'
+import { missionDefinitions } from './missions'
 import type { MissionDefinition } from './missionTypes'
 
 export type CourseMapNode = {
   id: string
+  curriculum: CurriculumNode
   mission: MissionDefinition
   label: string
   shortIdea: string
-  station: 'algebra' | 'combinatorics' | 'algorithms'
+  station: CurriculumSection
 }
 
-export const courseMapNodes: CourseMapNode[] = [
-  {
-    id: substitutionWorkshopMission.id,
-    mission: substitutionWorkshopMission,
-    label: 'Состояния и операции',
-    shortIdea: 'Перестановка меняется транспозициями, а циклы и знак остаются видимыми.',
-    station: 'combinatorics',
-  },
-  {
-    id: matrixMachineMission.id,
-    mission: matrixMachineMission,
-    label: 'Матрица как действие',
-    shortIdea: 'Столбцы матрицы - это образы базисных векторов.',
-    station: 'algebra',
-  },
-  {
-    id: determinantForgeMission.id,
-    mission: determinantForgeMission,
-    label: 'Площадь и ориентация',
-    shortIdea: 'Определитель хранит масштаб площади, знак и вырожденность.',
-    station: 'algebra',
-  },
-  {
-    id: kernelHuntMission.id,
-    mission: kernelHuntMission,
-    label: 'Схлопнутые направления',
-    shortIdea: 'Ядро - подпространство решений Ax = 0.',
-    station: 'algebra',
-  },
-  {
-    id: graphDispatcherMission.id,
-    mission: graphDispatcherMission,
-    label: 'Trace алгоритма',
-    shortIdea: 'Очередь, стек и посещенные вершины превращают обход в проверяемое состояние.',
-    station: 'algorithms',
-  },
-]
+const missionById = new Map(missionDefinitions.map((mission) => [mission.id, mission]))
+
+export const courseMapNodes: CourseMapNode[] = curriculumGraph.flatMap((curriculum) =>
+  curriculum.missionIds.map((missionId) => {
+    const mission = missionById.get(missionId)
+    if (!mission) throw new Error(`Unknown course map mission: ${missionId}`)
+    return {
+      id: curriculum.id,
+      curriculum,
+      mission,
+      label: curriculum.cardLabel,
+      shortIdea: curriculum.takeaway,
+      station: curriculum.section,
+    }
+  }),
+)
 
 export function missionCompletionRatio(completed: string[] | undefined, mission: MissionDefinition) {
   const completedCount = completed?.length ?? 0
