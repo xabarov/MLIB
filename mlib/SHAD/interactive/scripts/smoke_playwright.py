@@ -10,6 +10,7 @@ CHROMIUM = os.environ.get("PLAYWRIGHT_CHROMIUM", "/snap/bin/chromium")
 OUT_DIR = Path(os.environ.get("SHAD_INTERACTIVE_SCREEN_DIR", "/tmp/shad-interactive-screens"))
 
 ROUTES = [
+    ("map", "#/map", '[data-testid="course-map"]'),
     ("kernel", "#/algebra/linear-maps/kernel", '[data-testid="mission-kernel-hunt"]'),
     ("determinant", "#/algebra/determinants/forge", '[data-testid="mission-determinant-forge"]'),
     ("matrix", "#/algebra/matrices/machine", '[data-testid="mission-matrix-machine"]'),
@@ -18,6 +19,7 @@ ROUTES = [
         "#/algebra/substitutions/workshop",
         '[data-testid="mission-substitution-workshop"]',
     ),
+    ("graph", "#/combinatorics/graphs/dispatcher", '[data-testid="mission-graph-dispatcher"]'),
 ]
 
 VIEWPORTS = [
@@ -67,6 +69,11 @@ def fill_matrix(page, ux: str, uy: str, vx: str, vy: str) -> None:
 def swap_tiles(page, a: int, b: int) -> None:
     page.get_by_test_id(f"substitution-tile-{a}").click()
     page.get_by_test_id(f"substitution-tile-{b}").click()
+
+
+def click_graph_order(page, order: list[str]) -> None:
+    for vertex in order:
+        page.get_by_test_id(f"graph-vertex-{vertex}").click()
 
 
 def run() -> None:
@@ -162,6 +169,20 @@ def run() -> None:
         swap_tiles(page, 2, 3)
         swap_tiles(page, 3, 5)
         expect(page.get_by_text("Маршрут восстановлен")).to_be_visible(timeout=10_000)
+
+        page.goto(f"{BASE_URL}/#/combinatorics/graphs/dispatcher", wait_until="domcontentloaded")
+        page.wait_for_selector('[data-testid="mission-graph-dispatcher"]', timeout=10_000)
+        click_graph_order(page, ["A", "B", "C", "D", "E", "F", "G"])
+        expect(page.get_by_text("BFS прошел по слоям")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-dfs-stack").click()
+        click_graph_order(page, ["A", "B", "D", "F", "E", "G", "C"])
+        expect(page.get_by_text("DFS ушел в глубину")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-connected-component").click()
+        click_graph_order(page, ["A", "B", "C", "D", "E", "F", "G"])
+        expect(page.get_by_text("Компонента найдена")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-repair-trace").click()
+        click_graph_order(page, ["B", "C", "D", "E", "F", "G"])
+        expect(page.get_by_text("Trace восстановлен")).to_be_visible(timeout=10_000)
 
         context.close()
         browser.close()

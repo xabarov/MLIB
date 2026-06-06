@@ -227,3 +227,63 @@ export const substitutionWorkshopMission: MissionDefinition = {
     },
   ],
 }
+
+export const graphDispatcherMission: MissionDefinition = {
+  id: 'graph-dispatcher',
+  route: '/combinatorics/graphs/dispatcher',
+  title: 'Графовый диспетчер',
+  domain: 'algorithms',
+  mechanic: 'code-trace',
+  lessonPath: 'SHAD/combinatorics/4. Graphs/lesson.md',
+  difficulty: 2,
+  summaryTitle: 'Обход превращен в trace',
+  summaryText:
+    'Ты прошел граф не глазами, а состояниями алгоритма: граница, посещенные вершины и стоимость шагов стали проверяемыми инвариантами.',
+  nextMissionRoute: '/map',
+  nextMissionLabel: 'Карта курса',
+  dataContract: {
+    traceSteps: [],
+  },
+  levels: [
+    {
+      id: 'bfs-layers',
+      title: 'BFS по слоям',
+      objective: 'Пройди граф BFS: бери первую вершину очереди и сохраняй порядок слоев.',
+      hint: 'Очередь работает FIFO: сначала A, потом его соседи B и C.',
+      successText: 'BFS прошел по слоям: очередь сохранила ближайшую границу.',
+      takeaway: 'BFS держит очередь вершин и поэтому раскрывает граф слоями от старта.',
+      lectureAnchor: 'Графы: пути, связность и компоненты',
+      nextPrompt: 'Теперь поменяем очередь на стек и увидим другой trace.',
+    },
+    {
+      id: 'dfs-stack',
+      title: 'DFS стеком',
+      objective: 'Пройди граф DFS: всегда бери вершину на вершине стека.',
+      hint: 'Стек работает LIFO: после A первым раскрывается B, затем глубже через D.',
+      successText: 'DFS ушел в глубину: стек удержал активную ветку обхода.',
+      takeaway: 'DFS хранит фронтир как стек и поэтому предпочитает углубляться, а не идти слоями.',
+      lectureAnchor: 'Графы: пути и деревья обхода',
+      nextPrompt: 'Дальше проверим, что обход видит только свою компоненту.',
+    },
+    {
+      id: 'connected-component',
+      title: 'Компонента',
+      objective: 'Найди компоненту связности от A и не трогай отдельный кусок H-I.',
+      hint: 'Если вершина не достижима из A, она не должна попасть в visited.',
+      successText: 'Компонента найдена: недостижимые вершины остались вне обхода.',
+      takeaway: 'Компонента связности - это все вершины, достижимые из выбранного старта.',
+      lectureAnchor: 'Графы: связность и компоненты',
+      nextPrompt: 'Финальный уровень начнется с уже частично собранного trace.',
+    },
+    {
+      id: 'repair-trace',
+      title: 'Почини trace',
+      objective: 'Продолжи начатый BFS без нарушения очереди.',
+      hint: 'После A в очереди стоят B и C: нельзя перепрыгивать через B.',
+      successText: 'Trace восстановлен: BFS снова идет по честной очереди.',
+      takeaway: 'Ошибку в обходе легче заметить по состоянию очереди, чем по итоговой картинке.',
+      lectureAnchor: 'Графы: алгоритмическое состояние',
+      nextPrompt: 'Этот же trace-язык пригодится для сортировок, DP и анализа данных.',
+    },
+  ],
+}

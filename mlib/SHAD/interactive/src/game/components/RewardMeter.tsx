@@ -20,7 +20,7 @@ export function RewardMeter({ keys, completed, total, success = false }: RewardM
       <span
         className={`inline-flex size-8 items-center justify-center rounded-full ${
           success ? 'bg-success/20 text-success' : 'bg-orange/15 text-orange'
-        }`}
+        } ${success ? 'reward-key-success' : ''}`}
       >
         <KeyRound className="size-4" />
       </span>

@@ -46,3 +46,19 @@ input {
 .katex {
   font-size: 1.05em;
 }
+
+@keyframes reward-key-pop {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  42% {
+    transform: rotate(-12deg) scale(1.14);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.reward-key-success {
+  animation: reward-key-pop 520ms ease-out;
+}

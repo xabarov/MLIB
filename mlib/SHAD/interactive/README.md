@@ -6,6 +6,7 @@
 Игровой план развития: [gameplay_roadmap.md](gameplay_roadmap.md).
 План закрытого игрового среза: [next_stage_plan.md](next_stage_plan.md).
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
+План следующего этапа: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
 
 ## Стек
 
@@ -22,7 +23,7 @@
 cd SHAD/interactive
 nvm use        # если используешь nvm
 npm install
-npm run dev      # http://localhost:5173/#/algebra/linear-maps/kernel
+npm run dev      # http://localhost:5173/#/map
 npm run build    # артефакт в dist/
 npm run preview  # проверка статической сборки
 ```
@@ -56,10 +57,12 @@ make compose-down
 [Игровая миссия](../../interactive/#/algebra/linear-maps/kernel)
 ```
 
-Маршрут по умолчанию: `#/algebra/linear-maps/kernel`.
+Маршрут по умолчанию: `#/map`.
+Карта курса: `#/map`.
 Прототип цеха перестановок: `#/algebra/substitutions/workshop`.
 Прототип определителя: `#/algebra/determinants/forge`.
 Прототип матричной машины: `#/algebra/matrices/machine`.
+Прототип графового trace: `#/combinatorics/graphs/dispatcher`.
 
 В исходных лекциях используем dev-friendly ссылки `../../interactive/#/...`.
 Для опубликованной статической сборки их можно заменить на
@@ -83,6 +86,10 @@ make compose-down
 
 - `src/game/` - общий shell, runtime, feedback policy, takeaways, summaries,
   типы миссий и UI-компоненты.
+- `src/game/courseMap.ts` - маршрут миссий, recommended next step и progress
+  helpers для первого экрана.
+- `src/game/components/trace/` - очередь/стек, visited set, trace steps и
+  инвариантные проверки для алгоритмических миссий.
 - `src/visualizations/*/*Model.ts` - чистая математика без React/DOM.
 - `src/visualizations/missionRegistry.ts` - playable/prototype mission metadata.
 - `src/visualizations/navigation.ts` - дерево sidebar/drawer.
@@ -104,7 +111,9 @@ make compose-down
 - `kernel-*`;
 - `substitution-*`;
 - `determinant-*`;
-- `matrix-*`.
+- `matrix-*`;
+- `graph-*`;
+- `map-*`.
 
 ## Палитра
 

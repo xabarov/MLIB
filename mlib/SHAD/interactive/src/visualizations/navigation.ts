@@ -69,4 +69,15 @@ export const navSections: NavSection[] = [
       },
     ],
   },
+  {
+    id: 'combinatorics',
+    title: 'Комбинаторика и графы',
+    topics: [
+      {
+        id: 'graphs',
+        title: 'Графы и обходы',
+        visualizations: [missionEntry('graph-dispatcher')],
+      },
+    ],
+  },
 ]

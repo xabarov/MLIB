@@ -33,7 +33,7 @@ export function LevelStepper({
                 : completed
                   ? 'border-success/50 bg-success/15 text-ink'
                   : unlocked
-                    ? 'border-ink/10 bg-bg/80 text-ink hover:border-orange/50'
+                    ? 'border-ink/10 bg-bg/80 text-ink shadow-[inset_0_0_0_1px_rgba(217,119,87,0.08)] hover:border-orange/50'
                     : 'cursor-not-allowed border-ink/5 bg-panel/50 text-ink/30'
             }`}
             title={level.title}

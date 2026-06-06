@@ -1,4 +1,12 @@
-import { ChevronDown, ChevronRight, FlaskConical, PanelLeftClose, PanelLeft, X } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronRight,
+  FlaskConical,
+  Map,
+  PanelLeftClose,
+  PanelLeft,
+  X,
+} from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useNavigationStore } from '../../store/navigationStore'
 import { navSections } from '../../visualizations/registry'
@@ -59,6 +67,21 @@ export function Sidebar() {
       </div>
 
       <nav className="min-h-0 flex-1 overflow-y-auto p-2">
+        <NavLink
+          to="/map"
+          onClick={closeMobileNav}
+          className={({ isActive }) =>
+            `mb-3 flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition-colors ${
+              isActive
+                ? 'border-orange/35 bg-orange/15 text-ink'
+                : 'border-ink/10 bg-paper/80 text-ink/72 hover:border-orange/25 hover:text-ink'
+            }`
+          }
+          data-testid="nav-course-map"
+        >
+          <Map className="size-4 text-orange" />
+          Карта курса
+        </NavLink>
         {navSections.map((section) => {
           const sectionOpen = expandedSections[section.id] ?? true
           return (

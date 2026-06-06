@@ -12,6 +12,12 @@ export const KernelHuntMission = lazy(() =>
   })),
 )
 
+export const GraphDispatcherMission = lazy(() =>
+  import('./graphs/GraphDispatcherMission').then((module) => ({
+    default: module.GraphDispatcherMission,
+  })),
+)
+
 export const MatrixMachineMission = lazy(() =>
   import('./matrices/MatrixMachineMission').then((module) => ({
     default: module.MatrixMachineMission,

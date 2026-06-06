@@ -1,5 +1,6 @@
 import {
   determinantForgeMission,
+  graphDispatcherMission,
   kernelHuntMission,
   matrixMachineMission,
   substitutionWorkshopMission,
@@ -7,6 +8,7 @@ import {
 import type { VizEntry } from './registryTypes'
 import {
   DeterminantForgeMission,
+  GraphDispatcherMission,
   KernelHuntMission,
   MatrixMachineMission,
   SubstitutionWorkshopMission,
@@ -81,6 +83,23 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`\operatorname{sgn}(\sigma)=(-1)^{\mathrm{inv}(\sigma)}`,
       description:
         'Перестановка меняется транспозициями: циклы, знак и число ходов становятся игровым состоянием.',
+    },
+  },
+  {
+    id: 'graph-dispatcher',
+    path: '/combinatorics/graphs/dispatcher',
+    title: 'Графовый диспетчер',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: graphDispatcherMission.lessonPath,
+    mission: graphDispatcherMission,
+    component: GraphDispatcherMission,
+    meta: {
+      title: 'Графовый диспетчер',
+      formula: String.raw`\mathrm{frontier}\rightarrow\mathrm{current}\rightarrow\mathrm{visited}`,
+      description:
+        'BFS и DFS становятся trace-состояниями: очередь, стек, посещенные вершины и стоимость шагов.',
     },
   },
 ]
