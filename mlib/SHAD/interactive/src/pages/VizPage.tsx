@@ -17,7 +17,7 @@ export function VizPage() {
     return <Navigate to="/algebra/linear-maps/kernel" replace />
   }
 
-  if (!entry.available || !entry.component) {
+  if (entry.status === 'planned') {
     return (
       <div className="flex flex-1 items-center justify-center p-8 text-ink/60">
         <p>Визуализация «{entry.title}» появится позже.</p>

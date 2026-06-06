@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import type { ThreeEvent } from '@react-three/fiber'
 import { AxesGrid } from '../../components/three/AxesGrid'
 import { CameraController } from '../../components/three/CameraController'
 import { LabeledLine } from '../../components/three/LabeledLine'
@@ -12,9 +14,61 @@ import { kernelLineConfig } from './kernelLineConfig'
 type KernelLineVizProps = {
   candidate?: readonly [number, number, number]
   projection?: readonly [number, number, number]
+  onCandidateChange?: (candidate: [number, number, number]) => void
 }
 
-export function KernelLineViz({ candidate, projection }: KernelLineVizProps) {
+function snapDragCoord(value: number): number {
+  return Math.max(-3, Math.min(3, Math.round(value / 0.25) * 0.25))
+}
+
+function DraggableCandidateHandle({
+  candidate,
+  onCandidateChange,
+}: {
+  candidate: readonly [number, number, number]
+  onCandidateChange: (candidate: [number, number, number]) => void
+}) {
+  const [dragging, setDragging] = useState(false)
+
+  const updateFromPoint = (event: ThreeEvent<PointerEvent>) => {
+    onCandidateChange([
+      snapDragCoord(event.point.x),
+      snapDragCoord(event.point.y),
+      candidate[2],
+    ])
+  }
+
+  return (
+    <group>
+      <mesh
+        position={[0, 0, candidate[2]]}
+        onPointerMove={(event) => {
+          if (!dragging) return
+          updateFromPoint(event)
+        }}
+        onPointerUp={() => setDragging(false)}
+        onPointerCancel={() => setDragging(false)}
+      >
+        <planeGeometry args={[8, 8]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+      <mesh
+        position={candidate}
+        onPointerDown={(event) => {
+          event.stopPropagation()
+          setDragging(true)
+        }}
+        onPointerUp={() => setDragging(false)}
+        onPointerCancel={() => setDragging(false)}
+      >
+        <sphereGeometry args={[0.16, 24, 24]} />
+        <meshStandardMaterial color={tokens.energy} emissive={tokens.energy} emissiveIntensity={0.15} />
+      </mesh>
+    </group>
+  )
+}
+
+export function KernelLineViz({ candidate, projection, onCandidateChange }: KernelLineVizProps) {
   const showPlane = useSceneStore((s) => s.showAuxiliaryPlane)
   const cfg = kernelLineConfig
 
@@ -50,6 +104,9 @@ export function KernelLineViz({ candidate, projection }: KernelLineVizProps) {
       )}
       {candidate && (
         <VectorArrow vector={candidate} color={tokens.energy} label="x" lineWidth={8} />
+      )}
+      {candidate && onCandidateChange && (
+        <DraggableCandidateHandle candidate={candidate} onCandidateChange={onCandidateChange} />
       )}
     </SceneCanvas>
   )

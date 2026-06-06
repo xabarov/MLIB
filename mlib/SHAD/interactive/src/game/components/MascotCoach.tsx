@@ -16,7 +16,7 @@ const imageByState: Record<MascotState, string> = {
 
 export function MascotCoach({ state, message }: MascotCoachProps) {
   return (
-    <div className="flex min-w-0 items-end gap-3">
+    <div className="flex min-w-0 items-end gap-3" data-testid="mascot-coach" data-state={state}>
       <img
         src={imageByState[state]}
         alt="Меби"

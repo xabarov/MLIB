@@ -43,9 +43,20 @@ export function MissionShell({
   )
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-bg lg:flex-row">
-      <section className="relative min-h-[460px] flex-1 overflow-hidden border-b border-panel lg:border-r lg:border-b-0">
-        <div className="absolute inset-x-0 top-0 z-10 flex flex-wrap items-center gap-2 border-b border-ink/10 bg-bg/90 px-3 py-2 backdrop-blur">
+    <div
+      className="flex min-h-0 flex-1 flex-col bg-bg lg:flex-row"
+      data-testid={`mission-${definition.id}`}
+    >
+      <section className="relative min-h-[430px] flex-1 overflow-hidden border-b border-panel lg:border-r lg:border-b-0">
+        <div className="absolute inset-x-0 top-0 z-20 border-b border-ink/10 bg-bg/92 px-3 py-2 backdrop-blur">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="min-w-[180px]">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-orange">
+                Цель уровня
+              </p>
+              <p className="text-sm font-semibold leading-snug text-ink">{activeLevel.objective}</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
           {badges.map((badge) => (
             <InvariantBadge
               key={badge.id}
@@ -54,16 +65,19 @@ export function MissionShell({
               tone={badge.tone}
             />
           ))}
+            </div>
+          </div>
         </div>
-        <div className="h-[560px] pt-[74px] lg:h-full">{scene}</div>
+        <div className="h-[540px] pt-[96px] sm:pt-[74px] lg:h-full">{scene}</div>
       </section>
 
-      <aside className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-panel bg-panel/30 p-4 lg:w-[360px] xl:w-[400px]">
+      <aside className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-panel bg-panel/30 p-4 lg:w-[380px] xl:w-[420px]">
         <MissionHeader definition={definition} level={activeLevel} />
         <RewardMeter
           keys={keys}
           completed={completedLevels.length}
           total={definition.levels.length}
+          success={mascotState === 'success'}
         />
         <LevelStepper
           levels={definition.levels}
@@ -72,9 +86,16 @@ export function MissionShell({
           isUnlocked={(levelId) => isUnlocked(definition.id, levelId, firstLevelId)}
           onSelect={onLevelSelect}
         />
-        {controls && <div className="rounded-md border border-ink/10 bg-bg/72 p-3">{controls}</div>}
+        {controls && (
+          <div className="rounded-md border border-ink/10 bg-bg/72 p-3" data-testid="mission-controls">
+            {controls}
+          </div>
+        )}
         {feedback && (
-          <div className="rounded-md border border-ink/10 bg-highlight/70 p-3 text-sm leading-relaxed text-ink/80">
+          <div
+            className="rounded-md border border-ink/10 bg-highlight/70 p-3 text-sm leading-relaxed text-ink/80"
+            data-testid="mission-feedback"
+          >
             {feedback}
           </div>
         )}

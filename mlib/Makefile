@@ -14,10 +14,13 @@ help:
 	@printf "  format-python     Run ruff formatter\n"
 	@printf "  lint-js           Run ESLint for SHAD/interactive\n"
 	@printf "  format-js         Run ESLint autofix for SHAD/interactive\n"
+	@printf "  test-js           Run Vitest model tests for SHAD/interactive\n"
 	@printf "  lint              Run Python and JS linters\n"
 	@printf "  interactive-dev   Run Vite dev server locally\n"
+	@printf "  interactive-test  Run SHAD/interactive Vitest model tests\n"
 	@printf "  interactive-build Build SHAD/interactive\n"
 	@printf "  interactive-smoke Run Playwright smoke against local dev server\n"
+	@printf "  interactive-quality Run lint, tests, build, and smoke\n"
 	@printf "  compose-dev       Run Docker dev server with hot reload\n"
 	@printf "  compose-prod      Build and run production container\n"
 	@printf "  compose-down      Stop interactive compose services\n"
@@ -46,12 +49,19 @@ lint-js:
 format-js:
 	cd $(INTERACTIVE_DIR) && npm run lint:fix
 
+.PHONY: test-js
+test-js:
+	cd $(INTERACTIVE_DIR) && npm run test
+
 .PHONY: lint
 lint: lint-python lint-js
 
 .PHONY: interactive-dev
 interactive-dev:
 	cd $(INTERACTIVE_DIR) && npm run dev -- --host 127.0.0.1
+
+.PHONY: interactive-test
+interactive-test: test-js
 
 .PHONY: interactive-build
 interactive-build:
@@ -64,6 +74,9 @@ interactive-smoke:
 	trap 'kill -TERM -$$server_pid 2>/dev/null || true' EXIT; \
 	$(PYTHON) $(INTERACTIVE_DIR)/scripts/wait_for_port.py --port 5173 --timeout 45; \
 	$(PYTHON) $(INTERACTIVE_DIR)/scripts/smoke_playwright.py
+
+.PHONY: interactive-quality
+interactive-quality: lint-python lint-js test-js interactive-build interactive-smoke
 
 .PHONY: compose-dev
 compose-dev:

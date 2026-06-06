@@ -79,3 +79,43 @@ export const determinantForgeMission: MissionDefinition = {
     },
   ],
 }
+
+export const matrixMachineMission: MissionDefinition = {
+  id: 'matrix-machine',
+  route: '/algebra/matrices/machine',
+  title: 'Матрица как машина',
+  domain: 'linear-algebra',
+  mechanic: 'geometry-lab',
+  lessonPath: 'SHAD/algebra/6_Matrices/lesson.md',
+  difficulty: 1,
+  levels: [
+    {
+      id: 'stretch-x',
+      title: 'Растяни ось x',
+      objective: 'Собери машину, которая отправляет e1 в (2,0), а e2 оставляет на месте.',
+      hint: 'Столбцы матрицы - это образы базисных векторов.',
+      successText: 'Первый столбец растянулся: A e1 = (2,0), A e2 = (0,1).',
+    },
+    {
+      id: 'shear-y',
+      title: 'Сдвинь верх',
+      objective: 'Сделай сдвиг: e1 остается (1,0), а e2 уходит в (1,1).',
+      hint: 'Двигай синюю ручку: второй столбец отвечает за образ e2.',
+      successText: 'Сдвиг собран: второй базисный вектор получил x-компоненту.',
+    },
+    {
+      id: 'flip-x',
+      title: 'Отрази x',
+      objective: 'Настрой отражение: e1 → (-1,0), e2 → (0,1).',
+      hint: 'Первый столбец должен смотреть влево, второй остаться вверх.',
+      successText: 'Ось x перевернулась, а вертикальное направление сохранилось.',
+    },
+    {
+      id: 'quarter-turn',
+      title: 'Поверни четверть',
+      objective: 'Собери поворот: e1 → (0,1), e2 → (-1,0).',
+      hint: 'После поворота первый базисный вектор смотрит вверх, второй - влево.',
+      successText: 'Матрица поворота собрана из двух образов базисных векторов.',
+    },
+  ],
+}

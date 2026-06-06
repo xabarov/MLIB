@@ -1,103 +1,82 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { determinantForgeMission } from '../../game/missions'
-import type { MascotState, MissionBadge } from '../../game/missionTypes'
-import { useProgressStore } from '../../store/progressStore'
+import type { MissionBadge } from '../../game/missionTypes'
+import { useMissionRuntime } from '../../game/useMissionRuntime'
+import {
+  determinant,
+  determinantArea,
+  determinantGridLimit,
+  determinantLevelSuccess,
+  formatDeterminantNumber,
+  isDegenerate,
+  svgPointToCoord,
+  type Vec2,
+} from './determinantForgeModel'
 
-type Vec2 = [number, number]
 type DragTarget = 'u' | 'v' | null
-
-const gridLimit = 3
-const snap = 0.25
-const emptyLevels: string[] = []
-
-function determinant(u: Vec2, v: Vec2): number {
-  return u[0] * v[1] - v[0] * u[1]
-}
-
-function format(value: number): string {
-  return Math.abs(value) < 0.005 ? '0.00' : value.toFixed(2)
-}
-
-function snapCoord(value: number): number {
-  return Math.max(-gridLimit, Math.min(gridLimit, Math.round(value / snap) * snap))
-}
 
 function VectorReadout({ label, value }: { label: string; value: Vec2 }) {
   return (
     <p className="text-xs text-ink/65">
-      <span className="font-semibold text-ink">{label}</span> = ({format(value[0])},{' '}
-      {format(value[1])})
+      <span className="font-semibold text-ink">{label}</span> = ({formatDeterminantNumber(value[0])},{' '}
+      {formatDeterminantNumber(value[1])})
     </p>
   )
 }
 
 export function DeterminantForgeMission() {
   const definition = determinantForgeMission
-  const [activeLevelId, setActiveLevelId] = useState(definition.levels[0].id)
   const [u, setU] = useState<Vec2>([1, 0])
   const [v, setV] = useState<Vec2>([0, 1])
   const svgRef = useRef<SVGSVGElement>(null)
   const dragTarget = useRef<DragTarget>(null)
-
-  const completeLevel = useProgressStore((s) => s.completeLevel)
-  const unlockLevel = useProgressStore((s) => s.unlockLevel)
-  const completedLevels = useProgressStore((s) => s.completedLevels[definition.id] ?? emptyLevels)
-
-  useEffect(() => {
-    unlockLevel(definition.id, definition.levels[0].id)
-  }, [definition.id, definition.levels, unlockLevel])
-
-  const activeLevelIndex = definition.levels.findIndex((level) => level.id === activeLevelId)
-  const activeLevel = definition.levels[Math.max(activeLevelIndex, 0)]
+  const runtime = useMissionRuntime(definition)
+  const activeLevel = runtime.activeLevel
+  const { completeActiveLevel, completedLevelIds, setActiveLevelId } = runtime
   const det = determinant(u, v)
-  const area = Math.abs(det)
-  const degenerate = area < 0.05
+  const area = determinantArea(u, v)
+  const degenerate = isDegenerate(u, v)
 
   const levelSuccess = useMemo(() => {
-    if (activeLevel.id === 'area-two') return Math.abs(area - 2) < 0.05
-    if (activeLevel.id === 'flip-orientation') return det < -0.5 && area > 1
-    if (activeLevel.id === 'break-invertibility') return degenerate
-    if (activeLevel.id === 'repair-matrix') {
-      return completedLevels.includes('break-invertibility') && area > 0.5
-    }
-    return false
-  }, [activeLevel.id, area, completedLevels, degenerate, det])
+    return determinantLevelSuccess({
+      levelId: activeLevel.id,
+      u,
+      v,
+      completedLevelIds,
+    })
+  }, [activeLevel.id, completedLevelIds, u, v])
 
   useEffect(() => {
     if (!levelSuccess) return
-    const nextLevel = definition.levels[activeLevelIndex + 1]
-    completeLevel(definition.id, activeLevel.id, nextLevel?.id)
-  }, [activeLevel.id, activeLevelIndex, completeLevel, definition.id, definition.levels, levelSuccess])
+    completeActiveLevel()
+  }, [completeActiveLevel, levelSuccess])
 
-  const mascotState: MascotState = levelSuccess
-    ? 'success'
-    : degenerate && activeLevel.id !== 'break-invertibility'
-      ? 'warning'
-      : Math.abs(area - 2) < 0.5 || Math.abs(det) < 0.35
-        ? 'hint'
-        : 'idle'
-
-  const mascotMessage =
-    mascotState === 'success'
-      ? activeLevel.successText
-      : mascotState === 'warning'
-        ? 'Площадь исчезла. Это полезно только когда мы специально ломаем обратимость.'
-        : mascotState === 'hint'
-          ? activeLevel.hint
-          : 'Тяни концы векторов. Я буду считать площадь и ориентацию параллелограмма.'
+  const mascotState = chooseMascotState({
+    success: levelSuccess,
+    warning: degenerate && activeLevel.id !== 'break-invertibility',
+    hint: Math.abs(area - 2) < 0.5 || Math.abs(det) < 0.35,
+  })
+  const mascotMessage = missionMessage(mascotState, {
+    success: activeLevel.successText,
+    warning: 'Площадь исчезла. Это полезно только когда мы специально ломаем обратимость.',
+    hint: activeLevel.hint,
+    thinking: 'Смотри на форму: площадь - это модуль det A, а знак показывает ориентацию.',
+    idle: 'Тяни концы векторов. Я буду считать площадь и ориентацию параллелограмма.',
+  })
 
   const badges: MissionBadge[] = [
     {
       id: 'det',
       label: 'det A',
-      value: format(det),
+      value: formatDeterminantNumber(det),
       tone: levelSuccess ? 'success' : degenerate ? 'danger' : det < 0 ? 'target' : 'energy',
     },
     {
       id: 'area',
       label: 'area',
-      value: format(area),
+      value: formatDeterminantNumber(area),
       tone: Math.abs(area - 2) < 0.05 ? 'success' : 'neutral',
     },
     {
@@ -117,9 +96,7 @@ export function DeterminantForgeMission() {
     const svg = svgRef.current
     if (!svg) return [0, 0]
     const rect = svg.getBoundingClientRect()
-    const x = ((event.clientX - rect.left) / rect.width) * 8 - 4
-    const y = 4 - ((event.clientY - rect.top) / rect.height) * 8
-    return [snapCoord(x), snapCoord(y)]
+    return svgPointToCoord({ clientX: event.clientX, clientY: event.clientY, rect })
   }
 
   const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
@@ -136,7 +113,10 @@ export function DeterminantForgeMission() {
     dragTarget.current = null
   }
 
-  const gridLines = Array.from({ length: gridLimit * 2 + 1 }, (_, index) => index - gridLimit)
+  const gridLines = Array.from(
+    { length: determinantGridLimit * 2 + 1 },
+    (_, index) => index - determinantGridLimit,
+  )
   const parallelogram = `0,0 ${u[0]},${-u[1]} ${u[0] + v[0]},${-(u[1] + v[1])} ${v[0]},${-v[1]}`
   const detClass = degenerate ? 'fill-danger/12 stroke-danger' : det > 0 ? 'fill-energy/16 stroke-energy' : 'fill-target/16 stroke-target'
 
@@ -158,6 +138,7 @@ export function DeterminantForgeMission() {
             onPointerUp={stopDrag}
             onPointerCancel={stopDrag}
             aria-label="Кузница определителя"
+            data-testid="determinant-forge-plane"
           >
             <g transform="scale(1,-1)">
               {gridLines.map((line) => (
@@ -177,6 +158,7 @@ export function DeterminantForgeMission() {
                 r={0.14}
                 className="cursor-grab fill-orange stroke-ink"
                 strokeWidth="0.035"
+                data-testid="determinant-handle-u"
                 onPointerDown={(event) => startDrag(event, 'u')}
               />
               <circle
@@ -185,6 +167,7 @@ export function DeterminantForgeMission() {
                 r={0.14}
                 className="cursor-grab fill-target stroke-ink"
                 strokeWidth="0.035"
+                data-testid="determinant-handle-v"
                 onPointerDown={(event) => startDrag(event, 'v')}
               />
             </g>
@@ -203,8 +186,9 @@ export function DeterminantForgeMission() {
       }
       feedback={
         <p>
-          Матрица собрана из столбцов: A = [[{format(u[0])}, {format(v[0])}], [
-          {format(u[1])}, {format(v[1])}]].
+          Матрица собрана из столбцов: A = [[{formatDeterminantNumber(u[0])},{' '}
+          {formatDeterminantNumber(v[0])}], [{formatDeterminantNumber(u[1])},{' '}
+          {formatDeterminantNumber(v[1])}]].
         </p>
       }
     />

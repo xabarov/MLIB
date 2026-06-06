@@ -1,19 +1,21 @@
-import { ChevronDown, ChevronRight, FlaskConical, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { ChevronDown, ChevronRight, FlaskConical, PanelLeftClose, PanelLeft, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useNavigationStore } from '../../store/navigationStore'
 import { navSections } from '../../visualizations/registry'
 
 export function Sidebar() {
   const collapsed = useNavigationStore((s) => s.sidebarCollapsed)
+  const mobileNavOpen = useNavigationStore((s) => s.mobileNavOpen)
   const expandedSections = useNavigationStore((s) => s.expandedSections)
   const expandedTopics = useNavigationStore((s) => s.expandedTopics)
   const toggleSidebar = useNavigationStore((s) => s.toggleSidebar)
+  const closeMobileNav = useNavigationStore((s) => s.closeMobileNav)
   const toggleSection = useNavigationStore((s) => s.toggleSection)
   const toggleTopic = useNavigationStore((s) => s.toggleTopic)
 
   if (collapsed) {
     return (
-      <aside className="flex h-12 shrink-0 items-center border-b border-panel bg-panel/30 px-3 md:h-auto md:w-12 md:flex-col md:border-r md:border-b-0 md:px-0 md:py-3">
+      <aside className="hidden shrink-0 items-center border-panel bg-panel/30 md:flex md:h-auto md:w-12 md:flex-col md:border-r md:px-0 md:py-3">
         <button
           type="button"
           onClick={toggleSidebar}
@@ -27,7 +29,12 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex max-h-[46vh] w-full shrink-0 flex-col border-b border-panel bg-panel/30 md:max-h-none md:w-72 md:border-r md:border-b-0">
+    <aside
+      className={`${
+        mobileNavOpen ? 'fixed inset-0 z-50 flex' : 'hidden'
+      } w-full shrink-0 flex-col border-panel bg-bg/95 backdrop-blur md:static md:z-auto md:flex md:max-h-none md:w-72 md:border-r md:bg-panel/30 md:backdrop-blur-none`}
+      data-testid="sidebar"
+    >
       <div className="flex items-center justify-between border-b border-panel px-4 py-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-ink/50">SHAD</p>
@@ -36,10 +43,18 @@ export function Sidebar() {
         <button
           type="button"
           onClick={toggleSidebar}
-          className="rounded p-1.5 text-ink/70 hover:bg-panel"
+          className="hidden rounded p-1.5 text-ink/70 hover:bg-panel md:inline-flex"
           title="Свернуть панель"
         >
           <PanelLeftClose className="size-4" />
+        </button>
+        <button
+          type="button"
+          onClick={closeMobileNav}
+          className="rounded p-1.5 text-ink/70 hover:bg-panel md:hidden"
+          aria-label="Закрыть навигацию"
+        >
+          <X className="size-5" />
         </button>
       </div>
 
@@ -83,9 +98,10 @@ export function Sidebar() {
                         <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-gray/50 pl-2">
                           {topic.visualizations.map((viz) => (
                             <li key={viz.id}>
-                              {viz.available ? (
+                              {viz.status !== 'planned' ? (
                                 <NavLink
                                   to={viz.path}
+                                  onClick={closeMobileNav}
                                   className={({ isActive }) =>
                                     `flex items-start gap-1.5 rounded px-2 py-1.5 text-xs leading-snug transition-colors ${
                                       isActive
