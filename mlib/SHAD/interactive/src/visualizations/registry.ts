@@ -1,5 +1,18 @@
-import type { ComponentType } from 'react'
-import { KernelLineViz } from './linear-maps/KernelLineViz'
+import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import type { MissionDefinition } from '../game/missionTypes'
+import { determinantForgeMission, kernelHuntMission } from '../game/missions'
+
+const DeterminantForgeMission = lazy(() =>
+  import('./determinants/DeterminantForgeMission').then((module) => ({
+    default: module.DeterminantForgeMission,
+  })),
+)
+
+const KernelHuntMission = lazy(() =>
+  import('./linear-maps/KernelHuntMission').then((module) => ({
+    default: module.KernelHuntMission,
+  })),
+)
 
 export type VizMeta = {
   title: string
@@ -9,12 +22,19 @@ export type VizMeta = {
   sceneTitle?: string
 }
 
+export type VizComponent = ComponentType | LazyExoticComponent<ComponentType>
+
 export type VizEntry = {
   id: string
   path: string
   title: string
   available: boolean
-  component?: ComponentType
+  kind?: 'viewer' | 'mission' | 'prototype'
+  difficulty?: 1 | 2 | 3
+  lessonPath?: string
+  mission?: MissionDefinition
+  status?: 'available' | 'prototype' | 'planned'
+  component?: VizComponent
   meta: VizMeta
 }
 
@@ -42,11 +62,16 @@ export const navSections: NavSection[] = [
           {
             id: 'kernel',
             path: '/algebra/linear-maps/kernel',
-            title: 'Ядро: прямая span{(-1,1,-1)}',
+            title: 'Охота за ядром',
             available: true,
-            component: KernelLineViz,
+            kind: 'mission',
+            status: 'available',
+            difficulty: 1,
+            lessonPath: kernelHuntMission.lessonPath,
+            mission: kernelHuntMission,
+            component: KernelHuntMission,
             meta: {
-              title: 'Геометрия ядра линейного отображения',
+              title: 'Охота за ядром',
               sceneTitle: 'Геометрия ядра линейного отображения',
               formula: String.raw`\ker\varphi=\mathrm{span}\{(-1,1,-1)\}`,
               description:
@@ -81,6 +106,30 @@ export const navSections: NavSection[] = [
             available: false,
             meta: {
               title: 'Одна плоскость, два базиса',
+            },
+          },
+        ],
+      },
+      {
+        id: 'determinants',
+        title: 'Определители',
+        visualizations: [
+          {
+            id: 'forge',
+            path: '/algebra/determinants/forge',
+            title: 'Кузница определителя',
+            available: true,
+            kind: 'mission',
+            status: 'prototype',
+            difficulty: 1,
+            lessonPath: determinantForgeMission.lessonPath,
+            mission: determinantForgeMission,
+            component: DeterminantForgeMission,
+            meta: {
+              title: 'Кузница определителя',
+              formula: String.raw`\det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc`,
+              description:
+                'Два столбца матрицы задают параллелограмм: площадь, ориентация и обратимость видны через определитель.',
             },
           },
         ],

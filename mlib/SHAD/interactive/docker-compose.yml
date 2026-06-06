@@ -1,0 +1,8 @@
+services:
+  shad-interactive:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "8080:80"
+    restart: unless-stopped

@@ -1,8 +1,10 @@
 # SHAD — интерактивные визуализации
 
-Браузерное приложение к лекциям ШАД: 3D-сцены с вращением камеры, формулы KaTeX, навигация по разделам.
+Браузерное приложение к лекциям ШАД: игровые миссии, 3D/2D-сцены,
+формулы KaTeX, навигация по разделам и проводник Меби.
 
 Игровой план развития: [gameplay_roadmap.md](gameplay_roadmap.md).
+План текущего этапа: [next_stage_plan.md](next_stage_plan.md).
 
 ## Стек
 
@@ -21,6 +23,18 @@ npm run build    # артефакт в dist/
 npm run preview  # проверка статической сборки
 ```
 
+Из корня репозитория:
+
+```bash
+make lint
+make interactive-build
+make interactive-smoke # Playwright desktop/mobile + базовые действия
+make interactive-dev
+make compose-dev   # Docker dev с hot reload
+make compose-prod  # production nginx на http://localhost:8080
+make compose-down
+```
+
 ## Статическая публикация
 
 Сборка с `base: './'` — относительные пути к ассетам. После `npm run build` каталог `dist/` можно:
@@ -32,17 +46,20 @@ npm run preview  # проверка статической сборки
 Ссылка из лекции (пример):
 
 ```markdown
-[Интерактивная модель](../../interactive/dist/index.html#/algebra/linear-maps/kernel)
+[Игровая миссия](../../interactive/dist/index.html#/algebra/linear-maps/kernel)
 ```
 
 Маршрут по умолчанию: `#/algebra/linear-maps/kernel`.
+Прототип определителя: `#/algebra/determinants/forge`.
 
-## Добавление визуализации
+## Добавление миссии
 
-1. Конфиг геометрии (по возможности синхронизировать с `generate_visuals.py` лекции).
-2. Компонент сцены в `src/visualizations/`.
-3. Запись в `src/visualizations/registry.ts` (`available: true`, `component`, `path`).
-4. `npm run build` и обновить ссылку в `lesson.md` при необходимости.
+1. Описать `MissionDefinition` и уровни в `src/game/missions.ts`.
+2. Сделать компонент сцены в `src/visualizations/`.
+3. Обернуть сцену в `MissionShell` и подключить Меби/feedback.
+4. Добавить запись в `src/visualizations/registry.ts` с `kind: 'mission'`.
+5. Выполнить `npm run lint`, `npm run build` и Playwright-проверку.
+6. Обновить ссылку в `lesson.md` только после успешной сборки.
 
 ## Палитра
 

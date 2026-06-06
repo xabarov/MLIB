@@ -11,9 +11,9 @@ export const kernelLineConfig = {
   /** z = -x - y  <=>  x + y + z = 0 */
   planeFn: (x: number, y: number) => -x - y,
   camera: {
-    distance: 9.5,
-    elevDeg: 22,
-    azimDeg: 38,
+    distance: 5.6,
+    elevDeg: 24,
+    azimDeg: 42,
   },
   colors: {
     line: '#d97757',

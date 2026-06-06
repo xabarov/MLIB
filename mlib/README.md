@@ -73,10 +73,31 @@ npm run build
 npm run dev -- --host 127.0.0.1
 ```
 
+From the repo root, the same checks are available through `make`:
+
+```bash
+make setup-python
+make lint-python
+make lint-python-all
+make lint-js
+make interactive-build
+make interactive-smoke
+make interactive-dev
+```
+
+Docker workflows:
+
+```bash
+make compose-dev   # Vite dev server with source mounted into the container
+make compose-prod  # production nginx container on http://localhost:8080
+make compose-down
+```
+
 Open:
 
 ```text
 http://127.0.0.1:5173/#/algebra/linear-maps/kernel
+http://127.0.0.1:5173/#/algebra/determinants/forge
 ```
 
 `node_modules/` and `dist/` are ignored. Commit source files and lockfiles, not
@@ -123,4 +144,3 @@ git status --short
 git diff --check
 git check-ignore -v .env .claude/settings.local.json SHAD/interactive/dist/index.html
 ```
-

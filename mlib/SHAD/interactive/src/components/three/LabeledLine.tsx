@@ -1,4 +1,4 @@
-import { Line, Text } from '@react-three/drei'
+import { Line } from '@react-three/drei'
 
 type LabeledLineProps = {
   direction: readonly [number, number, number]
@@ -16,8 +16,6 @@ export function LabeledLine({
   tMax,
   color,
   lineWidth = 3,
-  label,
-  labelAt,
 }: LabeledLineProps) {
   const [dx, dy, dz] = direction
   const start: [number, number, number] = [dx * tMin, dy * tMin, dz * tMin]
@@ -26,11 +24,6 @@ export function LabeledLine({
   return (
     <group>
       <Line points={[start, end]} color={color} lineWidth={lineWidth} />
-      {label && labelAt && (
-        <Text position={[...labelAt]} fontSize={0.28} color={color} anchorX="center">
-          {label}
-        </Text>
-      )}
     </group>
   )
 }

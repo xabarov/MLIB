@@ -18,7 +18,6 @@ from typing import Any
 
 from PIL import Image
 
-
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_OUT_DIR = REPO_ROOT / "SHAD" / "interactive" / "src" / "assets" / "game"
 DEFAULT_MODEL = "openai/gpt-5.4-image-2"

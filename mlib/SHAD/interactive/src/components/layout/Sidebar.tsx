@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { ChevronDown, ChevronRight, FlaskConical, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useNavigationStore } from '../../store/navigationStore'
 import { navSections } from '../../visualizations/registry'
@@ -31,7 +31,7 @@ export function Sidebar() {
       <div className="flex items-center justify-between border-b border-panel px-4 py-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-ink/50">SHAD</p>
-          <h1 className="text-sm font-semibold text-ink">Визуализации</h1>
+          <h1 className="text-sm font-semibold text-ink">Миссии</h1>
         </div>
         <button
           type="button"
@@ -87,14 +87,24 @@ export function Sidebar() {
                                 <NavLink
                                   to={viz.path}
                                   className={({ isActive }) =>
-                                    `block rounded px-2 py-1.5 text-xs leading-snug transition-colors ${
+                                    `flex items-start gap-1.5 rounded px-2 py-1.5 text-xs leading-snug transition-colors ${
                                       isActive
                                         ? 'bg-orange/15 font-medium text-ink'
                                         : 'text-ink/75 hover:bg-panel/60 hover:text-ink'
                                     }`
                                   }
                                 >
-                                  {viz.title}
+                                  {viz.kind === 'mission' && (
+                                    <FlaskConical className="mt-0.5 size-3.5 shrink-0 text-orange" />
+                                  )}
+                                  <span className="min-w-0">
+                                    <span className="block">{viz.title}</span>
+                                    {viz.status === 'prototype' && (
+                                      <span className="text-[10px] uppercase tracking-wide text-target">
+                                        прототип
+                                      </span>
+                                    )}
+                                  </span>
                                 </NavLink>
                               ) : (
                                 <span

@@ -1,4 +1,4 @@
-import { Line, Text } from '@react-three/drei'
+import { Line } from '@react-three/drei'
 import { tokens } from '../../theme/tokens'
 
 type AxesGridProps = {
@@ -7,7 +7,6 @@ type AxesGridProps = {
 
 export function AxesGrid({ limit = 2.2 }: AxesGridProps) {
   const axisColor = tokens.gray
-  const labelColor = tokens.ink
   const tick = 0.5
 
   const ticks = Array.from(
@@ -17,19 +16,9 @@ export function AxesGrid({ limit = 2.2 }: AxesGridProps) {
 
   return (
     <group>
-      <Line points={[[-limit, 0, 0], [limit, 0, 0]]} color={axisColor} lineWidth={1} />
-      <Line points={[[0, -limit, 0], [0, limit, 0]]} color={axisColor} lineWidth={1} />
-      <Line points={[[0, 0, -limit], [0, 0, limit]]} color={axisColor} lineWidth={1} />
-
-      <Text position={[limit + 0.15, 0, 0]} fontSize={0.22} color={labelColor} anchorX="left">
-        x
-      </Text>
-      <Text position={[0, limit + 0.15, 0]} fontSize={0.22} color={labelColor} anchorX="center">
-        y
-      </Text>
-      <Text position={[0, 0, limit + 0.25]} fontSize={0.22} color={labelColor} anchorX="center">
-        z
-      </Text>
+      <Line points={[[-limit, 0, 0], [limit, 0, 0]]} color={axisColor} lineWidth={2.4} />
+      <Line points={[[0, -limit, 0], [0, limit, 0]]} color={axisColor} lineWidth={2.4} />
+      <Line points={[[0, 0, -limit], [0, 0, limit]]} color={axisColor} lineWidth={2.4} />
 
       {ticks.map((v) => (
         <group key={`tick-${v}`}>
@@ -39,7 +28,7 @@ export function AxesGrid({ limit = 2.2 }: AxesGridProps) {
               [v, 0.06, 0],
             ]}
             color={axisColor}
-            lineWidth={0.5}
+            lineWidth={1}
             transparent
             opacity={0.5}
           />
@@ -49,7 +38,7 @@ export function AxesGrid({ limit = 2.2 }: AxesGridProps) {
               [0, v, 0.06],
             ]}
             color={axisColor}
-            lineWidth={0.5}
+            lineWidth={1}
             transparent
             opacity={0.5}
           />
@@ -59,7 +48,7 @@ export function AxesGrid({ limit = 2.2 }: AxesGridProps) {
               [0.06, 0, v],
             ]}
             color={axisColor}
-            lineWidth={0.5}
+            lineWidth={1}
             transparent
             opacity={0.5}
           />

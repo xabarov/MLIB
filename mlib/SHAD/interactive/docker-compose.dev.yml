@@ -1,0 +1,16 @@
+services:
+  shad-interactive-dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - shad_interactive_node_modules:/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+volumes:
+  shad_interactive_node_modules:

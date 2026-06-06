@@ -4,10 +4,17 @@ import { LabeledLine } from '../../components/three/LabeledLine'
 import { OriginMarker } from '../../components/three/OriginMarker'
 import { SceneCanvas } from '../../components/three/SceneCanvas'
 import { SemiTransparentPlane } from '../../components/three/SemiTransparentPlane'
+import { VectorArrow } from '../../components/three/VectorArrow'
 import { useSceneStore } from '../../store/sceneStore'
+import { tokens } from '../../theme/tokens'
 import { kernelLineConfig } from './kernelLineConfig'
 
-export function KernelLineViz() {
+type KernelLineVizProps = {
+  candidate?: readonly [number, number, number]
+  projection?: readonly [number, number, number]
+}
+
+export function KernelLineViz({ candidate, projection }: KernelLineVizProps) {
   const showPlane = useSceneStore((s) => s.showAuxiliaryPlane)
   const cfg = kernelLineConfig
 
@@ -25,7 +32,7 @@ export function KernelLineViz() {
         tMin={cfg.tMin}
         tMax={cfg.tMax}
         color={cfg.colors.line}
-        lineWidth={3.4}
+        lineWidth={7}
         label="ker φ"
         labelAt={cfg.labelPosition}
       />
@@ -37,6 +44,12 @@ export function KernelLineViz() {
           color={cfg.colors.plane}
           opacity={cfg.colors.planeOpacity}
         />
+      )}
+      {projection && (
+        <VectorArrow vector={projection} color={tokens.target} label="proj" lineWidth={4.5} />
+      )}
+      {candidate && (
+        <VectorArrow vector={candidate} color={tokens.energy} label="x" lineWidth={8} />
       )}
     </SceneCanvas>
   )

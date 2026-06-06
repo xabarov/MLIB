@@ -11,6 +11,13 @@
   --color-green: #788c5d;
   --color-purple: #7c6ccf;
   --color-highlight: #f8f3dc;
+  --color-success: #5f8d65;
+  --color-danger: #b65b55;
+  --color-target: #4d86a8;
+  --color-energy: #c59738;
+  --color-grid: #d8d3c7;
+  --color-paper: #fffdf7;
+  --color-shadowInk: rgba(20, 20, 19, 0.16);
 }
 
 html,
@@ -22,12 +29,18 @@ body,
 
 body {
   font-family:
+    'Trebuchet MS',
     'Segoe UI',
     system-ui,
     -apple-system,
     sans-serif;
   background-color: var(--color-bg);
   color: var(--color-ink);
+}
+
+button,
+input {
+  font: inherit;
 }
 
 .katex {
