@@ -1,6 +1,16 @@
-import { determinantForgeMission, kernelHuntMission, matrixMachineMission } from '../game/missions'
+import {
+  determinantForgeMission,
+  kernelHuntMission,
+  matrixMachineMission,
+  substitutionWorkshopMission,
+} from '../game/missions'
 import type { VizEntry } from './registryTypes'
-import { DeterminantForgeMission, KernelHuntMission, MatrixMachineMission } from './routeLoaders'
+import {
+  DeterminantForgeMission,
+  KernelHuntMission,
+  MatrixMachineMission,
+  SubstitutionWorkshopMission,
+} from './routeLoaders'
 
 export const missionEntries: VizEntry[] = [
   {
@@ -54,6 +64,23 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`A=[Ae_1\ Ae_2]`,
       description:
         'Матрица задается образами базисных векторов: эти образы становятся ее столбцами.',
+    },
+  },
+  {
+    id: 'substitution-workshop',
+    path: '/algebra/substitutions/workshop',
+    title: 'Цех перестановок',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 1,
+    lessonPath: substitutionWorkshopMission.lessonPath,
+    mission: substitutionWorkshopMission,
+    component: SubstitutionWorkshopMission,
+    meta: {
+      title: 'Цех перестановок',
+      formula: String.raw`\operatorname{sgn}(\sigma)=(-1)^{\mathrm{inv}(\sigma)}`,
+      description:
+        'Перестановка меняется транспозициями: циклы, знак и число ходов становятся игровым состоянием.',
     },
   },
 ]

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
+import { RotateCcw } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { matrixMachineMission } from '../../game/missions'
@@ -25,6 +26,34 @@ function VectorReadout({ label, value, target }: { label: string; value: Vec2; t
         цель ({formatMatrixNumber(target[0])}, {formatMatrixNumber(target[1])})
       </span>
     </p>
+  )
+}
+
+function CoordInput({
+  label,
+  value,
+  testId,
+  onChange,
+}: {
+  label: string
+  value: number
+  testId: string
+  onChange: (value: number) => void
+}) {
+  return (
+    <label className="grid grid-cols-[44px_1fr] items-center gap-2 text-xs text-ink/70">
+      <span className="font-semibold">{label}</span>
+      <input
+        type="number"
+        min={-3}
+        max={3}
+        step={0.25}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="w-full rounded border border-ink/10 bg-paper px-2 py-1 text-right tabular-nums text-ink"
+        data-testid={testId}
+      />
+    </label>
   )
 }
 
@@ -115,6 +144,19 @@ export function MatrixMachineMission() {
   }
 
   const gridLines = Array.from({ length: 7 }, (_, index) => index - 3)
+  const resetLevel = () => {
+    setU([1, 0])
+    setV([0, 1])
+  }
+  const setVectorCoord = (targetName: 'u' | 'v', coord: 0 | 1, value: number) => {
+    const safeValue = Number.isFinite(value) ? Math.max(-3, Math.min(3, value)) : 0
+    const setter = targetName === 'u' ? setU : setV
+    setter((current) => {
+      const next = [...current] as Vec2
+      next[coord] = safeValue
+      return next
+    })
+  }
 
   return (
     <MissionShell
@@ -177,12 +219,52 @@ export function MatrixMachineMission() {
       }
       controls={
         <div className="space-y-2">
+          <div className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs text-ink">
+            Целевая матрица: [[{formatMatrixNumber(target.u[0])},{' '}
+            {formatMatrixNumber(target.v[0])}], [{formatMatrixNumber(target.u[1])},{' '}
+            {formatMatrixNumber(target.v[1])}]]
+          </div>
           <VectorReadout label="A e1" value={u} target={target.u} />
           <VectorReadout label="A e2" value={v} target={target.v} />
+          <div className="grid grid-cols-2 gap-2">
+            <CoordInput
+              label="u.x"
+              value={u[0]}
+              testId="matrix-input-u-x"
+              onChange={(value) => setVectorCoord('u', 0, value)}
+            />
+            <CoordInput
+              label="u.y"
+              value={u[1]}
+              testId="matrix-input-u-y"
+              onChange={(value) => setVectorCoord('u', 1, value)}
+            />
+            <CoordInput
+              label="v.x"
+              value={v[0]}
+              testId="matrix-input-v-x"
+              onChange={(value) => setVectorCoord('v', 0, value)}
+            />
+            <CoordInput
+              label="v.y"
+              value={v[1]}
+              testId="matrix-input-v-y"
+              onChange={(value) => setVectorCoord('v', 1, value)}
+            />
+          </div>
           <p className="text-xs leading-relaxed text-ink/60">
             Оранжевая ручка задает первый столбец, синяя - второй. Бледные
-            направляющие показывают цель уровня.
+            направляющие показывают цель уровня. Поля ниже дают точный режим.
           </p>
+          <button
+            type="button"
+            onClick={resetLevel}
+            className="inline-flex items-center gap-1 rounded border border-ink/10 bg-paper px-2 py-1 text-xs font-semibold text-ink/75 hover:border-orange/40 hover:text-ink"
+            data-testid="matrix-reset"
+          >
+            <RotateCcw className="size-3.5" />
+            Сбросить уровень
+          </button>
         </div>
       }
       feedback={

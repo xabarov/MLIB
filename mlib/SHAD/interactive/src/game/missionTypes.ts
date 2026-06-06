@@ -16,12 +16,27 @@ export type MissionMechanic =
 
 export type MascotState = 'idle' | 'hint' | 'success' | 'warning' | 'thinking'
 
+export type TraceStep = {
+  id: string
+  label: string
+  state: Record<string, unknown>
+  cost?: number
+  invariantOk?: boolean
+}
+
+export type MissionDataContract = {
+  traceSteps?: TraceStep[]
+}
+
 export type MissionLevel = {
   id: string
   title: string
   objective: string
   hint: string
   successText: string
+  takeaway: string
+  lectureAnchor?: string
+  nextPrompt?: string
 }
 
 export type MissionDefinition = {
@@ -32,6 +47,11 @@ export type MissionDefinition = {
   mechanic: MissionMechanic
   lessonPath?: string
   difficulty: 1 | 2 | 3
+  summaryTitle?: string
+  summaryText?: string
+  nextMissionRoute?: string
+  nextMissionLabel?: string
+  dataContract?: MissionDataContract
   levels: MissionLevel[]
 }
 

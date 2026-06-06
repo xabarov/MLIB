@@ -13,6 +13,11 @@ ROUTES = [
     ("kernel", "#/algebra/linear-maps/kernel", '[data-testid="mission-kernel-hunt"]'),
     ("determinant", "#/algebra/determinants/forge", '[data-testid="mission-determinant-forge"]'),
     ("matrix", "#/algebra/matrices/machine", '[data-testid="mission-matrix-machine"]'),
+    (
+        "substitution",
+        "#/algebra/substitutions/workshop",
+        '[data-testid="mission-substitution-workshop"]',
+    ),
 ]
 
 VIEWPORTS = [
@@ -50,6 +55,18 @@ def fill_kernel(page, x: str, y: str, z: str) -> None:
     page.get_by_test_id("kernel-input-x").fill(x)
     page.get_by_test_id("kernel-input-y").fill(y)
     page.get_by_test_id("kernel-input-z").fill(z)
+
+
+def fill_matrix(page, ux: str, uy: str, vx: str, vy: str) -> None:
+    page.get_by_test_id("matrix-input-u-x").fill(ux)
+    page.get_by_test_id("matrix-input-u-y").fill(uy)
+    page.get_by_test_id("matrix-input-v-x").fill(vx)
+    page.get_by_test_id("matrix-input-v-y").fill(vy)
+
+
+def swap_tiles(page, a: int, b: int) -> None:
+    page.get_by_test_id(f"substitution-tile-{a}").click()
+    page.get_by_test_id(f"substitution-tile-{b}").click()
 
 
 def run() -> None:
@@ -106,24 +123,45 @@ def run() -> None:
         expect(page.get_by_text("Матрица вырождена")).to_be_visible(timeout=10_000)
         page.get_by_test_id("level-repair-matrix").click()
         drag_svg_handle(page, "determinant-forge-plane", 2, 0, 0, 1)
-        expect(page.get_by_text("Матрица снова обратима")).to_be_visible(timeout=10_000)
+        expect(page.get_by_text("Матрица снова обратима: площадь вернулась.")).to_be_visible(
+            timeout=10_000
+        )
 
         page.goto(f"{BASE_URL}/#/algebra/matrices/machine", wait_until="domcontentloaded")
         page.wait_for_selector('[data-testid="matrix-machine-plane"]', timeout=10_000)
-        drag_svg_handle(page, "matrix-machine-plane", 1, 0, 2, 0)
+        fill_matrix(page, "2", "0", "0", "1")
         expect(page.get_by_text("Первый столбец растянулся")).to_be_visible(timeout=10_000)
         page.get_by_test_id("level-shear-y").click()
-        drag_svg_handle(page, "matrix-machine-plane", 2, 0, 1, 0)
-        drag_svg_handle(page, "matrix-machine-plane", 0, 1, 1, 1)
+        fill_matrix(page, "1", "0", "1", "1")
         expect(page.get_by_text("Сдвиг собран")).to_be_visible(timeout=10_000)
         page.get_by_test_id("level-flip-x").click()
-        drag_svg_handle(page, "matrix-machine-plane", 1, 0, -1, 0)
-        drag_svg_handle(page, "matrix-machine-plane", 1, 1, 0, 1)
+        fill_matrix(page, "-1", "0", "0", "1")
         expect(page.get_by_text("Ось x перевернулась")).to_be_visible(timeout=10_000)
         page.get_by_test_id("level-quarter-turn").click()
-        drag_svg_handle(page, "matrix-machine-plane", -1, 0, 0, 1)
-        drag_svg_handle(page, "matrix-machine-plane", 0, 1, -1, 0)
-        expect(page.get_by_text("Матрица поворота собрана")).to_be_visible(timeout=10_000)
+        fill_matrix(page, "0", "1", "-1", "0")
+        expect(
+            page.get_by_text("Матрица поворота собрана из двух образов базисных векторов.")
+        ).to_be_visible(timeout=10_000)
+
+        page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
+        page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
+        swap_tiles(page, 1, 5)
+        swap_tiles(page, 1, 4)
+        swap_tiles(page, 1, 3)
+        swap_tiles(page, 1, 2)
+        expect(page.get_by_text("Цикл собран")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-flip-parity").click()
+        swap_tiles(page, 1, 2)
+        expect(page.get_by_text("Знак сменился")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-two-cycles").click()
+        swap_tiles(page, 1, 2)
+        swap_tiles(page, 3, 4)
+        swap_tiles(page, 5, 6)
+        expect(page.get_by_text("Три независимых обмена")).to_be_visible(timeout=10_000)
+        page.get_by_test_id("level-repair").click()
+        swap_tiles(page, 2, 3)
+        swap_tiles(page, 3, 5)
+        expect(page.get_by_text("Маршрут восстановлен")).to_be_visible(timeout=10_000)
 
         context.close()
         browser.close()

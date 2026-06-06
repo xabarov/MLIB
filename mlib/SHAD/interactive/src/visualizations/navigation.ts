@@ -15,6 +15,11 @@ export const navSections: NavSection[] = [
     title: 'Линейная алгебра',
     topics: [
       {
+        id: 'substitutions',
+        title: 'Подстановки',
+        visualizations: [missionEntry('substitution-workshop')],
+      },
+      {
         id: 'linear-maps',
         title: 'Линейные отображения и операторы',
         visualizations: [

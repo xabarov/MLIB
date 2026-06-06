@@ -119,6 +119,7 @@ export function DeterminantForgeMission() {
   )
   const parallelogram = `0,0 ${u[0]},${-u[1]} ${u[0] + v[0]},${-(u[1] + v[1])} ${v[0]},${-v[1]}`
   const detClass = degenerate ? 'fill-danger/12 stroke-danger' : det > 0 ? 'fill-energy/16 stroke-energy' : 'fill-target/16 stroke-target'
+  const targetArea = activeLevel.id === 'area-two' ? 'Поймай |det A| = 2' : activeLevel.id === 'flip-orientation' ? 'Сделай det A < 0' : activeLevel.id === 'break-invertibility' ? 'Схлопни площадь в 0' : 'Верни det A ≠ 0'
 
   return (
     <MissionShell
@@ -155,20 +156,34 @@ export function DeterminantForgeMission() {
               <circle
                 cx={u[0]}
                 cy={u[1]}
-                r={0.14}
-                className="cursor-grab fill-orange stroke-ink"
+                r={0.26}
+                className="cursor-grab fill-orange/10 stroke-transparent"
+                strokeWidth="0.02"
+                onPointerDown={(event) => startDrag(event, 'u')}
+              />
+              <circle
+                cx={u[0]}
+                cy={u[1]}
+                r={0.17}
+                className="pointer-events-none fill-orange stroke-ink"
                 strokeWidth="0.035"
                 data-testid="determinant-handle-u"
-                onPointerDown={(event) => startDrag(event, 'u')}
               />
               <circle
                 cx={v[0]}
                 cy={v[1]}
-                r={0.14}
-                className="cursor-grab fill-target stroke-ink"
+                r={0.26}
+                className="cursor-grab fill-target/10 stroke-transparent"
+                strokeWidth="0.02"
+                onPointerDown={(event) => startDrag(event, 'v')}
+              />
+              <circle
+                cx={v[0]}
+                cy={v[1]}
+                r={0.17}
+                className="pointer-events-none fill-target stroke-ink"
                 strokeWidth="0.035"
                 data-testid="determinant-handle-v"
-                onPointerDown={(event) => startDrag(event, 'v')}
               />
             </g>
           </svg>
@@ -181,6 +196,9 @@ export function DeterminantForgeMission() {
           <p className="text-xs leading-relaxed text-ink/60">
             Оранжевая ручка - первый столбец, синяя - второй. Координаты
             притягиваются к шагу 0.25.
+          </p>
+          <p className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs font-medium text-target">
+            Цель прибора: {targetArea}
           </p>
         </div>
       }

@@ -148,7 +148,7 @@ $$
 
 ![Геометрический смысл определителя в двумерном случае: модуль det равен площади параллелограмма](assets/det_area_parallelogram.png)
 
-[Игровая миссия: собрать площадь, знак и вырожденность определителя](../../interactive/dist/index.html#/algebra/determinants/forge)
+[Игровая миссия: собрать площадь, знак и вырожденность определителя](../../interactive/#/algebra/determinants/forge)
 
 ---
 

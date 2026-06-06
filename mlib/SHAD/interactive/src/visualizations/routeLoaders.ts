@@ -17,3 +17,9 @@ export const MatrixMachineMission = lazy(() =>
     default: module.MatrixMachineMission,
   })),
 )
+
+export const SubstitutionWorkshopMission = lazy(() =>
+  import('./substitutions/SubstitutionWorkshopMission').then((module) => ({
+    default: module.SubstitutionWorkshopMission,
+  })),
+)

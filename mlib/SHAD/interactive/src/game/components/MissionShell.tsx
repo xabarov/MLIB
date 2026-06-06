@@ -6,6 +6,8 @@ import { InvariantBadge } from './InvariantBadge'
 import { LevelStepper } from './LevelStepper'
 import { MascotCoach } from './MascotCoach'
 import { MissionHeader } from './MissionHeader'
+import { MissionSummary } from './MissionSummary'
+import { MissionTakeaway } from './MissionTakeaway'
 import { RewardMeter } from './RewardMeter'
 
 const emptyLevels: string[] = []
@@ -41,6 +43,7 @@ export function MissionShell({
     () => definition.levels.find((level) => level.id === activeLevelId) ?? definition.levels[0],
     [activeLevelId, definition.levels],
   )
+  const levelSuccess = completedLevels.includes(activeLevel.id) || mascotState === 'success'
 
   return (
     <div
@@ -77,7 +80,7 @@ export function MissionShell({
           keys={keys}
           completed={completedLevels.length}
           total={definition.levels.length}
-          success={mascotState === 'success'}
+          success={levelSuccess}
         />
         <LevelStepper
           levels={definition.levels}
@@ -99,6 +102,8 @@ export function MissionShell({
             {feedback}
           </div>
         )}
+        <MissionTakeaway level={activeLevel} success={levelSuccess} />
+        <MissionSummary definition={definition} completedLevelIds={completedLevels} />
         <MascotCoach state={mascotState} message={mascotMessage} />
       </aside>
     </div>

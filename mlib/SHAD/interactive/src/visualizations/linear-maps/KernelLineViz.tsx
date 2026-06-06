@@ -52,6 +52,10 @@ function DraggableCandidateHandle({
         <planeGeometry args={[8, 8]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
+      <mesh position={[0, 0, candidate[2] - 0.003]}>
+        <circleGeometry args={[1.85, 48]} />
+        <meshBasicMaterial color={tokens.energy} transparent opacity={0.07} depthWrite={false} />
+      </mesh>
       <mesh
         position={candidate}
         onPointerDown={(event) => {
@@ -101,6 +105,18 @@ export function KernelLineViz({ candidate, projection, onCandidateChange }: Kern
       )}
       {projection && (
         <VectorArrow vector={projection} color={tokens.target} label="proj" lineWidth={4.5} />
+      )}
+      {candidate && projection && (
+        <VectorArrow
+          vector={[
+            candidate[0] - projection[0],
+            candidate[1] - projection[1],
+            candidate[2] - projection[2],
+          ]}
+          color={tokens.danger}
+          label="err"
+          lineWidth={2.5}
+        />
       )}
       {candidate && (
         <VectorArrow vector={candidate} color={tokens.energy} label="x" lineWidth={8} />

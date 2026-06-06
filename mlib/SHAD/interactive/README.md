@@ -4,7 +4,8 @@
 формулы KaTeX, навигация по разделам и проводник Меби.
 
 Игровой план развития: [gameplay_roadmap.md](gameplay_roadmap.md).
-План текущего этапа: [next_stage_plan.md](next_stage_plan.md).
+План закрытого игрового среза: [next_stage_plan.md](next_stage_plan.md).
+План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
 
 ## Стек
 
@@ -52,12 +53,17 @@ make compose-down
 Ссылка из лекции (пример):
 
 ```markdown
-[Игровая миссия](../../interactive/dist/index.html#/algebra/linear-maps/kernel)
+[Игровая миссия](../../interactive/#/algebra/linear-maps/kernel)
 ```
 
 Маршрут по умолчанию: `#/algebra/linear-maps/kernel`.
+Прототип цеха перестановок: `#/algebra/substitutions/workshop`.
 Прототип определителя: `#/algebra/determinants/forge`.
 Прототип матричной машины: `#/algebra/matrices/machine`.
+
+В исходных лекциях используем dev-friendly ссылки `../../interactive/#/...`.
+Для опубликованной статической сборки их можно заменить на
+`../../interactive/dist/index.html#/...`.
 
 ## Добавление миссии
 
@@ -75,12 +81,15 @@ make compose-down
 
 ## Архитектура
 
-- `src/game/` - общий shell, runtime, feedback policy, типы миссий и UI-компоненты.
+- `src/game/` - общий shell, runtime, feedback policy, takeaways, summaries,
+  типы миссий и UI-компоненты.
 - `src/visualizations/*/*Model.ts` - чистая математика без React/DOM.
 - `src/visualizations/missionRegistry.ts` - playable/prototype mission metadata.
 - `src/visualizations/navigation.ts` - дерево sidebar/drawer.
 - `src/visualizations/routeLoaders.ts` - lazy imports.
 - `src/store/progressStore.ts` - persistent progress с migration/reset для тестов.
+- `TraceStep` в `src/game/missionTypes.ts` - минимальный контракт для будущих
+  algorithm/programming/data-analysis миссий без преждевременного code editor.
 
 ## Playwright screenshots
 
@@ -93,6 +102,7 @@ make compose-down
 Сейчас проверяются desktop/mobile маршруты:
 
 - `kernel-*`;
+- `substitution-*`;
 - `determinant-*`;
 - `matrix-*`.
 

@@ -8,6 +8,11 @@ export const kernelHuntMission: MissionDefinition = {
   mechanic: 'geometry-lab',
   lessonPath: 'SHAD/algebra/8_Linear_maps/lesson.md',
   difficulty: 1,
+  summaryTitle: 'Ядро собрано',
+  summaryText:
+    'Ты увидел ядро как геометрическое место решений Ax = 0: это не список ответов, а подпространство с собственной размерностью.',
+  nextMissionRoute: '/algebra/determinants/forge',
+  nextMissionLabel: 'Кузница определителя',
   levels: [
     {
       id: 'nonzero-zero',
@@ -15,6 +20,9 @@ export const kernelHuntMission: MissionDefinition = {
       objective: 'Подбери ненулевой вектор x так, чтобы Ax стало нулевым.',
       hint: 'Смотри на две ошибки: x + y и x - z. Их нужно занулить одновременно.',
       successText: 'Есть ненулевой вектор ядра: матрица отправляет его в ноль.',
+      takeaway: 'Ненулевое решение Ax = 0 показывает направление, которое матрица схлопывает.',
+      lectureAnchor: 'Линейные отображения: ядро отображения',
+      nextPrompt: 'Дальше проверим, что решения не одиноки: они тянутся вдоль прямой.',
     },
     {
       id: 'solution-line',
@@ -22,6 +30,9 @@ export const kernelHuntMission: MissionDefinition = {
       objective: 'Найди второй вектор ядра, отличный от первого.',
       hint: 'Если умножить найденное направление на другое число, ты останешься в ядре.',
       successText: 'Решения тянутся вдоль одной прямой через начало.',
+      takeaway: 'Если x лежит в ядре, то любой λx тоже лежит в ядре: появляется подпространство.',
+      lectureAnchor: 'Линейные уравнения: пространство решений',
+      nextPrompt: 'Теперь нужно назвать это направление базисом ядра.',
     },
     {
       id: 'kernel-basis',
@@ -29,6 +40,9 @@ export const kernelHuntMission: MissionDefinition = {
       objective: 'Выставь вектор в направлении (-1, 1, -1) или противоположном.',
       hint: 'Координаты должны иметь одинаковые модули, а первая и третья - один знак.',
       successText: 'Одного направления достаточно: ядро одномерно.',
+      takeaway: 'Одно ненулевое направление задает базис одномерного ядра.',
+      lectureAnchor: 'Ранг: свободные параметры и ФСР',
+      nextPrompt: 'Осталось связать размерность ядра с рангом матрицы.',
     },
     {
       id: 'rank-nullity',
@@ -36,6 +50,9 @@ export const kernelHuntMission: MissionDefinition = {
       objective: 'Собери финальное равенство: 3 = rank A + dim ker A.',
       hint: 'Матрица имеет две независимые строки, а ядро дает одно свободное направление.',
       successText: 'Ранг 2 и дефект 1 складываются в размерность исходного пространства.',
+      takeaway: 'Ранг плюс размерность ядра возвращают размерность исходного пространства: 2 + 1 = 3.',
+      lectureAnchor: 'Теорема о ранге и дефекте',
+      nextPrompt: 'Следующая миссия показывает, как матрица меняет площадь и ориентацию.',
     },
   ],
 }
@@ -48,6 +65,11 @@ export const determinantForgeMission: MissionDefinition = {
   mechanic: 'geometry-lab',
   lessonPath: 'SHAD/algebra/5_Det/lesson.md',
   difficulty: 1,
+  summaryTitle: 'Определитель выкован',
+  summaryText:
+    'Ты связал число det A с площадью, знаком ориентации и обратимостью матрицы.',
+  nextMissionRoute: '/algebra/matrices/machine',
+  nextMissionLabel: 'Матрица как машина',
   levels: [
     {
       id: 'area-two',
@@ -55,6 +77,9 @@ export const determinantForgeMission: MissionDefinition = {
       objective: 'Поставь два вектора так, чтобы площадь параллелограмма стала равна 2.',
       hint: 'Площадь параллелограмма равна |det A|.',
       successText: 'Площадь поймана: модуль определителя равен 2.',
+      takeaway: 'Модуль определителя равен площади параллелограмма, построенного на столбцах.',
+      lectureAnchor: 'Определители: геометрический смысл',
+      nextPrompt: 'Теперь оставим площадь заметной, но поменяем ориентацию.',
     },
     {
       id: 'flip-orientation',
@@ -62,6 +87,9 @@ export const determinantForgeMission: MissionDefinition = {
       objective: 'Сделай det A отрицательным, сохранив заметную площадь.',
       hint: 'Поменяй порядок обхода пары векторов: знак определителя сменится.',
       successText: 'Ориентация изменилась: знак определителя стал отрицательным.',
+      takeaway: 'Знак определителя хранит ориентацию пары векторов, а не только размер площади.',
+      lectureAnchor: 'Определители: знак и ориентация',
+      nextPrompt: 'Дальше специально сломаем обратимость.',
     },
     {
       id: 'break-invertibility',
@@ -69,6 +97,9 @@ export const determinantForgeMission: MissionDefinition = {
       objective: 'Схлопни параллелограмм так, чтобы det A стал равен 0.',
       hint: 'Два вектора должны лечь на одну прямую.',
       successText: 'Матрица вырождена: площадь исчезла.',
+      takeaway: 'Когда столбцы зависимы, площадь схлопывается в ноль и det A = 0.',
+      lectureAnchor: 'Определители: критерий вырожденности',
+      nextPrompt: 'Теперь почини матрицу одним движением.',
     },
     {
       id: 'repair-matrix',
@@ -76,6 +107,9 @@ export const determinantForgeMission: MissionDefinition = {
       objective: 'Верни det A отличным от нуля одним движением.',
       hint: 'Чуть отведи один вектор от общей прямой.',
       successText: 'Матрица снова обратима: площадь вернулась.',
+      takeaway: 'Ненулевая площадь означает det A ≠ 0, значит матрица снова обратима.',
+      lectureAnchor: 'Матрицы: обратимость и det A',
+      nextPrompt: 'Следующая миссия показывает, откуда берутся столбцы матрицы.',
     },
   ],
 }
@@ -88,6 +122,11 @@ export const matrixMachineMission: MissionDefinition = {
   mechanic: 'geometry-lab',
   lessonPath: 'SHAD/algebra/6_Matrices/lesson.md',
   difficulty: 1,
+  summaryTitle: 'Матричная машина настроена',
+  summaryText:
+    'Ты собрал несколько преобразований через образы e1 и e2: столбцы матрицы стали действиями на базисе.',
+  nextMissionRoute: '/algebra/substitutions/workshop',
+  nextMissionLabel: 'Цех перестановок',
   levels: [
     {
       id: 'stretch-x',
@@ -95,6 +134,9 @@ export const matrixMachineMission: MissionDefinition = {
       objective: 'Собери машину, которая отправляет e1 в (2,0), а e2 оставляет на месте.',
       hint: 'Столбцы матрицы - это образы базисных векторов.',
       successText: 'Первый столбец растянулся: A e1 = (2,0), A e2 = (0,1).',
+      takeaway: 'Первый столбец матрицы - это образ e1, поэтому растяжение оси x видно сразу.',
+      lectureAnchor: 'Матрицы: столбцы как образы базиса',
+      nextPrompt: 'Теперь поменяем второй столбец и получим сдвиг.',
     },
     {
       id: 'shear-y',
@@ -102,6 +144,9 @@ export const matrixMachineMission: MissionDefinition = {
       objective: 'Сделай сдвиг: e1 остается (1,0), а e2 уходит в (1,1).',
       hint: 'Двигай синюю ручку: второй столбец отвечает за образ e2.',
       successText: 'Сдвиг собран: второй базисный вектор получил x-компоненту.',
+      takeaway: 'Сдвиг появляется, когда образ e2 получает горизонтальную компоненту.',
+      lectureAnchor: 'Матрицы: линейные преобразования плоскости',
+      nextPrompt: 'Следующий уровень переворачивает одно базисное направление.',
     },
     {
       id: 'flip-x',
@@ -109,6 +154,9 @@ export const matrixMachineMission: MissionDefinition = {
       objective: 'Настрой отражение: e1 → (-1,0), e2 → (0,1).',
       hint: 'Первый столбец должен смотреть влево, второй остаться вверх.',
       successText: 'Ось x перевернулась, а вертикальное направление сохранилось.',
+      takeaway: 'Отражение по вертикальной оси меняет знак образа e1 и сохраняет e2.',
+      lectureAnchor: 'Матрицы: примеры преобразований',
+      nextPrompt: 'Осталось собрать поворот из двух образов базиса.',
     },
     {
       id: 'quarter-turn',
@@ -116,6 +164,66 @@ export const matrixMachineMission: MissionDefinition = {
       objective: 'Собери поворот: e1 → (0,1), e2 → (-1,0).',
       hint: 'После поворота первый базисный вектор смотрит вверх, второй - влево.',
       successText: 'Матрица поворота собрана из двух образов базисных векторов.',
+      takeaway: 'Чтобы задать линейное преобразование, достаточно знать, куда ушли e1 и e2.',
+      lectureAnchor: 'Матрицы и линейные отображения',
+      nextPrompt: 'Дальше попробуем дискретную механику: перестановки и транспозиции.',
+    },
+  ],
+}
+
+export const substitutionWorkshopMission: MissionDefinition = {
+  id: 'substitution-workshop',
+  route: '/algebra/substitutions/workshop',
+  title: 'Цех перестановок',
+  domain: 'combinatorics',
+  mechanic: 'state-machine',
+  lessonPath: 'SHAD/algebra/1_Substitutions/lesson.md',
+  difficulty: 1,
+  summaryTitle: 'Перестановка собрана',
+  summaryText:
+    'Ты увидел перестановку как состояние, которое меняется транспозициями: циклы, четность и стоимость ходов стали видимыми.',
+  nextMissionRoute: '/algebra/linear-maps/kernel',
+  nextMissionLabel: 'Охота за ядром',
+  levels: [
+    {
+      id: 'make-cycle',
+      title: 'Собери цикл',
+      objective: 'Транспозициями собери цикл (1 2 3 4 5).',
+      hint: 'Меняй местами образы соседних позиций: цель - 1→2→3→4→5→1.',
+      successText: 'Цикл собран: каждый элемент указывает на следующий.',
+      takeaway: 'Цикл показывает орбиту элемента при повторном применении перестановки.',
+      lectureAnchor: 'Подстановки: циклическая запись',
+      nextPrompt: 'Теперь одним обменом изменим четность.',
+    },
+    {
+      id: 'flip-parity',
+      title: 'Смени четность',
+      objective: 'Сделай нечетную перестановку ровно одной транспозицией.',
+      hint: 'Любая одна транспозиция меняет знак перестановки.',
+      successText: 'Знак сменился: одна транспозиция делает перестановку нечетной.',
+      takeaway: 'Транспозиция всегда меняет четность перестановки.',
+      lectureAnchor: 'Подстановки: знак и транспозиции',
+      nextPrompt: 'Дальше соберем несколько независимых циклов.',
+    },
+    {
+      id: 'two-cycles',
+      title: 'Три обмена',
+      objective: 'Собери (1 2)(3 4)(5 6) не более чем за 3 транспозиции.',
+      hint: 'Каждый независимый 2-цикл - это один обмен образов.',
+      successText: 'Три независимых обмена собраны.',
+      takeaway: 'Произведение непересекающихся циклов можно собирать независимо.',
+      lectureAnchor: 'Подстановки: непересекающиеся циклы',
+      nextPrompt: 'Теперь почини почти правильную перестановку.',
+    },
+    {
+      id: 'repair',
+      title: 'Почини маршрут',
+      objective: 'Из сломанного состояния собери цикл (1 2 3 4 5) не более чем за 3 обмена.',
+      hint: 'Смотри на циклическую запись: она показывает, где маршрут разорван.',
+      successText: 'Маршрут восстановлен: снова один длинный цикл.',
+      takeaway: 'Циклическая запись помогает видеть структуру ошибки, а не только список чисел.',
+      lectureAnchor: 'Подстановки: разложение на циклы',
+      nextPrompt: 'Эту же идею состояния и операций потом используем в алгоритмах.',
     },
   ],
 }
