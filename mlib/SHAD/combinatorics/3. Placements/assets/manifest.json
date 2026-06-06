@@ -1,0 +1,17 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/mnt/share/gitlab_projects/wiki/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779696186,
+  "jobs": [
+    {
+      "slug": "placements-combinatorics-hero",
+      "filename_base": "hero_placements_combinatorics",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

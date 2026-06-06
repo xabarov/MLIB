@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+@import 'katex/dist/katex.min.css';
+
+@theme {
+  --color-bg: #faf9f5;
+  --color-ink: #141413;
+  --color-gray: #b0aea5;
+  --color-panel: #e8e6dc;
+  --color-orange: #d97757;
+  --color-blue: #6a9bcc;
+  --color-green: #788c5d;
+  --color-purple: #7c6ccf;
+  --color-highlight: #f8f3dc;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.katex {
+  font-size: 1.05em;
+}

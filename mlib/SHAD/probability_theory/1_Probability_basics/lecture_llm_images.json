@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "probability-space-hero",
+      "filename_base": "hero_probability_space",
+      "prompt": "16:9 educational editorial illustration for a university probability theory lecture on probability spaces, outcomes, events, Kolmogorov axioms, classical probability, and geometric probability. Show a calm abstract sample space as a warm paper rectangle or soft region containing many small points, with two translucent overlapping event regions and a subtle area-ratio motif suggesting probability as measure. One main idea only: probability assigns normalized measure to events inside a sample space. Warm paper background, deep ink contours, dusty blue and muted sage event regions, small terracotta focal area, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    }
+  ]
+}

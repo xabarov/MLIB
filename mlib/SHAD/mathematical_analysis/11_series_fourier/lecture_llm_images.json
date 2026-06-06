@@ -1,0 +1,15 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "series-hero-partial-sums",
+      "filename_base": "hero_series_convergence",
+      "prompt": "16:9 educational editorial illustration for a lecture on infinite series. Show a calm staircase or layered blocks of partial sums approaching a horizontal limit line, suggesting convergence without coordinate axes or numbers. One main idea only: partial sums approach a limit. Warm paper background, deep ink structure, dusty blue and terracotta accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake charts, no UI elements."
+    },
+    {
+      "slug": "series-fourier-harmonics-editorial",
+      "filename_base": "hero_fourier_harmonics",
+      "prompt": "16:9 educational editorial illustration for a lecture on Fourier series. Show smooth overlapping sine-like waves of different scales combining into one richer wave silhouette, suggesting harmonic superposition. One main idea only: a periodic signal builds from harmonics. Warm paper palette, deep ink contours, dusty blue, terracotta, sage accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no UI."
+    }
+  ]
+}

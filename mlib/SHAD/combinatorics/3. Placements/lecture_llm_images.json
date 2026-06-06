@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "placements-combinatorics-hero",
+      "filename_base": "hero_placements_combinatorics",
+      "prompt": "16:9 educational editorial illustration for a lecture on permutations, arrangements, combinations, Pascal triangle and combinatorial choice. Abstract geometric composition only: ordered slots, branching choices, small objects being selected, a triangular coefficient pattern suggested by dots, and a calm probability sampling motif. One main idea: choosing objects with or without order and with or without repetition. Warm paper background, premium academic textbook style, deep ink outlines, dusty blue, terracotta, sage green and muted violet accents, generous whitespace. Strictly no readable text, no letters, no mathematical symbols, no formulas, no digits, no captions, no people, no UI, no black background."
+    }
+  ]
+}

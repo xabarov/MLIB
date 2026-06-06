@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "sets-euler-diagrams-hero",
+      "filename_base": "hero_sets_euler_diagrams",
+      "prompt": "16:9 educational editorial illustration for a lecture on sets and Euler diagrams in combinatorics. Abstract geometric composition only: overlapping translucent regions, small element-like dots, a soft universal container rectangle, subtle visual suggestion of double counting being corrected by one highlighted shared region. One main idea: sets as regions and careful counting without double counting. Warm paper background, premium academic textbook style, deep ink outlines, dusty blue, terracotta, sage green and muted violet accents, generous whitespace. Strictly no readable text, no letters, no mathematical symbols, no formulas, no digits, no captions, no people, no UI, no black background."
+    }
+  ]
+}

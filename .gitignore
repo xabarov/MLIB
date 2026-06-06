@@ -82,5 +82,14 @@ cython_debug/
 # IDEs (common with Python)
 .idea/
 .vscode/
+.claude/
 *.swp
 *.swo
+
+# Local sync/cleanup backups
+_rsync_backups/
+_cleanup_backups/
+
+# Frontend build artifacts
+mlib/SHAD/interactive/node_modules/
+mlib/SHAD/interactive/dist/

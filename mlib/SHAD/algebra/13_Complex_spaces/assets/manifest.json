@@ -1,0 +1,37 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/mnt/share/gitlab_projects/wiki/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779352488,
+  "jobs": [
+    {
+      "slug": "complex-spaces-hero",
+      "filename_base": "complex_vector_space_concept",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "complex-hermitian-geometry",
+      "filename_base": "hermitian_geometry_concept",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "complex-self-adjoint-spectral",
+      "filename_base": "self_adjoint_spectral_concept",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "complex-svd-concept",
+      "filename_base": "svd_concept",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "complex-forms-concept",
+      "filename_base": "forms_concept",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

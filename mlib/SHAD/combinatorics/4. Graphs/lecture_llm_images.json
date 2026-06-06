@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "graphs-combinatorics-hero",
+      "filename_base": "hero_graphs_combinatorics",
+      "prompt": "16:9 educational editorial illustration for a lecture on graph theory in combinatorics. Abstract geometric composition only: vertices and edges, connected components, a tree-like branching part, an Euler-style edge route, a planar graph with regions, and a few directed arrows suggesting tournaments. One main idea: graphs as objects plus relations, paths, cycles, trees and planar structure. Warm paper background, premium academic textbook style, deep ink outlines, dusty blue, terracotta, sage green and muted violet accents, generous whitespace. Strictly no readable text, no letters, no mathematical symbols, no formulas, no digits, no captions, no people, no UI, no black background."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "metric-normed-hero-distance",
+      "filename_base": "hero_metric_normed",
+      "prompt": "16:9 educational editorial illustration for a lecture on metric and normed spaces. Show abstract points or smooth blobs in space connected by a single clear distance segment or concentric soft neighborhoods suggesting closeness, without coordinate axes or formulas. One main idea only: distance makes nearness meaningful in an abstract space. Warm paper background, deep ink structure, dusty blue and terracotta accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no UI elements."
+    }
+  ]
+}

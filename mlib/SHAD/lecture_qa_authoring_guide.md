@@ -356,7 +356,21 @@ $$
 
 Если картинка не объясняет идею лучше текста, она не нужна.
 
-### 7.2. Что лучше использовать на практике
+### 7.2. Как выбрать инструмент
+
+Выбор инструмента зависит от типа визуала:
+
+| Нужно | Основной путь | Когда применять |
+|---|---|---|
+| Точная схема, график, геометрия, анимация параметра | `generate_visuals.py` рядом с темой | если важны координаты, подписи, воспроизводимость |
+| Обложка/hero/метафора без точных чисел | `generate_images.py` + `SHAD/lecture_visual_generation/` | если нужна editorial-картинка в едином стиле |
+| Статичный “плакатный” PNG/PDF | skill `canvas-design` | если нужна композиция уровня постера/слайда, а не математический график |
+| Генеративная графика / p5.js / параметрический sketch | skill `algorithmic-art` | если визуал сам является алгоритмом или интерактивной заготовкой |
+| React/Three.js интерактив | `SHAD/interactive` + skills `frontend-design`, `webapp-testing` | если студент должен вращать сцену, менять режимы, видеть динамику |
+
+Правило: **точные математические рисунки сначала делать кодом**. LLM/image skills использовать для визуального языка, hero-иллюстраций, метафор и сложной композиции, но не для фактических диаграмм с числами.
+
+### 7.3. Что лучше использовать на практике
 
 На текущий момент для этой кодовой базы хорошо подходят:
 
@@ -373,7 +387,7 @@ source .venv/bin/activate
 python -m pip install matplotlib seaborn plotly kaleido pillow imageio
 ```
 
-### 7.3. Куда складывать визуалы
+### 7.4. Куда складывать визуалы
 
 Для темы:
 
@@ -396,7 +410,7 @@ SHAD/algebra/<topic>/
   generate_visuals.py
 ```
 
-### 7.4. Как вставлять в `lesson.md`
+### 7.5. Как вставлять в `lesson.md`
 
 Использовать относительные пути:
 
@@ -410,7 +424,15 @@ SHAD/algebra/<topic>/
 ![Анимация перехода между базисами](assets/basis_change.gif)
 ```
 
-### 7.5. Правила для самих картинок
+Для интерактивной модели использовать ссылку на статическую сборку:
+
+```md
+[Интерактивная модель](../../interactive/dist/index.html#/algebra/linear-maps/kernel)
+```
+
+Если `dist/` не коммитится, такая ссылка должна поддерживаться CI/deploy-процессом или явно пересобираться перед публикацией.
+
+### 7.6. Правила для самих картинок
 
 Картинка должна:
 
@@ -420,7 +442,7 @@ SHAD/algebra/<topic>/
 - содержать подпись в тексте рядом;
 - быть достаточно контрастной на светлом фоне.
 
-### 7.6. Цвета
+### 7.7. Цвета
 
 Хорошая практика:
 
@@ -435,7 +457,16 @@ SHAD/algebra/<topic>/
 - итоговый вектор — красный;
 - вспомогательные построения — оранжевый.
 
-### 7.7. Когда лучше GIF, а не PNG
+Для SHAD-визуалов предпочтительно синхронизироваться с палитрой из
+`SHAD/lecture_visual_generation/lecture_visual_design_system.md`:
+
+- фон `#faf9f5`;
+- чернила/контур `#141413`;
+- вторичный серый `#b0aea5`;
+- мягкие панели `#e8e6dc`;
+- акценты: `#d97757`, `#6a9bcc`, `#788c5d`, `#7c6ccf`.
+
+### 7.8. Когда лучше GIF, а не PNG
 
 GIF полезен, когда нужно показать:
 
@@ -452,7 +483,7 @@ PNG полезен, когда нужен:
 - плоскость / линия / пересечение;
 - итоговая геометрическая картинка без движения.
 
-### 7.8. Важное правило: визуалы должны быть воспроизводимыми
+### 7.9. Важное правило: визуалы должны быть воспроизводимыми
 
 Нельзя просто положить “случайную” картинку без способа её пересоздать.
 
@@ -466,6 +497,141 @@ PNG полезен, когда нужен:
 - писать файлы в `assets/`;
 - быть воспроизводимым;
 - не требовать ручной магии после запуска.
+
+Минимальный шаблон для `generate_visuals.py`:
+
+```python
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+
+ROOT = Path(__file__).resolve().parent
+ASSETS = ROOT / "assets"
+
+COLORS = {
+    "bg": "#faf9f5",
+    "ink": "#141413",
+    "gray": "#b0aea5",
+    "orange": "#d97757",
+    "blue": "#6a9bcc",
+    "green": "#788c5d",
+    "purple": "#7c6ccf",
+}
+
+
+def ensure_assets() -> None:
+    ASSETS.mkdir(exist_ok=True)
+
+
+def save_figure(fig: plt.Figure, filename: str) -> None:
+    fig.savefig(ASSETS / filename, dpi=180, bbox_inches="tight", facecolor=COLORS["bg"])
+    plt.close(fig)
+
+
+def main() -> None:
+    ensure_assets()
+    fig, ax = plt.subplots(figsize=(8, 4.5), facecolor=COLORS["bg"])
+    ax.set_facecolor(COLORS["bg"])
+    ax.axhline(0, color=COLORS["gray"], linewidth=1)
+    ax.axvline(0, color=COLORS["gray"], linewidth=1)
+    ax.plot([0, 1], [0, 1], color=COLORS["orange"], linewidth=3)
+    ax.set_aspect("equal", adjustable="box")
+    ax.axis("off")
+    save_figure(fig, "example.png")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### 7.10. LLM-изображения через `generate_images.py`
+
+Для hero/метафор использовать `generate_images.py`; стиль по умолчанию берётся из
+`SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt`.
+
+Пример dry-run:
+
+```bash
+.venv/bin/python generate_images.py \
+  --dry-run \
+  --jobs SHAD/lecture_visual_generation/lecture_images.example.json
+```
+
+Пример пакетной генерации в assets темы:
+
+```bash
+.venv/bin/python generate_images.py \
+  --jobs SHAD/algebra/13_Complex_spaces/lecture_image_jobs.json \
+  --out-dir SHAD/algebra/13_Complex_spaces/assets
+```
+
+В prompt обязательно указывать, что на изображении не должно быть длинного текста,
+фейковых осей, выдуманных метрик и водяных знаков. Если нужен точный график,
+использовать `generate_visuals.py`, а не LLM-картинку.
+
+### 7.11. Как применять skills
+
+Рекомендуемый набор Codex skills для этого репозитория:
+
+- `doc-coauthoring` — структура лекции, guide, план работ, ревизия документации;
+- `canvas-design` — статичные PNG/PDF-артефакты, когда нужна сильная композиция;
+- `algorithmic-art` — p5.js/generative sketches, seeded randomness, flow fields;
+- `frontend-design` — дизайн `SHAD/interactive` и UI-состояний;
+- `webapp-testing` — Playwright-проверка dev/preview-сборок;
+- `theme-factory` — единый визуальный стиль между документами/HTML/графикой;
+- `pdf` — сборка или проверка PDF-версий материалов.
+
+Skills не заменяют проверку содержания. После применения любого визуального skill
+нужно убедиться, что результат:
+
+- математически не врёт;
+- соответствует теме;
+- имеет понятный source/rebuild path;
+- не ломает общий визуальный язык SHAD.
+
+### 7.12. Проверка `SHAD/interactive`
+
+Интерактивные сцены лежат в `SHAD/interactive`. Базовая проверка:
+
+```bash
+cd SHAD/interactive
+npm ci
+npm run lint
+npm run build
+npm run dev -- --host 127.0.0.1
+```
+
+Открыть маршрут:
+
+```text
+http://127.0.0.1:5173/#/algebra/linear-maps/kernel
+```
+
+Для Playwright-проверок использовать Python из `.venv` и системный Chromium:
+
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        executable_path="/snap/bin/chromium",
+        args=["--no-sandbox", "--disable-dev-shm-usage"],
+    )
+    page = browser.new_page(viewport={"width": 1440, "height": 960})
+    page.goto("http://127.0.0.1:5173/#/algebra/linear-maps/kernel")
+    page.wait_for_selector("canvas")
+    assert page.locator("canvas").count() >= 1
+    browser.close()
+```
+
+Перед коммитом интерактива проверить минимум desktop и mobile viewport:
+
+- нет горизонтального overflow;
+- canvas не пустой и не сжат до узкой колонки;
+- нет console errors;
+- текст не перекрывает кнопки и сцену;
+- ссылка из `lesson.md` ведёт на существующий hash-route.
 
 ---
 
@@ -656,4 +822,3 @@ PNG полезен, когда нужен:
 - сложные матричные формулы лучше оформлять через `aligned`;
 - картинки и GIF полезны, если реально объясняют идею;
 - визуалы должны быть воспроизводимыми через скрипт.
-

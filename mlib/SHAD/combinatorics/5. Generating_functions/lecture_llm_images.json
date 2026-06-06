@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "generating-functions-hero",
+      "filename_base": "hero_generating_functions",
+      "prompt": "16:9 educational editorial illustration for a lecture on generating functions and linear recurrences. Abstract mathematical composition only: a sequence of small coefficient blocks flowing into a formal power series, convolution-like merging of two streams, a recurrence feedback arrow, and a Fibonacci-style branching pattern. One main idea: packaging sequences into algebraic objects to extract coefficients and solve recurrences. Warm paper background, premium academic textbook style, deep ink outlines, dusty blue, terracotta, sage green and muted violet accents, generous whitespace. Strictly no readable text, no letters, no mathematical symbols, no formulas, no digits, no captions, no people, no UI, no black background."
+    }
+  ]
+}

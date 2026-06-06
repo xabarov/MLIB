@@ -1,0 +1,22 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/mnt/share/gitlab_projects/wiki/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1779864443,
+  "jobs": [
+    {
+      "slug": "series-hero-partial-sums",
+      "filename_base": "hero_series_convergence",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "series-fourier-harmonics-editorial",
+      "filename_base": "hero_fourier_harmonics",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}
