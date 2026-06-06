@@ -2,6 +2,8 @@
 
 Браузерное приложение к лекциям ШАД: 3D-сцены с вращением камеры, формулы KaTeX, навигация по разделам.
 
+Игровой план развития: [gameplay_roadmap.md](gameplay_roadmap.md).
+
 ## Стек
 
 - Vite + React + TypeScript

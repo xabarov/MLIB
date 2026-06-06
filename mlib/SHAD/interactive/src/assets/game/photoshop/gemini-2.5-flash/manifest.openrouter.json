@@ -1,0 +1,186 @@
+[
+  {
+    "filename": "reference/mebi-model-sheet-v2.png",
+    "title": "Mebi friendly canonical model sheet",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": null,
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nCreate a canonical model sheet for Mebi, a friendly abstract educational\nmascot and invariant guide for an interactive SHAD math/programming learning\napp.\n\nShow one consistent character only, repeated on the sheet as: front view,\nthree-quarter view, small silhouette, and five tiny expression thumbnails\nfor idle, success, hint, warning, and thinking. Keep all variants visibly the\nsame character.\n\nCharacter design: a warm Mobius-ribbon body folded into a small compass-pointer\nshape, but with a clear friendly face: two small expressive dot eyes and a\nsimple tiny mouth. The face must be part of the character, not floating nearby.\nAdd a small pivot-point core and subtle coordinate-grid etching on the ribbon.\nIt should look like a kind living mathematical instrument and study companion,\nnot an animal, not a robot, not a human, not a generic app mascot.\n\nImportant: no external emotion icons, no exclamation marks, no question marks,\nno speech bubbles, no labels, no text, no numbers, and no watermark. Express\nthe emotions only through Mebi's eyes, mouth, posture, and ribbon shape.\n\nArrange the views cleanly with generous transparent padding so the image can\nbe reused as a reference for later pose generation."
+  },
+  {
+    "filename": "mebi-idle-v2.png",
+    "title": "Mebi idle guide v2",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in the idle state. Preserve the same character\nidentity, ribbon silhouette, proportions, palette, pivot-point core, coordinate\netching, two dot eyes, and small mouth. Calm idle pose, slight curious tilt,\nfriendly and ready to help. Do not create a model sheet. Do not create copies,\nminiatures, thumbnails, extra versions, icons, hands, props, text, labels, or\nsymbols. One character only."
+  },
+  {
+    "filename": "mebi-success-v2.png",
+    "title": "Mebi success reaction v2",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in the success state. Preserve identity, silhouette,\nproportions, palette, pivot core, two eyes, and small mouth. Mebi looks pleased:\neyes warm, mouth smiling, ribbon posture open and lifted. Do not create a model\nsheet. Do not create copies, miniatures, thumbnails, extra versions, checkmarks,\nstars, icons, hands, props, text, labels, or symbols. One character only."
+  },
+  {
+    "filename": "mebi-hint-v2.png",
+    "title": "Mebi hint reaction v2",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in the hint state. Preserve identity, silhouette,\nproportions, palette, pivot core, two eyes, and small mouth. Mebi leans gently\nas if suggesting the next move using only its own ribbon posture; expression is\nkind and encouraging. Do not create a model sheet. Do not create copies,\nminiatures, thumbnails, extra versions, speech bubbles, lightbulbs, pointing\nhands, icons, props, text, labels, or symbols. One character only."
+  },
+  {
+    "filename": "mebi-warning-v2.png",
+    "title": "Mebi warning reaction v2",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in the warning state. Preserve identity, silhouette,\nproportions, palette, pivot core, two eyes, and small mouth. Mebi looks gently\nconcerned, with a small worried mouth and a slightly tightened ribbon posture.\nDo not create a model sheet. Do not create copies, miniatures, thumbnails,\nextra versions, exclamation marks, warning signs, icons, hands, props, text,\nlabels, or symbols. One character only."
+  },
+  {
+    "filename": "mebi-thinking-v2.png",
+    "title": "Mebi thinking reaction v2",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in the thinking state. Preserve identity, silhouette,\nproportions, palette, pivot core, two eyes, and small mouth. Mebi looks focused:\neyes slightly narrowed, small thoughtful mouth, ribbon curled inward like it is\nconsidering a proof. Do not create a model sheet. Do not create copies,\nminiatures, thumbnails, extra versions, question marks, thought bubbles, icons,\nhands, props, text, labels, or symbols. One character only."
+  },
+  {
+    "filename": "variants/mebi-hint-gesture-v3.png",
+    "title": "Mebi hint gesture v3",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in a clearly recognizable hint state. Preserve\nidentity, silhouette, proportions, palette, pivot core, two eyes, and small\nmouth. Make the pose visibly different from idle: the ribbon body leans 25\ndegrees to the side, one upper ribbon tip curls upward like a gentle pointer,\neyes look toward that raised tip, and the mouth is a small encouraging smile.\nNo separate hands, no arrows, no speech bubble, no lightbulb, no copies, no\nminiatures, no text, no labels, no symbols. One character only."
+  },
+  {
+    "filename": "variants/mebi-thinking-focused-v3.png",
+    "title": "Mebi thinking focused v3",
+    "model": "google/gemini-2.5-flash-image",
+    "generation_mode": "direct",
+    "tool_caller_model": null,
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "opaque_or_partial_model",
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/photoshop/gemini-2.5-flash/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\nexactly one large centered Mebi in a focused thinking state. Preserve identity,\nsilhouette, proportions, palette, pivot core, two eyes, and small mouth. The\nemotion must be curious concentration, not sadness: eyes look slightly upward\nand inward, eyebrows/eyelids are attentive rather than drooping, mouth is a\ntiny neutral curved line, ribbon body curls inward like it is considering a\nproof. No tears, no frown, no sleepy face, no question mark, no thought bubble,\nno copies, no miniatures, no text, no labels, no symbols. One character only."
+  }
+]

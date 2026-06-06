@@ -1,0 +1,23 @@
+[
+  {
+    "filename": "mebi-idle-v2.png",
+    "title": "Mebi idle guide v2",
+    "model": "openai/gpt-5.4-image-2",
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "alpha_source": "corner_key_fallback",
+      "corner_rgb": [
+        241,
+        241,
+        241
+      ],
+      "changed_pixels": 979630
+    },
+    "reference_image": "/home/roman/Documents/ML/MLIB/mlib/SHAD/interactive/src/assets/game/reference/mebi-model-sheet-v2.png",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent PNG UI/game asset for a math learning web app.\nVisual direction: warm paper-and-ink mathematical workshop, refined toy-like\n2.5D cutout, crisp silhouette, subtle coordinate-grid details, charcoal ink\nlines, muted accents from this palette: #d97757, #6a9bcc, #788c5d, #7c6ccf,\n#f8f3dc.\nBackground: true transparent background with alpha channel. No white box, no\nsolid background, no floor, no cast shadow, no contact shadow, no reflection.\nComposition: centered single asset, generous transparent padding, readable at\n64px and polished at 256px.\nAvoid: text, letters, numbers, logos, watermarks, animals, humans, robots,\nphotorealism, neon glow, busy details, stock-icon style, gradients as the main\nlook.\n\nPrimary request:\nUsing the attached Mebi model sheet as the strict character reference, create\none transparent PNG of Mebi in the idle state. Preserve the same character\nidentity, ribbon silhouette, proportions, palette, pivot-point core, coordinate\netching, two dot eyes, and small mouth. Calm idle pose, slight curious tilt,\nfriendly and ready to help. No other objects, no external icons, no text."
+  }
+]
