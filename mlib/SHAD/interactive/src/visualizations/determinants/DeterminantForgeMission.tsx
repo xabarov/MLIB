@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import { RotateCcw } from 'lucide-react'
+import { FieldPulse } from '../../game/components/FieldPulse'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { determinantForgeMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -191,6 +194,9 @@ export function DeterminantForgeMission() {
             ? 'fill-energy/16 stroke-energy'
             : 'fill-target/16 stroke-target'
   const targetArea = activeLevel.id === 'area-two' ? 'Поймай |det A| = 2' : activeLevel.id === 'flip-orientation' ? 'Сделай det A < 0' : activeLevel.id === 'break-invertibility' ? 'Схлопни площадь в 0' : 'Верни det A ≠ 0'
+  const pulseTone = levelSuccess ? 'success' : degenerate ? 'danger' : diagnosis.kind === 'wrong-orientation' ? 'warning' : 'target'
+  const resultLabel = activeLevel.id === 'break-invertibility' ? 'basis collapsed' : activeLevel.id === 'flip-orientation' ? 'orientation flipped' : 'area locked'
+  const markerLabel = degenerate ? 'flat' : diagnosis.kind === 'wrong-orientation' ? 'flip sign' : ''
 
   return (
     <MissionShell
@@ -202,16 +208,21 @@ export function DeterminantForgeMission() {
       badges={badges}
       scene={
         <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_20%_15%,rgba(217,119,87,0.13),transparent_32%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4">
-          <svg
-            ref={svgRef}
-            viewBox="-4 -4 8 8"
-            className="aspect-square max-h-full w-full max-w-[720px] touch-none rounded-md border border-ink/10 bg-paper shadow-[0_18px_42px_rgba(20,20,19,0.12)]"
-            onPointerMove={handlePointerMove}
-            onPointerUp={stopDrag}
-            onPointerCancel={stopDrag}
-            aria-label="Кузница определителя"
-            data-testid="determinant-forge-plane"
-          >
+          <FieldPulse tone={pulseTone} active={levelSuccess || (touched && (degenerate || diagnosis.kind === 'wrong-orientation'))} label="determinant field pulse" className="relative aspect-square max-h-full w-full max-w-[720px]">
+            <ResultMoment show={levelSuccess} label={resultLabel} />
+            {markerLabel && touched && (
+              <RepairMarker tone={degenerate ? 'danger' : 'warning'} label={markerLabel} xPercent={50} yPercent={16} />
+            )}
+            <svg
+              ref={svgRef}
+              viewBox="-4 -4 8 8"
+              className="h-full w-full touch-none rounded-md border border-ink/10 bg-paper shadow-[0_18px_42px_rgba(20,20,19,0.12)]"
+              onPointerMove={handlePointerMove}
+              onPointerUp={stopDrag}
+              onPointerCancel={stopDrag}
+              aria-label="Кузница определителя"
+              data-testid="determinant-forge-plane"
+            >
             <g transform="scale(1,-1)">
               {gridLines.map((line) => (
                 <g key={line}>
@@ -257,7 +268,8 @@ export function DeterminantForgeMission() {
                 data-testid="determinant-handle-v"
               />
             </g>
-          </svg>
+            </svg>
+          </FieldPulse>
         </div>
       }
       controls={

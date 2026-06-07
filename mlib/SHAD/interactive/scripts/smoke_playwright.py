@@ -28,6 +28,11 @@ ROUTES = [
     ),
     ("svd-lens", "#/algebra/svd/lens", '[data-testid="mission-svd-lens"]'),
     (
+        "pca-compression",
+        "#/algebra/svd/pca-compression",
+        '[data-testid="mission-pca-compression-lab"]',
+    ),
+    (
         "substitution",
         "#/algebra/substitutions/workshop",
         '[data-testid="mission-substitution-workshop"]',
@@ -234,6 +239,8 @@ def run_determinant_happy_path(page) -> None:
     expect(page.get_by_text("1.00").first).to_be_visible(timeout=10_000)
     fill_determinant(page, "2", "0", "0", "1")
     expect(page.get_by_text("Площадь поймана").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("field-pulse-success")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_contain_text("area locked", timeout=10_000)
     page.get_by_test_id("level-flip-orientation").click()
     fill_determinant(page, "2", "0", "0", "-1")
     expect(page.get_by_text("Ориентация изменилась").first).to_be_visible(timeout=10_000)
@@ -257,6 +264,7 @@ def run_determinant_mistake_path(page) -> None:
     expect(page.get_by_test_id("determinant-diagnosis")).to_contain_text(
         "ориентация все еще положительная", timeout=10_000
     )
+    expect(page.get_by_test_id("repair-marker")).to_contain_text("flip sign", timeout=10_000)
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
     page.get_by_test_id("determinant-reset").click()
     expect(page.get_by_test_id("determinant-diagnosis")).to_contain_text(
@@ -382,6 +390,55 @@ def run_svd_mistake_path(page) -> None:
     page.get_by_test_id("level-singular-vs-eigen").click()
     expect(page.get_by_test_id("svd-diagnosis")).to_contain_text(
         "собственные значения A", timeout=10_000
+    )
+
+
+def run_pca_compression_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/svd/pca-compression", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-pca-compression-lab"]', timeout=10_000)
+    expect(page.get_by_test_id("pca-compression-canvas")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("pca-original-grid")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("pca-reconstruction-grid")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("pca-error-grid")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Сжатие уложилось").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-component-detective").click()
+    page.get_by_test_id("pca-component-toggle-1").click()
+    expect(page.get_by_text("Нужная компонента найдена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-center-before-pca").click()
+    page.get_by_test_id("pca-center-toggle").check()
+    expect(page.get_by_text("Данные центрированы").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-quality-gate").click()
+    page.get_by_test_id("pca-fix-artifact").click()
+    expect(page.get_by_text("Оба gates пройдены").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-transfer-to-features").click()
+    page.get_by_test_id("pca-feature-choice-2").click()
+    expect(page.get_by_text("PCA coordinates стали").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
+
+
+def run_pca_compression_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/svd/pca-compression", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-pca-compression-lab"]', timeout=10_000)
+    page.get_by_test_id("pca-rank-choice-0").click()
+    expect(page.get_by_test_id("pca-diagnosis")).to_contain_text(
+        "Too much energy", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("pca-fit-budget").click()
+    expect(page.get_by_text("Сжатие уложилось").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-component-detective").click()
+    page.get_by_test_id("pca-component-toggle-1").click()
+    expect(page.get_by_text("Нужная компонента найдена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-center-before-pca").click()
+    expect(page.get_by_test_id("pca-diagnosis")).to_contain_text(
+        "Mean shift", timeout=10_000
+    )
+    page.get_by_test_id("pca-center-toggle").check()
+    expect(page.get_by_text("Данные центрированы").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-quality-gate").click()
+    page.get_by_test_id("pca-rank-choice-2").click()
+    expect(page.get_by_test_id("pca-diagnosis")).to_contain_text(
+        "artifact", timeout=10_000
     )
 
 
@@ -560,6 +617,8 @@ def run_graph_mistake_path(page) -> None:
     expect(page.get_by_test_id("mission-feedback")).to_contain_text(
         "Следующий допустимый ход: A", timeout=10_000
     )
+    expect(page.get_by_test_id("repair-marker")).to_contain_text("next A", timeout=10_000)
+    expect(page.get_by_test_id("graph-ghost-next")).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
     page.get_by_test_id("graph-reset").click()
     expect(page.get_by_test_id("mission-feedback")).to_contain_text(
@@ -635,6 +694,7 @@ def run_feature_factory_happy_path(page) -> None:
     expect(page.get_by_test_id("pipeline-diff")).to_be_visible(timeout=10_000)
     click_data_column_action(page, "impute-median", "temperature")
     expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_contain_text("pipeline clean", timeout=10_000)
     page.get_by_test_id("level-outlier-repair").click()
     click_data_row_action(page, "drop-row", "ff-07")
     expect(page.get_by_text("Выброс удален").first).to_be_visible(timeout=10_000)
@@ -657,6 +717,7 @@ def run_feature_factory_mistake_path(page) -> None:
     expect(page.get_by_test_id("feature-factory-diagnosis")).to_contain_text(
         "остались NA", timeout=10_000
     )
+    expect(page.get_by_test_id("repair-marker")).to_contain_text("dirty temp", timeout=10_000)
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
     click_data_column_action(page, "fill-zero", "temperature")
     expect(page.get_by_test_id("feature-factory-diagnosis")).to_contain_text("Нули закрыли NA")
@@ -669,6 +730,7 @@ def run_feature_factory_mistake_path(page) -> None:
     page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
     click_data_column_action(page, "impute-median", "temperature")
     expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("repair-marker")).to_have_count(0)
 
 
 def run_happy_paths(browser) -> None:
@@ -681,6 +743,7 @@ def run_happy_paths(browser) -> None:
     run_orthogonal_mistake_path(page)
     run_unitary_mistake_path(page)
     run_svd_mistake_path(page)
+    run_pca_compression_mistake_path(page)
     run_determinant_mistake_path(page)
     run_kernel_mistake_path(page)
     run_graph_mistake_path(page)
@@ -694,6 +757,7 @@ def run_happy_paths(browser) -> None:
     run_orthogonal_happy_path(page)
     run_unitary_happy_path(page)
     run_svd_happy_path(page)
+    run_pca_compression_happy_path(page)
     run_substitution_happy_path(page)
     run_graph_happy_path(page)
     run_asymptotic_happy_path(page)

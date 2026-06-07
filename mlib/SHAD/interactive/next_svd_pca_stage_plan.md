@@ -29,8 +29,9 @@ P0 выполнен:
 - validation пройдена: JS lint, Python lint, Vitest, build, Playwright
   happy/mistake smoke, Playwright screens-only and `git diff --check`.
 
-Оставшийся P1: data compression lab and unitary compass remain future
-extensions.
+P1 `Унитарный компас` выполнен отдельным этапом. P1 data compression lab тоже
+выполнен отдельным этапом:
+[next_pca_compression_stage_plan.md](next_pca_compression_stage_plan.md).
 
 ## Почему это следующий этап
 
@@ -473,7 +474,7 @@ Do not add:
 
 ## P0. Curriculum and routing
 
-Add curriculum node:
+Historical P0 target was to add a curriculum node:
 
 ```ts
 {
@@ -496,11 +497,20 @@ Add curriculum node:
 }
 ```
 
+Current graph after `Евклидова мастерская` and `Унитарный компас` is stricter:
+
+- `quadratic-forms` unlocks `euclidean-geometry`;
+- `euclidean-geometry` unlocks `complex-geometry`;
+- `complex-geometry` contains `unitary-compass` and unlocks `svd-pca`;
+- `svd-pca.prerequisites = ['complex-geometry']`;
+- `svd-pca.missionIds = ['svd-lens']`;
+- `svd-pca.plannedMissionIds = ['pca-compression-lab']`.
+
 Validation caveat:
 
 - current curriculum validator requires `unlocks` to point to existing node ids;
 - `ml-playground` exists, so use it as real transfer;
-- keep `unitary-compass` and `pca-compression-lab` in `plannedMissionIds`.
+- keep only unfinished missions in `plannedMissionIds`.
 
 Registry:
 
@@ -554,25 +564,29 @@ Validation:
 
 ## P1. Data compression extension
 
-If P0 is successful, add a second mission or level family:
+Status: completed separately as an additional playable mission:
 
 ```text
-/data/pca/compression-lab
+/algebra/svd/pca-compression
 ```
 
-Core idea:
+Implemented core idea:
 
 - tiny grayscale image or matrix heatmap;
 - user keeps 1, 2, 4 singular components;
 - app shows storage cost and reconstruction error.
 
-This should not be the first SVD mission because it can become a demo of image
+This was not the first SVD mission because it can become a demo of image
 compression without understanding right/left singular directions. It is better
 after the SVD lens teaches the geometry.
 
+Detailed plan:
+
+- [next_pca_compression_stage_plan.md](next_pca_compression_stage_plan.md).
+
 ## P1. Unitary compass extension
 
-Future route:
+Status: completed separately.
 
 ```text
 /algebra/complex/unitary-compass
@@ -587,6 +601,10 @@ Core idea:
 
 This belongs after SVD P0, because then the reason for `A* A` is already
 visible.
+
+Detailed status:
+
+- [next_unitary_compass_stage_plan.md](next_unitary_compass_stage_plan.md).
 
 ## Implementation order
 

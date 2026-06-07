@@ -48,6 +48,12 @@ export const SvdLensMission = lazy(() =>
   })),
 )
 
+export const PcaCompressionMission = lazy(() =>
+  import('./pca-compression/PcaCompressionMission').then((module) => ({
+    default: module.PcaCompressionMission,
+  })),
+)
+
 export const SubstitutionWorkshopMission = lazy(() =>
   import('./substitutions/SubstitutionWorkshopMission').then((module) => ({
     default: module.SubstitutionWorkshopMission,

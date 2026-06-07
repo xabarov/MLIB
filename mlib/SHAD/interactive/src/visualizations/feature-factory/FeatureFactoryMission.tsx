@@ -6,6 +6,8 @@ import { PipelineDiff } from '../../game/components/data/PipelineDiff'
 import { PipelineStrip } from '../../game/components/data/PipelineStrip'
 import { SplitInspector } from '../../game/components/data/SplitInspector'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { featureFactoryMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -53,6 +55,16 @@ function visibleColumns(state: FeatureFactoryState) {
   return factoryColumns.filter((column) => enabled.has(column.id))
 }
 
+function repairMarkerLabel(kind: string): string | undefined {
+  if (kind === 'missing-left' || kind === 'zero-filled' || kind === 'coverage-lost') return 'dirty temp'
+  if (kind === 'outlier-left' || kind === 'over-cleaned') return 'outlier'
+  if (kind === 'leakage-enabled') return 'leakage'
+  if (kind === 'category-raw') return 'raw category'
+  if (kind === 'split-skewed') return 'split skew'
+  if (kind === 'useful-feature-disabled') return 'feature off'
+  return undefined
+}
+
 export function FeatureFactoryMission() {
   const definition = featureFactoryMission
   const runtime = useMissionRuntime(definition)
@@ -86,6 +98,7 @@ function FeatureFactoryLevel({
   const quality = useMemo(() => splitQuality(state.rows), [state.rows])
   const diff = useMemo(() => pipelineDiff(state), [state])
   const columns = visibleColumns(state)
+  const markerLabel = repairMarkerLabel(diagnosis.kind)
   const effectiveSelectedRowId = state.rows.some((row) => row.id === selectedRowId)
     ? selectedRowId
     : state.rows[0]?.id
@@ -163,6 +176,12 @@ function FeatureFactoryLevel({
             data-testid="mission-feature-factory"
           >
             <section className="min-w-0 space-y-4 rounded-md border border-ink/10 bg-paper/92 p-4 shadow-[0_18px_42px_rgba(20,20,19,0.08)]">
+              <div className="relative min-h-7">
+                <ResultMoment show={levelSuccess} label="pipeline clean" />
+                {!levelSuccess && markerLabel && (
+                  <RepairMarker tone="warning" label={markerLabel} />
+                )}
+              </div>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-orange">

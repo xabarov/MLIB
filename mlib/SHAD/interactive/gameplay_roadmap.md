@@ -8,7 +8,7 @@
 Закрытый план первого игрового среза: [next_stage_plan.md](next_stage_plan.md).
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
 План этапа карты и trace-механики: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
-Текущий следующий этап: [next_svd_pca_stage_plan.md](next_svd_pca_stage_plan.md).
+Текущий следующий этап: [next_game_feel_available_stage_plan.md](next_game_feel_available_stage_plan.md).
 Евклидово-унитарный этап: [next_euclidean_unitary_stage_plan.md](next_euclidean_unitary_stage_plan.md).
 Следующий authoring-system этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
 Следующий игровой этап: [next_gameplay_learning_stage_plan.md](next_gameplay_learning_stage_plan.md).
@@ -18,8 +18,10 @@
 Следующий data/ML-этап: [next_data_ml_playground_plan.md](next_data_ml_playground_plan.md).
 Следующий feature/data-cleaning этап: [next_feature_factory_plan.md](next_feature_factory_plan.md).
 Следующий quality/game-feel этап: [next_mission_quality_upgrade_plan.md](next_mission_quality_upgrade_plan.md).
+Следующий game-feel/available этап: [next_game_feel_available_stage_plan.md](next_game_feel_available_stage_plan.md).
 Следующий этап спектральной геометрии: [next_spectral_geometry_stage_plan.md](next_spectral_geometry_stage_plan.md).
 Следующий SVD/PCA этап: [next_svd_pca_stage_plan.md](next_svd_pca_stage_plan.md).
+Завершенный PCA-compression этап: [next_pca_compression_stage_plan.md](next_pca_compression_stage_plan.md).
 Следующий евклидово-унитарный этап: [next_euclidean_unitary_stage_plan.md](next_euclidean_unitary_stage_plan.md).
 Завершенный complex/unitary этап: [next_unitary_compass_stage_plan.md](next_unitary_compass_stage_plan.md).
 
@@ -28,14 +30,15 @@
 - Программа уже закрывает алгебру, математический анализ, комбинаторику и
   базовую вероятность; разделы вероятности, алгоритмов и анализа данных еще
   частично впереди.
-- В interactive сейчас есть карта курса и двенадцать playable/prototype миссий:
+- В interactive сейчас есть карта курса и тринадцать playable/prototype миссий:
   геометрия ядра, цех перестановок, кузница определителя, матричная машина,
   `Квадратичная линза` как мост от форм к спектральной геометрии,
   `Евклидова мастерская` как мост от форм к ортогональным проекциям,
   `Унитарный компас` как мост от комплексной фазы и Hermitian geometry к
   `A^*A`, `SVD-линза` как мост к PCA и низкоранговому приближению, графовый
-  trace, `Арена асимптотик` как первый programming/algorithms slice и
-  `ML-полигон` как первый data/ML slice, а также `Фабрика признаков` как первый
+  trace, `PCA-компрессор` как практическая игра про low-rank compression,
+  `Арена асимптотик` как первый programming/algorithms slice и `ML-полигон`
+  как первый data/ML slice, а также `Фабрика признаков` как первый
   data-cleaning / feature engineering slice.
 - Техническая база подходит для расширения: Vite, React, TypeScript, React
   Three Fiber, Zustand, HashRouter, Tailwind CSS, KaTeX, Vitest и Playwright
@@ -57,7 +60,16 @@
   игровой механикой перед complex/unitary extension.
 - Complex/unitary P0-фокус выполнен: `Унитарный компас` делает комплексную
   фазу, сопряжение, эрмитову норму, унитарность и bridge к `A^*A`
-  playable-механикой перед оставшимся `PCA compression lab`.
+  playable-механикой.
+- PCA-compression P0-фокус выполнен: `PCA-компрессор` делает усеченное SVD/PCA
+  игрой про rank budget, storage cost, reconstruction error, retained energy
+  and visible residual artifacts.
+- Текущий quality-фокус - не новая тема, а доведение лучших миссий до
+  `available`: field-level success/warning markers, repair moments, visible
+  failures, mobile screenshot review and human quality notes.
+- Первый game-feel/available P0 выполнен: `Кузница определителя`, `Графовый
+  диспетчер` and `Фабрика признаков` получили field-level markers/result
+  moments and promoted to `available`.
 - Authoring flow фиксируется отдельными документами:
   [mission_authoring_guide.md](mission_authoring_guide.md),
   [mission_quality_checklist.md](mission_quality_checklist.md),

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { TracePanel } from '../../game/components/trace/TracePanel'
 import { MascotOverlay } from '../../game/components/MascotOverlay'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { graphDispatcherMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -115,6 +117,7 @@ function GraphDispatcherLevel({
       scene={
         <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_70%_18%,rgba(77,134,168,0.13),transparent_30%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4">
           <div className="relative h-full max-h-[520px] w-full max-w-4xl">
+            <ResultMoment show={levelSuccess} label="trace repaired" />
             {requiredVertexPosition && (
               <MascotOverlay
                 role="frontier"
@@ -122,6 +125,14 @@ function GraphDispatcherLevel({
                 label={requiredVertexPosition.label}
                 xPercent={requiredVertexPosition.x}
                 yPercent={requiredVertexPosition.y}
+              />
+            )}
+            {requiredVertexPosition && state.mistakes > 0 && (
+              <RepairMarker
+                tone="warning"
+                label={`next ${requiredVertexPosition.label}`}
+                xPercent={requiredVertexPosition.x}
+                yPercent={requiredVertexPosition.y + 10}
               />
             )}
           <svg
@@ -180,6 +191,7 @@ function GraphDispatcherLevel({
                               : 'fill-bg stroke-ink/35'
                       }
                       strokeWidth={requiredVertex ? 1.4 : 1}
+                      data-testid={requiredVertex && state.mistakes > 0 ? 'graph-ghost-next' : undefined}
                     />
                     <text
                       x={vertex.x}

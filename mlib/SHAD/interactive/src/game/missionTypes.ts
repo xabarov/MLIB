@@ -23,6 +23,7 @@ export type MascotRole =
   | 'error-marker'
   | 'invariant-token'
   | 'data-point'
+  | 'metric-inspector'
 
 export type TraceStep = {
   id: string

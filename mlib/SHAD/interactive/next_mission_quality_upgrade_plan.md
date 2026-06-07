@@ -48,6 +48,8 @@
 
 Оставшийся P2 после этого этапа: более тонкие success/warning pulses на
 игровом поле и содержательная ревизия всех уровней на статус `available`.
+Подробный план этого продолжения вынесен в
+[next_game_feel_available_stage_plan.md](next_game_feel_available_stage_plan.md).
 
 ## Рубрика качества
 

@@ -59,6 +59,46 @@ input {
   }
 }
 
+@keyframes field-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--pulse-ring);
+  }
+  55% {
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.field-pulse {
+  border-radius: 0.375rem;
+}
+
+.field-pulse-success {
+  --pulse-ring: rgba(95, 141, 101, 0.34);
+  animation: field-pulse-ring 900ms ease-out;
+}
+
+.field-pulse-warning {
+  --pulse-ring: rgba(217, 119, 87, 0.34);
+  animation: field-pulse-ring 900ms ease-out;
+}
+
+.field-pulse-danger {
+  --pulse-ring: rgba(182, 91, 85, 0.34);
+  animation: field-pulse-ring 900ms ease-out;
+}
+
+.field-pulse-target {
+  --pulse-ring: rgba(77, 134, 168, 0.32);
+  animation: field-pulse-ring 900ms ease-out;
+}
+
+.result-moment {
+  animation: reward-key-pop 520ms ease-out;
+}
+
 .reward-key-success {
   animation: reward-key-pop 520ms ease-out;
 }
@@ -70,7 +110,12 @@ input {
     scroll-behavior: auto !important;
   }
 
-  .reward-key-success {
+  .reward-key-success,
+  .result-moment,
+  .field-pulse-success,
+  .field-pulse-warning,
+  .field-pulse-danger,
+  .field-pulse-target {
     animation: none;
   }
 }

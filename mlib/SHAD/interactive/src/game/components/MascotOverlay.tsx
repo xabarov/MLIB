@@ -16,6 +16,7 @@ const roleLabel: Record<MascotRole, string> = {
   'error-marker': 'ошибка',
   'invariant-token': 'инвариант',
   'data-point': 'точка',
+  'metric-inspector': 'метрика',
 }
 
 const imageByState: Record<MascotState, string> = {

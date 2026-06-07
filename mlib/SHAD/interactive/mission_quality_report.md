@@ -12,6 +12,7 @@ missing authoring fields, but human review still decides whether a task is inter
 | `Евклидова мастерская` | 32/32 | none |
 | `Унитарный компас` | 38/38 | none |
 | `SVD-линза` | 32/32 | none |
+| `PCA-компрессор` | 32/32 | none |
 | `Цех перестановок` | 26/26 | none |
 | `Графовый диспетчер` | 26/26 | none |
 | `Арена асимптотик` | 26/26 | none |

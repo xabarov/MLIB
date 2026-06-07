@@ -85,7 +85,7 @@ export const navSections: NavSection[] = [
       {
         id: 'svd-pca',
         title: 'SVD и PCA',
-        visualizations: [missionEntry('svd-lens')],
+        visualizations: [missionEntry('svd-lens'), missionEntry('pca-compression-lab')],
       },
     ],
   },
