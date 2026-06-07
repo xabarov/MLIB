@@ -1,4 +1,5 @@
 import { Compass, KeyRound, Route } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { mascotImages } from '../assets/game/mascot'
 import { CoursePath } from '../game/components/CoursePath'
@@ -6,7 +7,18 @@ import { MissionCard } from '../game/components/MissionCard'
 import { courseMapNodes, missionCompletionRatio, recommendedMissionId } from '../game/courseMap'
 import { useProgressStore } from '../store/progressStore'
 
+type CourseFilter = 'all' | 'algebra' | 'algorithms' | 'data-analysis' | 'review'
+
+const courseFilters: { id: CourseFilter; label: string }[] = [
+  { id: 'all', label: 'Все' },
+  { id: 'algebra', label: 'Алгебра' },
+  { id: 'algorithms', label: 'Алгоритмы' },
+  { id: 'data-analysis', label: 'Data' },
+  { id: 'review', label: 'Повторить' },
+]
+
 export function CourseMapPage() {
+  const [filter, setFilter] = useState<CourseFilter>('all')
   const completedLevels = useProgressStore((s) => s.completedLevels)
   const keysByMission = useProgressStore((s) => s.keysByMission)
   const keys = useProgressStore((s) => s.keys)
@@ -15,6 +27,16 @@ export function CourseMapPage() {
   const completedMissions = courseMapNodes.filter(
     (node) => missionCompletionRatio(completedLevels[node.mission.id], node.mission).complete,
   ).length
+  const visibleNodes = useMemo(
+    () =>
+      courseMapNodes.filter((node) => {
+        const progress = missionCompletionRatio(completedLevels[node.mission.id], node.mission)
+        if (filter === 'all') return true
+        if (filter === 'review') return progress.complete || node.curriculum.reviewAfterMissionIds?.length
+        return node.curriculum.section === filter
+      }),
+    [completedLevels, filter],
+  )
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto bg-[linear-gradient(180deg,#fffdf7,#faf9f5)]">
@@ -75,6 +97,24 @@ export function CourseMapPage() {
 
         <CoursePath nodes={courseMapNodes} recommendedMissionId={recommendedId} />
 
+        <div className="flex flex-wrap gap-2" aria-label="Фильтр карты курса">
+          {courseFilters.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setFilter(item.id)}
+              className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
+                filter === item.id
+                  ? 'border-orange/35 bg-orange text-bg'
+                  : 'border-ink/10 bg-paper text-ink/70 hover:border-orange/35 hover:text-ink'
+              }`}
+              data-testid={`course-filter-${item.id}`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
         {recommendedNode && (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-orange/25 bg-highlight px-4 py-3">
             <div className="min-w-0">
@@ -97,7 +137,7 @@ export function CourseMapPage() {
         )}
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3" data-testid="course-map">
-          {courseMapNodes.map((node) => {
+          {visibleNodes.map((node) => {
             const progress = missionCompletionRatio(completedLevels[node.mission.id], node.mission)
             return (
               <MissionCard

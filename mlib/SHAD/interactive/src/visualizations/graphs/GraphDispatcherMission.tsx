@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { TracePanel } from '../../game/components/trace/TracePanel'
+import { MascotOverlay } from '../../game/components/MascotOverlay'
 import { MissionShell } from '../../game/components/MissionShell'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { graphDispatcherMission } from '../../game/missions'
@@ -101,6 +102,7 @@ function GraphDispatcherLevel({
   const visitedSet = new Set(state.visited)
   const frontierSet = new Set(state.frontier)
   const treeEdgeKeys = new Set(state.treeEdges.map(([a, b]) => `${a}-${b}`))
+  const requiredVertexPosition = levelSpec.graph.vertices.find((vertex) => vertex.id === required)
 
   return (
     <MissionShell
@@ -112,9 +114,19 @@ function GraphDispatcherLevel({
       badges={badges}
       scene={
         <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_70%_18%,rgba(77,134,168,0.13),transparent_30%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4">
+          <div className="relative h-full max-h-[520px] w-full max-w-4xl">
+            {requiredVertexPosition && (
+              <MascotOverlay
+                role="frontier"
+                state={mascotState}
+                label={requiredVertexPosition.label}
+                xPercent={requiredVertexPosition.x}
+                yPercent={requiredVertexPosition.y}
+              />
+            )}
           <svg
             viewBox="0 0 100 100"
-            className="h-full max-h-[520px] w-full max-w-4xl rounded-md border border-ink/10 bg-paper shadow-[0_18px_44px_rgba(20,20,19,0.08)]"
+            className="h-full w-full rounded-md border border-ink/10 bg-paper shadow-[0_18px_44px_rgba(20,20,19,0.08)]"
             role="img"
             aria-label="Граф для обхода"
             data-testid="graph-dispatcher-plane"
@@ -181,6 +193,7 @@ function GraphDispatcherLevel({
               )
             })}
           </svg>
+          </div>
         </div>
       }
       controls={

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  diagnoseKernelState,
   errorToKernel,
   isBasisAligned,
   isOnKernel,
@@ -45,5 +46,52 @@ describe('kernelHuntModel', () => {
         completedLevelIds: ['nonzero-zero', 'solution-line', 'kernel-basis'],
       }),
     ).toBe(true)
+  })
+
+  it('diagnoses residual equations and kernel-specific mistakes', () => {
+    expect(
+      diagnoseKernelState({
+        levelId: 'nonzero-zero',
+        candidate: [1, 0, 0],
+        completedLevelIds: [],
+        touched: false,
+      }).kind,
+    ).toBe('in-progress')
+
+    expect(
+      diagnoseKernelState({
+        levelId: 'nonzero-zero',
+        candidate: [0, 0, 0],
+        completedLevelIds: [],
+        touched: true,
+      }).kind,
+    ).toBe('zero-vector')
+
+    expect(
+      diagnoseKernelState({
+        levelId: 'nonzero-zero',
+        candidate: [1, 0, 1],
+        completedLevelIds: [],
+        touched: true,
+      }).kind,
+    ).toBe('first-equation-error')
+
+    expect(
+      diagnoseKernelState({
+        levelId: 'nonzero-zero',
+        candidate: [1, -1, 0],
+        completedLevelIds: [],
+        touched: true,
+      }).kind,
+    ).toBe('second-equation-error')
+
+    expect(
+      diagnoseKernelState({
+        levelId: 'solution-line',
+        candidate: [-1, 1, -1],
+        completedLevelIds: ['nonzero-zero'],
+        touched: true,
+      }).kind,
+    ).toBe('same-solution-scale-needed')
   })
 })

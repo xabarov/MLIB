@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, CheckCircle2, KeyRound, Play } from 'lucide-react'
+import { ArrowRight, BookOpen, CheckCircle2, KeyRound, Play, Route } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { CourseMapNode } from '../courseMap'
 
@@ -48,6 +48,22 @@ export function MissionCard({ node, completed, total, keys, recommended }: Missi
 
         <p className="text-sm leading-relaxed text-ink/68">{node.shortIdea}</p>
 
+        <div className="mt-3 space-y-2 text-xs text-ink/62">
+          <p className="rounded border border-ink/10 bg-bg px-2 py-1">
+            Навык: <span className="font-semibold text-ink">{node.curriculum.skillIds[0]}</span>
+          </p>
+          <p className="rounded border border-ink/10 bg-bg px-2 py-1">
+            Готовность:{' '}
+            <span className="font-semibold text-ink">{node.curriculum.readinessLabel}</span>
+          </p>
+          {node.curriculum.unlocks.length > 0 && (
+            <p className="inline-flex w-full items-center gap-1 rounded border border-ink/10 bg-bg px-2 py-1">
+              <Route className="size-3.5 shrink-0" />
+              <span className="truncate">Открывает: {node.curriculum.unlocks.join(', ')}</span>
+            </p>
+          )}
+        </div>
+
         <div className="mt-4 h-2 overflow-hidden rounded-full bg-panel">
           <div
             className={`h-full rounded-full ${complete ? 'bg-success' : 'bg-orange'}`}
@@ -63,6 +79,9 @@ export function MissionCard({ node, completed, total, keys, recommended }: Missi
           <span className="inline-flex items-center gap-1 rounded border border-ink/10 bg-bg px-2 py-1 text-ink/70">
             <KeyRound className="size-3.5" />
             {keys} ключей
+          </span>
+          <span className="col-span-2 rounded border border-ink/10 bg-bg px-2 py-1 text-ink/70">
+            {node.curriculum.coverageStatus}
           </span>
         </div>
       </div>

@@ -16,6 +16,14 @@ export type MissionMechanic =
 
 export type MascotState = 'idle' | 'hint' | 'success' | 'warning' | 'thinking'
 
+export type MascotRole =
+  | 'guide'
+  | 'pivot'
+  | 'frontier'
+  | 'error-marker'
+  | 'invariant-token'
+  | 'data-point'
+
 export type TraceStep = {
   id: string
   label: string
@@ -37,6 +45,7 @@ export type MissionLevel = {
   mistakeFeedback?: string[]
   successText: string
   successConditionLabel?: string
+  mascotRole?: MascotRole
   takeaway: string
   lectureAnchor?: string
   nextPrompt?: string
@@ -56,6 +65,7 @@ export type MissionDefinition = {
   transferTask?: string
   qualityTags?: string[]
   estimatedMinutes?: number
+  mascotRole?: MascotRole
   nextMissionRoute?: string
   nextMissionLabel?: string
   dataContract?: MissionDataContract

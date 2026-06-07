@@ -10,6 +10,11 @@ export const curriculumGraph: CurriculumNode[] = [
     qaPaths: ['SHAD/algebra/1_Substitutions/qa.md'],
     prerequisites: [],
     missionIds: ['substitution-workshop'],
+    skillIds: ['state-machine', 'cycles', 'parity'],
+    unlocks: ['matrices', 'graph-trace'],
+    reviewAfterMissionIds: ['matrix-machine'],
+    readinessLabel: 'Диагностика транспозиций готова',
+    coverageStatus: 'diagnosed',
     takeaway: 'Перестановка меняется транспозициями, а циклы и знак остаются видимыми.',
     status: 'prototype',
   },
@@ -21,6 +26,11 @@ export const curriculumGraph: CurriculumNode[] = [
     lessonPaths: ['SHAD/algebra/6_Matrices/lesson.md'],
     prerequisites: ['substitutions'],
     missionIds: ['matrix-machine'],
+    skillIds: ['basis-images', 'linear-map-as-columns'],
+    unlocks: ['determinants', 'linear-maps-kernel'],
+    reviewAfterMissionIds: ['determinant-forge'],
+    readinessLabel: 'Диагностика столбцов готова',
+    coverageStatus: 'diagnosed',
     takeaway: 'Столбцы матрицы - это образы базисных векторов.',
     status: 'prototype',
   },
@@ -32,6 +42,11 @@ export const curriculumGraph: CurriculumNode[] = [
     lessonPaths: ['SHAD/algebra/5_Det/lesson.md'],
     prerequisites: ['matrices'],
     missionIds: ['determinant-forge'],
+    skillIds: ['area-scale', 'orientation', 'degeneracy'],
+    unlocks: ['linear-maps-kernel'],
+    reviewAfterMissionIds: ['kernel-hunt'],
+    readinessLabel: 'Диагностика det готовится',
+    coverageStatus: 'diagnosed',
     takeaway: 'Определитель хранит масштаб площади, знак и вырожденность.',
     status: 'prototype',
   },
@@ -43,6 +58,11 @@ export const curriculumGraph: CurriculumNode[] = [
     lessonPaths: ['SHAD/algebra/8_Linear_maps/lesson.md'],
     prerequisites: ['matrices', 'determinants'],
     missionIds: ['kernel-hunt'],
+    skillIds: ['homogeneous-system', 'kernel-basis', 'rank-nullity'],
+    unlocks: ['graph-trace'],
+    reviewAfterMissionIds: ['graph-dispatcher'],
+    readinessLabel: 'Residual-диагностика готовится',
+    coverageStatus: 'diagnosed',
     takeaway: 'Ядро - подпространство решений Ax = 0.',
     status: 'available',
   },
@@ -56,6 +76,11 @@ export const curriculumGraph: CurriculumNode[] = [
     prerequisites: ['substitutions'],
     missionIds: ['graph-dispatcher'],
     plannedMissionIds: ['graph-bridges', 'shortest-paths'],
+    skillIds: ['frontier', 'visited', 'trace-invariant'],
+    unlocks: [],
+    reviewAfterMissionIds: ['substitution-workshop'],
+    readinessLabel: 'Trace-эталон',
+    coverageStatus: 'review-ready',
     takeaway:
       'Очередь, стек и посещенные вершины превращают обход в проверяемое состояние.',
     status: 'prototype',
@@ -80,8 +105,21 @@ export function validateCurriculumGraph(
         errors.push(`${node.id}: unknown mission ${missionId}`)
       }
     }
+    for (const unlock of node.unlocks) {
+      if (!nodeIds.has(unlock)) {
+        errors.push(`${node.id}: unknown unlock ${unlock}`)
+      }
+    }
+    for (const reviewMissionId of node.reviewAfterMissionIds ?? []) {
+      if (!knownMissionIds.has(reviewMissionId)) {
+        errors.push(`${node.id}: unknown review mission ${reviewMissionId}`)
+      }
+    }
     if (node.lessonPaths.length === 0) {
       errors.push(`${node.id}: lessonPaths must not be empty`)
+    }
+    if (node.skillIds.length === 0) {
+      errors.push(`${node.id}: skillIds must not be empty`)
     }
   }
 

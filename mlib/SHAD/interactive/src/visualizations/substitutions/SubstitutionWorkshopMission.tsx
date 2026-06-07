@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { MascotOverlay } from '../../game/components/MascotOverlay'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { substitutionWorkshopMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -144,7 +145,16 @@ function SubstitutionWorkshopLevel({
       badges={badges}
       scene={
         <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_28%_18%,rgba(124,108,207,0.12),transparent_28%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4">
-          <div className="w-full max-w-4xl">
+          <div className="relative w-full max-w-4xl">
+            {selectedIndex !== null && (
+              <MascotOverlay
+                role="pivot"
+                state="thinking"
+                label={`позиция ${selectedIndex + 1}`}
+                xPercent={((selectedIndex % permutation.length) + 0.5) * (100 / permutation.length)}
+                yPercent={4}
+              />
+            )}
             <div className="mb-5 grid grid-cols-[repeat(auto-fit,minmax(72px,1fr))] gap-3">
               {permutation.map((value, index) => {
                 const selected = selectedIndex === index

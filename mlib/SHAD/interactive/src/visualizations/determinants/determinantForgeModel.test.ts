@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  diagnoseDeterminantState,
   determinant,
   determinantArea,
   determinantLevelSuccess,
@@ -57,5 +58,57 @@ describe('determinantForgeModel', () => {
         rect: { left: 0, top: 0, width: 200, height: 200 },
       }),
     ).toEqual([0, 0])
+  })
+
+  it('diagnoses determinant area, orientation and repair states', () => {
+    expect(
+      diagnoseDeterminantState({
+        levelId: 'area-two',
+        u: [1, 0],
+        v: [0, 1],
+        completedLevelIds: [],
+        touched: false,
+      }).kind,
+    ).toBe('in-progress')
+
+    expect(
+      diagnoseDeterminantState({
+        levelId: 'area-two',
+        u: [0.5, 0],
+        v: [0, 1],
+        completedLevelIds: [],
+        touched: true,
+      }).kind,
+    ).toBe('area-too-small')
+
+    expect(
+      diagnoseDeterminantState({
+        levelId: 'flip-orientation',
+        u: [1, 0],
+        v: [0, 2],
+        completedLevelIds: ['area-two'],
+        touched: true,
+      }).kind,
+    ).toBe('wrong-orientation')
+
+    expect(
+      diagnoseDeterminantState({
+        levelId: 'break-invertibility',
+        u: [1, 0],
+        v: [0, 1],
+        completedLevelIds: ['area-two', 'flip-orientation'],
+        touched: true,
+      }).kind,
+    ).toBe('needs-degenerate')
+
+    expect(
+      diagnoseDeterminantState({
+        levelId: 'repair-matrix',
+        u: [1, 0],
+        v: [2, 0],
+        completedLevelIds: ['break-invertibility'],
+        touched: true,
+      }).kind,
+    ).toBe('needs-repair-after-degenerate')
   })
 })

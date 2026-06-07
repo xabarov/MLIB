@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
+import { RotateCcw } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { determinantForgeMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
 import { useMissionRuntime } from '../../game/useMissionRuntime'
 import {
+  diagnoseDeterminantState,
   determinant,
   determinantArea,
   determinantGridLimit,
@@ -12,6 +14,7 @@ import {
   formatDeterminantNumber,
   isDegenerate,
   svgPointToCoord,
+  snapCoord,
   type Vec2,
 } from './determinantForgeModel'
 
@@ -26,10 +29,39 @@ function VectorReadout({ label, value }: { label: string; value: Vec2 }) {
   )
 }
 
+function CoordInput({
+  label,
+  value,
+  testId,
+  onChange,
+}: {
+  label: string
+  value: number
+  testId: string
+  onChange: (value: number) => void
+}) {
+  return (
+    <label className="grid grid-cols-[44px_1fr] items-center gap-2 text-xs text-ink/70">
+      <span className="font-semibold">{label}</span>
+      <input
+        type="number"
+        min={-3}
+        max={3}
+        step={0.25}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="w-full rounded border border-ink/10 bg-paper px-2 py-1 text-right tabular-nums text-ink"
+        data-testid={testId}
+      />
+    </label>
+  )
+}
+
 export function DeterminantForgeMission() {
   const definition = determinantForgeMission
   const [u, setU] = useState<Vec2>([1, 0])
   const [v, setV] = useState<Vec2>([0, 1])
+  const [touched, setTouched] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
   const dragTarget = useRef<DragTarget>(null)
   const runtime = useMissionRuntime(definition)
@@ -38,6 +70,13 @@ export function DeterminantForgeMission() {
   const det = determinant(u, v)
   const area = determinantArea(u, v)
   const degenerate = isDegenerate(u, v)
+  const diagnosis = diagnoseDeterminantState({
+    levelId: activeLevel.id,
+    u,
+    v,
+    completedLevelIds,
+    touched,
+  })
 
   const levelSuccess = useMemo(() => {
     return determinantLevelSuccess({
@@ -55,12 +94,19 @@ export function DeterminantForgeMission() {
 
   const mascotState = chooseMascotState({
     success: levelSuccess,
-    warning: degenerate && activeLevel.id !== 'break-invertibility',
-    hint: Math.abs(area - 2) < 0.5 || Math.abs(det) < 0.35,
+    warning:
+      touched &&
+      [
+        'wrong-orientation',
+        'unexpected-degenerate',
+        'needs-degenerate',
+        'needs-repair-after-degenerate',
+      ].includes(diagnosis.kind),
+    hint: Math.abs(area - 2) < 0.5 || Math.abs(det) < 0.35 || diagnosis.kind === 'area-too-small',
   })
   const mascotMessage = missionMessage(mascotState, {
     success: activeLevel.successText,
-    warning: 'Площадь исчезла. Это полезно только когда мы специально ломаем обратимость.',
+    warning: activeLevel.mistakeFeedback?.[0] ?? diagnosis.message,
     hint: activeLevel.hint,
     thinking: 'Смотри на форму: площадь - это модуль det A, а знак показывает ориентацию.',
     idle: 'Тяни концы векторов. Я буду считать площадь и ориентацию параллелограмма.',
@@ -88,6 +134,7 @@ export function DeterminantForgeMission() {
   ]
 
   const setVector = (target: DragTarget, next: Vec2) => {
+    setTouched(true)
     if (target === 'u') setU(next)
     if (target === 'v') setV(next)
   }
@@ -112,13 +159,37 @@ export function DeterminantForgeMission() {
   const stopDrag = () => {
     dragTarget.current = null
   }
+  const setVectorCoord = (target: 'u' | 'v', coord: 0 | 1, value: number) => {
+    const safeValue = Number.isFinite(value) ? snapCoord(value) : 0
+    setTouched(true)
+    const setter = target === 'u' ? setU : setV
+    setter((current) => {
+      const next = [...current] as Vec2
+      next[coord] = safeValue
+      return next
+    })
+  }
+  const resetLevel = () => {
+    setU([1, 0])
+    setV([0, 1])
+    setTouched(false)
+  }
 
   const gridLines = Array.from(
     { length: determinantGridLimit * 2 + 1 },
     (_, index) => index - determinantGridLimit,
   )
   const parallelogram = `0,0 ${u[0]},${-u[1]} ${u[0] + v[0]},${-(u[1] + v[1])} ${v[0]},${-v[1]}`
-  const detClass = degenerate ? 'fill-danger/12 stroke-danger' : det > 0 ? 'fill-energy/16 stroke-energy' : 'fill-target/16 stroke-target'
+  const detClass =
+    diagnosis.kind === 'success'
+      ? 'fill-success/18 stroke-success'
+      : diagnosis.kind === 'wrong-orientation'
+        ? 'fill-target/18 stroke-target'
+        : degenerate
+          ? 'fill-danger/12 stroke-danger'
+          : det > 0
+            ? 'fill-energy/16 stroke-energy'
+            : 'fill-target/16 stroke-target'
   const targetArea = activeLevel.id === 'area-two' ? 'Поймай |det A| = 2' : activeLevel.id === 'flip-orientation' ? 'Сделай det A < 0' : activeLevel.id === 'break-invertibility' ? 'Схлопни площадь в 0' : 'Верни det A ≠ 0'
 
   return (
@@ -193,20 +264,63 @@ export function DeterminantForgeMission() {
         <div className="space-y-2">
           <VectorReadout label="u" value={u} />
           <VectorReadout label="v" value={v} />
+          <div
+            className="rounded border border-ink/10 bg-paper/80 px-2 py-1.5 text-xs leading-relaxed text-ink/70"
+            data-testid="determinant-diagnosis"
+          >
+            <p className="font-semibold text-ink">{diagnosis.message}</p>
+            <p className="mt-1">{diagnosis.repairHint}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <CoordInput
+              label="u.x"
+              value={u[0]}
+              testId="determinant-input-u-x"
+              onChange={(value) => setVectorCoord('u', 0, value)}
+            />
+            <CoordInput
+              label="u.y"
+              value={u[1]}
+              testId="determinant-input-u-y"
+              onChange={(value) => setVectorCoord('u', 1, value)}
+            />
+            <CoordInput
+              label="v.x"
+              value={v[0]}
+              testId="determinant-input-v-x"
+              onChange={(value) => setVectorCoord('v', 0, value)}
+            />
+            <CoordInput
+              label="v.y"
+              value={v[1]}
+              testId="determinant-input-v-y"
+              onChange={(value) => setVectorCoord('v', 1, value)}
+            />
+          </div>
           <p className="text-xs leading-relaxed text-ink/60">
             Оранжевая ручка - первый столбец, синяя - второй. Координаты
-            притягиваются к шагу 0.25.
+            притягиваются к шагу 0.25. Поля ниже дают точный режим.
           </p>
           <p className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs font-medium text-target">
             Цель прибора: {targetArea}
           </p>
+          <button
+            type="button"
+            onClick={resetLevel}
+            className="inline-flex items-center gap-1 rounded border border-ink/10 bg-paper px-2 py-1 text-xs font-semibold text-ink/75 hover:border-orange/40 hover:text-ink"
+            data-testid="determinant-reset"
+          >
+            <RotateCcw className="size-3.5" />
+            Сбросить уровень
+          </button>
         </div>
       }
       feedback={
         <p>
           Матрица собрана из столбцов: A = [[{formatDeterminantNumber(u[0])},{' '}
           {formatDeterminantNumber(v[0])}], [{formatDeterminantNumber(u[1])},{' '}
-          {formatDeterminantNumber(v[1])}]].
+          {formatDeterminantNumber(v[1])}]]. Диагноз:{' '}
+          <span className="font-semibold">{diagnosis.kind}</span>.
         </p>
       }
     />

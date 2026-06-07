@@ -6,9 +6,9 @@ import type { MissionBadge } from '../../game/missionTypes'
 import { useMissionRuntime } from '../../game/useMissionRuntime'
 import { KernelLineViz } from './KernelLineViz'
 import {
+  diagnoseKernelState,
   errorToKernel,
   formatKernelNumber,
-  isZeroVector,
   kernelLevelSuccess,
   projectionToKernel,
   residual,
@@ -54,13 +54,19 @@ function SliderControl({
 export function KernelHuntMission() {
   const definition = kernelHuntMission
   const [candidate, setCandidate] = useState<Vec3>([1, 0, 0])
+  const [touched, setTouched] = useState(false)
   const runtime = useMissionRuntime(definition)
   const activeLevel = runtime.activeLevel
   const ax = residual(candidate)
   const error = errorToKernel(candidate)
-  const zeroVector = isZeroVector(candidate)
   const projection = projectionToKernel(candidate)
   const { completeActiveLevel, completedLevelIds, setActiveLevelId } = runtime
+  const diagnosis = diagnoseKernelState({
+    levelId: activeLevel.id,
+    candidate,
+    completedLevelIds,
+    touched,
+  })
 
   const levelSuccess = useMemo(() => {
     return kernelLevelSuccess({
@@ -77,12 +83,20 @@ export function KernelHuntMission() {
 
   const mascotState = chooseMascotState({
     success: levelSuccess,
-    warning: zeroVector,
+    warning:
+      touched &&
+      [
+        'zero-vector',
+        'first-equation-error',
+        'second-equation-error',
+        'both-equations-error',
+        'rank-nullity-not-ready',
+      ].includes(diagnosis.kind),
     hint: error < 0.7,
   })
   const mascotMessage = missionMessage(mascotState, {
     success: activeLevel.successText,
-    warning: 'Нулевой вектор тоже уходит в ноль, но нам нужен ненулевой носитель направления.',
+    warning: activeLevel.mistakeFeedback?.[0] ?? diagnosis.message,
     hint: activeLevel.hint,
     thinking: 'Сравни две ошибки: x + y и x - z. Обе должны стать нулем.',
     idle: 'Двигай координаты. Я буду следить, насколько близко Ax к нулю.',
@@ -110,6 +124,7 @@ export function KernelHuntMission() {
   ]
 
   const setCoord = (index: number, value: number) => {
+    setTouched(true)
     setCandidate((current) => {
       const next = [...current] as Vec3
       next[index] = Number.isFinite(value) ? value : 0
@@ -129,7 +144,10 @@ export function KernelHuntMission() {
         <KernelLineViz
           candidate={candidate}
           projection={projection}
-          onCandidateChange={setCandidate}
+          onCandidateChange={(next) => {
+            setTouched(true)
+            setCandidate(next)
+          }}
         />
       }
       controls={
@@ -137,6 +155,23 @@ export function KernelHuntMission() {
           <SliderControl label="x" value={candidate[0]} onChange={(value) => setCoord(0, value)} />
           <SliderControl label="y" value={candidate[1]} onChange={(value) => setCoord(1, value)} />
           <SliderControl label="z" value={candidate[2]} onChange={(value) => setCoord(2, value)} />
+          <div
+            className="rounded border border-ink/10 bg-paper/80 px-2 py-1.5 text-xs leading-relaxed text-ink/70"
+            data-testid="kernel-diagnosis"
+          >
+            <p className="font-semibold text-ink">{diagnosis.message}</p>
+            <p className="mt-1">{diagnosis.repairHint}</p>
+            <div className="mt-2 grid gap-1 sm:grid-cols-2">
+              <p>
+                x + y ={' '}
+                <span className="font-semibold">{formatKernelNumber(diagnosis.residual[0])}</span>
+              </p>
+              <p>
+                x - z ={' '}
+                <span className="font-semibold">{formatKernelNumber(diagnosis.residual[1])}</span>
+              </p>
+            </div>
+          </div>
         </div>
       }
       feedback={
@@ -148,6 +183,15 @@ export function KernelHuntMission() {
           <p className="text-xs text-ink/60">
             Текущий вектор: ({candidate.map(formatKernelNumber).join(', ')})
           </p>
+          <p className="text-xs text-ink/60">
+            Параметризация: x = {formatKernelNumber(diagnosis.parameter)}(-1, 1, -1). Диагноз:{' '}
+            <span className="font-semibold">{diagnosis.kind}</span>.
+          </p>
+          {activeLevel.id === 'rank-nullity' && (
+            <p className="text-xs font-semibold text-success">
+              rank A = 2, dim ker A = 1, поэтому 3 = 2 + 1.
+            </p>
+          )}
           <p className="text-xs text-ink/60">
             Оранжевую ручку можно тянуть прямо в 3D-сцене по текущей плоскости z.
           </p>

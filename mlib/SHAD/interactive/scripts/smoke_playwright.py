@@ -82,6 +82,13 @@ def fill_matrix(page, ux: str, uy: str, vx: str, vy: str) -> None:
     page.get_by_test_id("matrix-input-v-y").fill(vy)
 
 
+def fill_determinant(page, ux: str, uy: str, vx: str, vy: str) -> None:
+    page.get_by_test_id("determinant-input-u-x").fill(ux)
+    page.get_by_test_id("determinant-input-u-y").fill(uy)
+    page.get_by_test_id("determinant-input-v-x").fill(vx)
+    page.get_by_test_id("determinant-input-v-y").fill(vy)
+
+
 def swap_tiles(page, a: int, b: int) -> None:
     page.get_by_test_id(f"substitution-tile-{a}").click()
     page.get_by_test_id(f"substitution-tile-{b}").click()
@@ -123,23 +130,54 @@ def run_kernel_happy_path(page) -> None:
     expect(page.get_by_text("Ранг 2 и дефект 1")).to_be_visible(timeout=10_000)
 
 
+def run_kernel_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/linear-maps/kernel", wait_until="domcontentloaded")
+    page.wait_for_selector("canvas", timeout=10_000)
+    fill_kernel(page, "0", "0", "0")
+    expect(page.get_by_test_id("kernel-diagnosis")).to_contain_text(
+        "Нулевой вектор зануляет Ax", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    fill_kernel(page, "1", "-1", "0")
+    expect(page.get_by_test_id("kernel-diagnosis")).to_contain_text(
+        "x - z ≠ 0", timeout=10_000
+    )
+
+
 def run_determinant_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/determinants/forge", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="determinant-forge-plane"]', timeout=10_000)
     expect(page.get_by_text("det A").first).to_be_visible(timeout=10_000)
     expect(page.get_by_text("1.00").first).to_be_visible(timeout=10_000)
-    drag_svg_handle(page, "determinant-forge-plane", 1, 0, 2, 0)
+    fill_determinant(page, "2", "0", "0", "1")
     expect(page.get_by_text("Площадь поймана")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-orientation").click()
-    drag_svg_handle(page, "determinant-forge-plane", 0, 1, 0, -2)
+    fill_determinant(page, "2", "0", "0", "-1")
     expect(page.get_by_text("Ориентация изменилась")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-break-invertibility").click()
-    drag_svg_handle(page, "determinant-forge-plane", 0, -2, 2, 0)
+    fill_determinant(page, "1", "0", "2", "0")
     expect(page.get_by_text("Матрица вырождена")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-repair-matrix").click()
-    drag_svg_handle(page, "determinant-forge-plane", 2, 0, 0, 1)
+    fill_determinant(page, "1", "0", "0", "1")
     expect(page.get_by_text("Матрица снова обратима: площадь вернулась.")).to_be_visible(
         timeout=10_000
+    )
+
+
+def run_determinant_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/determinants/forge", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="determinant-forge-plane"]', timeout=10_000)
+    fill_determinant(page, "1", "0", "0", "2")
+    expect(page.get_by_text("Площадь поймана")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-flip-orientation").click()
+    fill_determinant(page, "1", "0", "0", "2")
+    expect(page.get_by_test_id("determinant-diagnosis")).to_contain_text(
+        "ориентация все еще положительная", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("determinant-reset").click()
+    expect(page.get_by_test_id("determinant-diagnosis")).to_contain_text(
+        "Параллелограмм еще не настроен", timeout=10_000
     )
 
 
@@ -228,12 +266,29 @@ def run_graph_happy_path(page) -> None:
     expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
 
 
+def run_graph_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/combinatorics/graphs/dispatcher", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-graph-dispatcher"]', timeout=10_000)
+    page.get_by_test_id("graph-vertex-B").click()
+    expect(page.get_by_test_id("mission-feedback")).to_contain_text(
+        "Следующий допустимый ход: A", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("graph-reset").click()
+    expect(page.get_by_test_id("mission-feedback")).to_contain_text(
+        "Следующий допустимый ход: A", timeout=10_000
+    )
+
+
 def run_happy_paths(browser) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 960})
     context.add_init_script("window.localStorage.clear()")
     page = context.new_page()
     run_substitution_mistake_path(page)
     run_matrix_mistake_path(page)
+    run_determinant_mistake_path(page)
+    run_kernel_mistake_path(page)
+    run_graph_mistake_path(page)
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
