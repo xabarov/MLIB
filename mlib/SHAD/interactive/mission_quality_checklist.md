@@ -28,7 +28,18 @@
 - [ ] Уровни имеют `successConditionLabel`.
 - [ ] Есть `qualityTags` и `estimatedMinutes`.
 
-## 4. Architecture
+## 4. Diagnosis and Repair
+
+- [ ] Для каждого уровня описана хотя бы одна типовая ошибка.
+- [ ] Ошибка объясняется как нарушенный инвариант, порядок, ограничение,
+  стоимость или метрика.
+- [ ] У пользователя есть repair action или понятная причина, почему нужен
+  reset.
+- [ ] `successConditionLabel` написан языком model layer.
+- [ ] `takeaway` не повторяет `objective`.
+- [ ] Есть хотя бы один smoke или unit test на ошибочный путь.
+
+## 5. Architecture
 
 - [ ] Предметная логика вынесена в `*Model.ts`.
 - [ ] React-компонент не содержит скрытой математики, которую нельзя проверить.
@@ -37,7 +48,7 @@
 - [ ] Навигация обновлена в `navigation.ts`.
 - [ ] Карта курса показывает миссию в правильном месте.
 
-## 5. Tests
+## 6. Tests
 
 - [ ] Есть unit tests для model.
 - [ ] Curriculum graph validation проходит.
@@ -45,7 +56,7 @@
 - [ ] Playwright happy path проходит все уровни миссии.
 - [ ] `git diff --check` чистый.
 
-## 6. Accessibility
+## 7. Accessibility
 
 - [ ] Основное действие имеет keyboard path или input fallback.
 - [ ] Интерактивные SVG/DOM элементы имеют `aria-label` там, где нужно.
@@ -54,14 +65,14 @@
 - [ ] Анимации уважают `prefers-reduced-motion`.
 - [ ] Mobile tap targets достаточно крупные.
 
-## 7. Performance
+## 8. Performance
 
 - [ ] Новые assets не раздувают initial route без необходимости.
 - [ ] Тяжелые сцены lazy-loaded.
 - [ ] Build output просмотрен после `npm run build`.
 - [ ] Если добавлены PNG, проверен размер и формат.
 
-## 8. Lecture Link
+## 9. Lecture Link
 
 - [ ] Ссылка добавлена в `lesson.md` только после успешных проверок.
 - [ ] Формат ссылки dev-friendly: `../../interactive/#/...`.

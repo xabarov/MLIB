@@ -6,6 +6,7 @@ import { matrixMachineMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
 import { useMissionRuntime } from '../../game/useMissionRuntime'
 import {
+  diagnoseMatrixMachineState,
   formatMatrixNumber,
   matrixFromColumns,
   matrixMachineLevelSuccess,
@@ -65,6 +66,7 @@ export function MatrixMachineMission() {
   const target = matrixMachineTargets[activeLevel.id]
   const [u, setU] = useState<Vec2>([1, 0])
   const [v, setV] = useState<Vec2>([0, 1])
+  const [touched, setTouched] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
   const dragTarget = useRef<DragTarget>(null)
 
@@ -73,6 +75,12 @@ export function MatrixMachineMission() {
     () => matrixMachineLevelSuccess(activeLevel.id, u, v),
     [activeLevel.id, u, v],
   )
+  const diagnosis = diagnoseMatrixMachineState({
+    levelId: activeLevel.id,
+    u,
+    v,
+    touched,
+  })
 
   useEffect(() => {
     if (!levelSuccess) return
@@ -81,12 +89,17 @@ export function MatrixMachineMission() {
 
   const mascotState = chooseMascotState({
     success: levelSuccess,
+    warning:
+      touched &&
+      ['swapped-columns', 'wrong-direction', 'wrong-first-column', 'wrong-second-column'].includes(
+        diagnosis.kind,
+      ),
     hint: error < 0.6,
     thinking: error < 1.3,
   })
   const mascotMessage = missionMessage(mascotState, {
     success: activeLevel.successText,
-    warning: 'Один из образов ушел далеко. Верни ручку ближе к целевой отметке.',
+    warning: activeLevel.mistakeFeedback?.[0] ?? diagnosis.message,
     hint: activeLevel.hint,
     thinking: 'Матрица уже похожа на цель. Дотяни один из столбцов.',
     idle: 'Тяни оранжевую и синюю ручки. Это образы e1 и e2, то есть столбцы матрицы.',
@@ -115,6 +128,7 @@ export function MatrixMachineMission() {
   ]
 
   const setVector = (targetName: DragTarget, next: Vec2) => {
+    setTouched(true)
     if (targetName === 'u') setU(next)
     if (targetName === 'v') setV(next)
   }
@@ -147,9 +161,11 @@ export function MatrixMachineMission() {
   const resetLevel = () => {
     setU([1, 0])
     setV([0, 1])
+    setTouched(false)
   }
   const setVectorCoord = (targetName: 'u' | 'v', coord: 0 | 1, value: number) => {
     const safeValue = Number.isFinite(value) ? Math.max(-3, Math.min(3, value)) : 0
+    setTouched(true)
     const setter = targetName === 'u' ? setU : setV
     setter((current) => {
       const next = [...current] as Vec2
@@ -226,6 +242,13 @@ export function MatrixMachineMission() {
           </div>
           <VectorReadout label="A e1" value={u} target={target.u} />
           <VectorReadout label="A e2" value={v} target={target.v} />
+          <div
+            className="rounded border border-ink/10 bg-paper/80 px-2 py-1.5 text-xs leading-relaxed text-ink/70"
+            data-testid="matrix-diagnosis"
+          >
+            <p className="font-semibold text-ink">{diagnosis.message}</p>
+            <p className="mt-1">{diagnosis.repairHint}</p>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <CoordInput
               label="u.x"
@@ -270,7 +293,8 @@ export function MatrixMachineMission() {
       feedback={
         <p>
           A = [[{formatMatrixNumber(matrix[0][0])}, {formatMatrixNumber(matrix[0][1])}], [
-          {formatMatrixNumber(matrix[1][0])}, {formatMatrixNumber(matrix[1][1])}]].
+          {formatMatrixNumber(matrix[1][0])}, {formatMatrixNumber(matrix[1][1])}]]. Диагноз:{' '}
+          <span className="font-semibold">{diagnosis.kind}</span>.
         </p>
       }
     />

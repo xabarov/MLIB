@@ -9,6 +9,7 @@
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
 План этапа карты и trace-механики: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
 Текущий следующий этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
+Следующий игровой этап: [next_gameplay_learning_stage_plan.md](next_gameplay_learning_stage_plan.md).
 
 ## Текущее состояние
 

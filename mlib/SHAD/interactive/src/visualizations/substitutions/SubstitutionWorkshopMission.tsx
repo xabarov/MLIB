@@ -6,11 +6,11 @@ import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
 import { useMissionRuntime } from '../../game/useMissionRuntime'
 import {
   cycleNotation,
+  diagnoseSubstitutionState,
   parity,
   substitutionLevelSuccess,
   substitutionLevels,
   swapImages,
-  targetDistance,
   type Permutation,
 } from './substitutionWorkshopModel'
 
@@ -49,8 +49,12 @@ function SubstitutionWorkshopLevel({
 
   const currentParity = parity(permutation)
   const currentCycles = cycleNotation(permutation)
-  const distance = targetDistance(permutation, levelSpec.target)
   const overBudget = levelSpec.maxSwaps !== undefined && swapCount > levelSpec.maxSwaps
+  const diagnosis = diagnoseSubstitutionState({
+    levelId: activeLevel.id,
+    permutation,
+    swapCount,
+  })
   const levelSuccess = useMemo(
     () =>
       substitutionLevelSuccess({
@@ -68,15 +72,22 @@ function SubstitutionWorkshopLevel({
 
   const mascotState = chooseMascotState({
     success: levelSuccess,
-    warning: overBudget,
-    hint: distance <= 2 || (levelSpec.requiredParity !== undefined && currentParity === levelSpec.requiredParity),
+    warning:
+      overBudget ||
+      (swapCount > 0 && ['wrong-parity', 'target-mismatch'].includes(diagnosis.kind)),
+    hint:
+      diagnosis.kind === 'near-target' ||
+      (levelSpec.requiredParity !== undefined && currentParity === levelSpec.requiredParity),
     thinking: selectedIndex !== null,
   })
   const mascotMessage = missionMessage(mascotState, {
     success: activeLevel.successText,
-    warning: 'Ходов стало больше, чем нужно. Сбрось уровень и попробуй собрать структуру короче.',
+    warning: activeLevel.mistakeFeedback?.[0] ?? diagnosis.message,
     hint: activeLevel.hint,
-    thinking: 'Выбери вторую позицию: я поменяю местами два образа.',
+    thinking:
+      selectedIndex === null
+        ? 'Выбери позицию для транспозиции.'
+        : `Меби держит позицию ${selectedIndex + 1}. Выбери вторую, чтобы сделать транспозицию.`,
     idle: 'Кликни две позиции, чтобы сделать транспозицию образов.',
   })
 
@@ -139,6 +150,7 @@ function SubstitutionWorkshopLevel({
                 const selected = selectedIndex === index
                 const targetValue = levelSpec.target?.[index]
                 const correct = targetValue === undefined || targetValue === value
+                const mismatch = diagnosis.mismatchPositions.includes(index + 1)
                 return (
                   <button
                     key={index}
@@ -147,6 +159,8 @@ function SubstitutionWorkshopLevel({
                     className={`min-h-24 rounded-md border p-3 text-left shadow-[0_10px_28px_rgba(20,20,19,0.08)] transition ${
                       selected
                         ? 'border-purple bg-purple/12'
+                        : mismatch
+                          ? 'border-danger/35 bg-danger/8'
                         : correct
                           ? 'border-success/25 bg-paper'
                           : 'border-orange/30 bg-highlight'
@@ -200,6 +214,18 @@ function SubstitutionWorkshopLevel({
             Выбери две плитки: их образы поменяются местами. Это одна
             транспозиция.
           </p>
+          <div
+            className="rounded border border-ink/10 bg-paper/80 px-2 py-1.5 text-xs leading-relaxed text-ink/70"
+            data-testid="substitution-diagnosis"
+          >
+            <p className="font-semibold text-ink">{diagnosis.message}</p>
+            <p className="mt-1">{diagnosis.repairHint}</p>
+            {selectedIndex !== null && (
+              <p className="mt-1 text-target">
+                Меби держит позицию {selectedIndex + 1}; следующий клик сделает транспозицию.
+              </p>
+            )}
+          </div>
           <button
             type="button"
             onClick={resetLevel}
@@ -213,7 +239,8 @@ function SubstitutionWorkshopLevel({
       feedback={
         <p>
           Сейчас: {permutationLabel(permutation)}. Циклическая запись:{' '}
-          <span className="font-semibold">{currentCycles}</span>.
+          <span className="font-semibold">{currentCycles}</span>. Диагноз:{' '}
+          <span className="font-semibold">{diagnosis.kind}</span>.
         </p>
       }
     />

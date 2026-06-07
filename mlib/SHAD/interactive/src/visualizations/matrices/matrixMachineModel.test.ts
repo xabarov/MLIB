@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  diagnoseMatrixMachineState,
   matrixFromColumns,
   matrixMachineLevelSuccess,
   snapMatrixCoord,
@@ -25,5 +26,34 @@ describe('matrixMachineModel', () => {
     expect(targetError('stretch-x', [1, 0], [0, 1])).toBeCloseTo(1)
     expect(snapMatrixCoord(0.62)).toBe(0.5)
     expect(snapMatrixCoord(9)).toBe(3)
+  })
+
+  it('diagnoses matrix machine mistakes without punishing the initial state', () => {
+    expect(
+      diagnoseMatrixMachineState({
+        levelId: 'stretch-x',
+        u: [1, 0],
+        v: [0, 1],
+        touched: false,
+      }).kind,
+    ).toBe('in-progress')
+
+    expect(
+      diagnoseMatrixMachineState({
+        levelId: 'quarter-turn',
+        u: [-1, 0],
+        v: [0, 1],
+        touched: true,
+      }).kind,
+    ).toBe('swapped-columns')
+
+    expect(
+      diagnoseMatrixMachineState({
+        levelId: 'stretch-x',
+        u: [1, 0],
+        v: [0, 1],
+        touched: true,
+      }).kind,
+    ).toBe('wrong-length')
   })
 })

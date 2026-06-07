@@ -9,6 +9,21 @@ export type SubstitutionLevelSpec = {
   requiredParity?: 'even' | 'odd'
 }
 
+export type SubstitutionDiagnosisKind =
+  | 'success'
+  | 'over-budget'
+  | 'wrong-parity'
+  | 'target-mismatch'
+  | 'near-target'
+  | 'in-progress'
+
+export type SubstitutionDiagnosis = {
+  kind: SubstitutionDiagnosisKind
+  message: string
+  repairHint: string
+  mismatchPositions: number[]
+}
+
 export const substitutionLevels: Record<string, SubstitutionLevelSpec> = {
   'make-cycle': {
     id: 'make-cycle',
@@ -116,4 +131,82 @@ export function substitutionLevelSuccess({
 export function targetDistance(permutation: Permutation, target?: Permutation): number {
   if (!target) return 0
   return permutation.reduce((count, value, index) => count + (target[index] === value ? 0 : 1), 0)
+}
+
+export function mismatchPositions(permutation: Permutation, target?: Permutation): number[] {
+  if (!target) return []
+  return permutation.flatMap((value, index) => (value === target[index] ? [] : [index + 1]))
+}
+
+export function diagnoseSubstitutionState({
+  levelId,
+  permutation,
+  swapCount,
+}: {
+  levelId: string
+  permutation: Permutation
+  swapCount: number
+}): SubstitutionDiagnosis {
+  const level = substitutionLevels[levelId]
+  if (!level) {
+    return {
+      kind: 'in-progress',
+      message: 'Уровень не найден.',
+      repairHint: 'Вернись на карту курса и открой миссию заново.',
+      mismatchPositions: [],
+    }
+  }
+
+  const mismatches = mismatchPositions(permutation, level.target)
+  const currentParity = parity(permutation)
+  const success = substitutionLevelSuccess({ levelId, permutation, swapCount })
+  const shouldDiagnoseTarget = swapCount > 0 || level.id === 'repair'
+
+  if (success) {
+    return {
+      kind: 'success',
+      message: 'Инвариант уровня собран.',
+      repairHint: 'Можно переходить к следующему уровню.',
+      mismatchPositions: [],
+    }
+  }
+
+  if (level.maxSwaps !== undefined && swapCount > level.maxSwaps) {
+    return {
+      kind: 'over-budget',
+      message: `Бюджет транспозиций нарушен: ${swapCount}/${level.maxSwaps}.`,
+      repairHint: 'Сбрось уровень и ищи ход, который чинит сразу несколько позиций.',
+      mismatchPositions: mismatches,
+    }
+  }
+
+  if (level.requiredParity && currentParity !== level.requiredParity) {
+    return {
+      kind: 'wrong-parity',
+      message: `Нужна ${level.requiredParity === 'odd' ? 'нечетная' : 'четная'} перестановка, сейчас ${currentParity}.`,
+      repairHint: 'Одна транспозиция всегда меняет четность.',
+      mismatchPositions: [],
+    }
+  }
+
+  if (level.target && mismatches.length > 0 && shouldDiagnoseTarget) {
+    const near = mismatches.length <= 2
+    return {
+      kind: near ? 'near-target' : 'target-mismatch',
+      message: near
+        ? `Почти собрано: разрыв остался в позициях ${mismatches.join(', ')}.`
+        : `Целевая циклическая структура нарушена в позициях ${mismatches.join(', ')}.`,
+      repairHint: near
+        ? 'Попробуй транспозицию, которая поставит оба оставшихся образа на свои места.'
+        : 'Смотри не на числа по отдельности, а на маршрут цикла: кто куда должен указывать.',
+      mismatchPositions: mismatches,
+    }
+  }
+
+  return {
+    kind: 'in-progress',
+    message: 'Состояние еще не нарушает явный запрет, но цель не достигнута.',
+    repairHint: 'Продолжай транспозициями и следи за инвариантом уровня.',
+    mismatchPositions: mismatches,
+  }
 }

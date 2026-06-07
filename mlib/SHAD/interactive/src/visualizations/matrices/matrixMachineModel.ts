@@ -9,6 +9,21 @@ export type MatrixMachineTarget = Matrix2 & {
   id: string
 }
 
+export type MatrixMachineDiagnosisKind =
+  | 'success'
+  | 'in-progress'
+  | 'swapped-columns'
+  | 'wrong-first-column'
+  | 'wrong-second-column'
+  | 'wrong-direction'
+  | 'wrong-length'
+
+export type MatrixMachineDiagnosis = {
+  kind: MatrixMachineDiagnosisKind
+  message: string
+  repairHint: string
+}
+
 export const matrixMachineTargets: Record<string, MatrixMachineTarget> = {
   'stretch-x': { id: 'stretch-x', u: [2, 0], v: [0, 1] },
   'shear-y': { id: 'shear-y', u: [1, 0], v: [1, 1] },
@@ -43,6 +58,99 @@ export function targetError(levelId: string, u: Vec2, v: Vec2): number {
 
 export function matrixMachineLevelSuccess(levelId: string, u: Vec2, v: Vec2): boolean {
   return targetError(levelId, u, v) < epsilon
+}
+
+export function sameDirection(a: Vec2, b: Vec2): boolean {
+  const cross = Math.abs(a[0] * b[1] - a[1] * b[0])
+  const dot = a[0] * b[0] + a[1] * b[1]
+  return cross < epsilon && dot > 0
+}
+
+export function diagnoseMatrixMachineState({
+  levelId,
+  u,
+  v,
+  touched,
+}: {
+  levelId: string
+  u: Vec2
+  v: Vec2
+  touched: boolean
+}): MatrixMachineDiagnosis {
+  const target = matrixMachineTargets[levelId]
+  if (!target) {
+    return {
+      kind: 'in-progress',
+      message: 'Цель уровня не найдена.',
+      repairHint: 'Вернись на карту курса и открой миссию заново.',
+    }
+  }
+
+  if (matrixMachineLevelSuccess(levelId, u, v)) {
+    return {
+      kind: 'success',
+      message: 'Оба образа базиса совпали с целевой матрицей.',
+      repairHint: 'Можно переходить к следующему уровню.',
+    }
+  }
+
+  if (!touched) {
+    return {
+      kind: 'in-progress',
+      message: 'Матрица еще не настроена: двигай образы e1 и e2.',
+      repairHint: 'Начни с того столбца, который отличается от бледной направляющей.',
+    }
+  }
+
+  const uError = distance(u, target.u)
+  const vError = distance(v, target.v)
+  const swapped = distance(u, target.v) < epsilon && distance(v, target.u) < epsilon
+
+  if (swapped) {
+    return {
+      kind: 'swapped-columns',
+      message: 'Образы e1 и e2 перепутаны местами.',
+      repairHint: 'Оранжевый вектор отвечает за первый столбец, синий - за второй.',
+    }
+  }
+
+  if (sameDirection(u, target.u) && uError >= epsilon) {
+    return {
+      kind: 'wrong-length',
+      message: 'Направление A e1 верное, но длина первого столбца еще не совпала.',
+      repairHint: 'Дотяни оранжевую ручку вдоль той же прямой до целевой отметки.',
+    }
+  }
+
+  if (sameDirection(v, target.v) && vError >= epsilon) {
+    return {
+      kind: 'wrong-length',
+      message: 'Направление A e2 верное, но длина второго столбца еще не совпала.',
+      repairHint: 'Дотяни синюю ручку вдоль той же прямой до целевой отметки.',
+    }
+  }
+
+  if (uError >= epsilon && vError < epsilon) {
+    return {
+      kind: 'wrong-first-column',
+      message: 'Второй столбец уже собран, ошибка осталась в A e1.',
+      repairHint: 'Исправляй оранжевую ручку: это образ первого базисного вектора.',
+    }
+  }
+
+  if (vError >= epsilon && uError < epsilon) {
+    return {
+      kind: 'wrong-second-column',
+      message: 'Первый столбец уже собран, ошибка осталась в A e2.',
+      repairHint: 'Исправляй синюю ручку: это образ второго базисного вектора.',
+    }
+  }
+
+  return {
+    kind: 'wrong-direction',
+    message: 'Хотя бы один образ базиса смотрит не в целевом направлении.',
+    repairHint: 'Сначала совмести направление с бледной направляющей, потом длину.',
+  }
 }
 
 export function formatMatrixNumber(value: number): string {

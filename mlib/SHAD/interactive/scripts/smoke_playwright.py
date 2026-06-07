@@ -161,6 +161,20 @@ def run_matrix_happy_path(page) -> None:
     ).to_be_visible(timeout=10_000)
 
 
+def run_matrix_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/matrices/machine", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="matrix-machine-plane"]', timeout=10_000)
+    fill_matrix(page, "0", "1", "2", "0")
+    expect(page.get_by_test_id("matrix-diagnosis")).to_contain_text(
+        "Образы e1 и e2 перепутаны местами.", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("matrix-reset").click()
+    expect(page.get_by_test_id("matrix-diagnosis")).to_contain_text(
+        "Матрица еще не настроена", timeout=10_000
+    )
+
+
 def run_substitution_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
@@ -181,6 +195,20 @@ def run_substitution_happy_path(page) -> None:
     swap_tiles(page, 2, 3)
     swap_tiles(page, 3, 5)
     expect(page.get_by_text("Маршрут восстановлен")).to_be_visible(timeout=10_000)
+
+
+def run_substitution_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
+    swap_tiles(page, 1, 2)
+    expect(page.get_by_test_id("substitution-diagnosis")).to_contain_text(
+        "Целевая циклическая структура нарушена", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("substitution-reset").click()
+    expect(page.get_by_test_id("substitution-diagnosis")).to_contain_text(
+        "Состояние еще не нарушает явный запрет", timeout=10_000
+    )
 
 
 def run_graph_happy_path(page) -> None:
@@ -204,6 +232,8 @@ def run_happy_paths(browser) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 960})
     context.add_init_script("window.localStorage.clear()")
     page = context.new_page()
+    run_substitution_mistake_path(page)
+    run_matrix_mistake_path(page)
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)

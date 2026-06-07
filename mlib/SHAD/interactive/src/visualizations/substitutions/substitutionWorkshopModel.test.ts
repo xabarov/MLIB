@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   cycleNotation,
   cycles,
+  diagnoseSubstitutionState,
   identity,
   inversions,
   isSamePermutation,
+  mismatchPositions,
   parity,
   substitutionLevelSuccess,
   swapImages,
@@ -46,5 +48,46 @@ describe('substitutionWorkshopModel', () => {
         swapCount: 1,
       }),
     ).toBe(true)
+  })
+
+  it('diagnoses target mismatches and near-target repair hints', () => {
+    expect(
+      diagnoseSubstitutionState({
+        levelId: 'make-cycle',
+        permutation: [1, 2, 3, 4, 5],
+        swapCount: 0,
+      }).kind,
+    ).toBe('in-progress')
+
+    expect(mismatchPositions([2, 1, 4, 5, 3], [2, 3, 4, 5, 1])).toEqual([2, 5])
+
+    const diagnosis = diagnoseSubstitutionState({
+      levelId: 'repair',
+      permutation: [2, 1, 4, 5, 3],
+      swapCount: 1,
+    })
+
+    expect(diagnosis.kind).toBe('near-target')
+    expect(diagnosis.mismatchPositions).toEqual([2, 5])
+    expect(diagnosis.message).toContain('2, 5')
+  })
+
+  it('diagnoses parity and swap-budget mistakes', () => {
+    expect(
+      diagnoseSubstitutionState({
+        levelId: 'flip-parity',
+        permutation: [1, 2, 3, 4, 5],
+        swapCount: 0,
+      }).kind,
+    ).toBe('wrong-parity')
+
+    const overBudget = diagnoseSubstitutionState({
+      levelId: 'make-cycle',
+      permutation: [2, 3, 4, 5, 1],
+      swapCount: 5,
+    })
+
+    expect(overBudget.kind).toBe('over-budget')
+    expect(overBudget.message).toContain('5/4')
   })
 })
