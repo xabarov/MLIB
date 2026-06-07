@@ -154,15 +154,15 @@ def run_kernel_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/linear-maps/kernel", wait_until="domcontentloaded")
     page.wait_for_selector("canvas", timeout=10_000)
     fill_kernel(page, "-1", "1", "-1")
-    expect(page.get_by_text("Есть ненулевой вектор ядра")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Есть ненулевой вектор ядра").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-solution-line").click()
     fill_kernel(page, "-2", "2", "-2")
-    expect(page.get_by_text("Решения тянутся вдоль одной прямой")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Решения тянутся вдоль одной прямой").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-kernel-basis").click()
     fill_kernel(page, "-1", "1", "-1")
-    expect(page.get_by_text("Одного направления достаточно")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Одного направления достаточно").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-rank-nullity").click()
-    expect(page.get_by_text("Ранг 2 и дефект 1")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Ранг 2 и дефект 1").first).to_be_visible(timeout=10_000)
 
 
 def run_kernel_mistake_path(page) -> None:
@@ -185,16 +185,16 @@ def run_determinant_happy_path(page) -> None:
     expect(page.get_by_text("det A").first).to_be_visible(timeout=10_000)
     expect(page.get_by_text("1.00").first).to_be_visible(timeout=10_000)
     fill_determinant(page, "2", "0", "0", "1")
-    expect(page.get_by_text("Площадь поймана")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Площадь поймана").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-orientation").click()
     fill_determinant(page, "2", "0", "0", "-1")
-    expect(page.get_by_text("Ориентация изменилась")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Ориентация изменилась").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-break-invertibility").click()
     fill_determinant(page, "1", "0", "2", "0")
-    expect(page.get_by_text("Матрица вырождена")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Матрица вырождена").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-repair-matrix").click()
     fill_determinant(page, "1", "0", "0", "1")
-    expect(page.get_by_text("Матрица снова обратима: площадь вернулась.")).to_be_visible(
+    expect(page.get_by_text("Матрица снова обратима: площадь вернулась.").first).to_be_visible(
         timeout=10_000
     )
 
@@ -203,7 +203,7 @@ def run_determinant_mistake_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/determinants/forge", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="determinant-forge-plane"]', timeout=10_000)
     fill_determinant(page, "1", "0", "0", "2")
-    expect(page.get_by_text("Площадь поймана")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Площадь поймана").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-orientation").click()
     fill_determinant(page, "1", "0", "0", "2")
     expect(page.get_by_test_id("determinant-diagnosis")).to_contain_text(
@@ -220,17 +220,17 @@ def run_matrix_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/matrices/machine", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="matrix-machine-plane"]', timeout=10_000)
     fill_matrix(page, "2", "0", "0", "1")
-    expect(page.get_by_text("Первый столбец растянулся")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Первый столбец растянулся").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-shear-y").click()
     fill_matrix(page, "1", "0", "1", "1")
-    expect(page.get_by_text("Сдвиг собран")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Сдвиг собран").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-x").click()
     fill_matrix(page, "-1", "0", "0", "1")
-    expect(page.get_by_text("Ось x перевернулась")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Ось x перевернулась").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-quarter-turn").click()
     fill_matrix(page, "0", "1", "-1", "0")
     expect(
-        page.get_by_text("Матрица поворота собрана из двух образов базисных векторов.")
+        page.get_by_text("Матрица поворота собрана из двух образов базисных векторов.").first
     ).to_be_visible(timeout=10_000)
 
 
@@ -251,28 +251,32 @@ def run_matrix_mistake_path(page) -> None:
 def run_substitution_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
+    expect(page.get_by_test_id("cycle-rail")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("swap-budget-stars")).to_be_visible(timeout=10_000)
     swap_tiles(page, 1, 5)
     swap_tiles(page, 1, 4)
     swap_tiles(page, 1, 3)
     swap_tiles(page, 1, 2)
-    expect(page.get_by_text("Цикл собран")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Цикл собран").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-parity").click()
     swap_tiles(page, 1, 2)
-    expect(page.get_by_text("Знак сменился")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Знак сменился").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-two-cycles").click()
     swap_tiles(page, 1, 2)
     swap_tiles(page, 3, 4)
     swap_tiles(page, 5, 6)
-    expect(page.get_by_text("Три независимых обмена")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Три независимых обмена").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-repair").click()
     swap_tiles(page, 2, 3)
     swap_tiles(page, 3, 5)
-    expect(page.get_by_text("Маршрут восстановлен")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Маршрут восстановлен").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
 
 
 def run_substitution_mistake_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
+    expect(page.get_by_test_id("cycle-rail")).to_be_visible(timeout=10_000)
     swap_tiles(page, 1, 2)
     expect(page.get_by_test_id("substitution-diagnosis")).to_contain_text(
         "Целевая циклическая структура нарушена", timeout=10_000
@@ -288,16 +292,16 @@ def run_graph_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/combinatorics/graphs/dispatcher", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-graph-dispatcher"]', timeout=10_000)
     click_graph_order(page, ["A", "B", "C", "D", "E", "F", "G"])
-    expect(page.get_by_text("BFS прошел по слоям")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("BFS прошел по слоям").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-dfs-stack").click()
     click_graph_order(page, ["A", "B", "D", "F", "E", "G", "C"])
-    expect(page.get_by_text("DFS ушел в глубину")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("DFS ушел в глубину").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-connected-component").click()
     click_graph_order(page, ["A", "B", "C", "D", "E", "F", "G"])
-    expect(page.get_by_text("Компонента найдена")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Компонента найдена").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-repair-trace").click()
     click_graph_order(page, ["B", "C", "D", "E", "F", "G"])
-    expect(page.get_by_text("Trace восстановлен")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Trace восстановлен").first).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
 
 
@@ -318,28 +322,32 @@ def run_graph_mistake_path(page) -> None:
 def run_asymptotic_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algorithms/asymptotics/arena", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-asymptotic-arena"]', timeout=10_000)
+    expect(page.get_by_test_id("strategy-race")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("race-result")).to_contain_text("winner")
     choose_strategy(page, "linear-scan")
-    expect(page.get_by_text("Малый вход решен просто")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Малый вход решен просто").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-large-input").click()
     choose_strategy(page, "merge-sort")
-    expect(page.get_by_text("Большой вход пережил рост")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Большой вход пережил рост").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-nearly-sorted").click()
     choose_strategy(page, "insertion-sort")
-    expect(page.get_by_text("Структура входа использована")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Структура входа использована").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-many-lookups").click()
     choose_strategy(page, "hash-index")
-    expect(page.get_by_text("Preprocessing окупился")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Preprocessing окупился").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
 
 
 def run_asymptotic_mistake_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algorithms/asymptotics/arena", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-asymptotic-arena"]', timeout=10_000)
+    expect(page.get_by_test_id("race-row-binary-search-after-sort")).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("mission-feedback")).to_contain_text(
         "setup-not-worth-it", timeout=10_000
     )
     choose_strategy(page, "linear-scan")
-    expect(page.get_by_text("Малый вход решен просто")).to_be_visible(timeout=10_000)
+    expect(page.get_by_text("Малый вход решен просто").first).to_be_visible(timeout=10_000)
 
 
 def run_ml_playground_happy_path(page) -> None:
@@ -376,6 +384,7 @@ def run_ml_playground_mistake_path(page) -> None:
 def run_feature_factory_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/data/features/factory", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
+    expect(page.get_by_test_id("pipeline-diff")).to_be_visible(timeout=10_000)
     click_data_column_action(page, "impute-median", "temperature")
     expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-outlier-repair").click()
@@ -387,6 +396,10 @@ def run_feature_factory_happy_path(page) -> None:
     page.get_by_test_id("level-encode-category").click()
     encode_feature(page, "segment")
     expect(page.get_by_text("Категория закодирована").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-split-check").click()
+    page.get_by_test_id("split-seed-balanced").click()
+    expect(page.get_by_text("Split сбалансирован").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
 
 
@@ -397,8 +410,15 @@ def run_feature_factory_mistake_path(page) -> None:
         "остались NA", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
-    click_data_column_action(page, "impute-median", "signal")
-    expect(page.get_by_test_id("pipeline-strip")).to_contain_text("median impute signal")
+    click_data_column_action(page, "fill-zero", "temperature")
+    expect(page.get_by_test_id("feature-factory-diagnosis")).to_contain_text("Нули закрыли NA")
+    expect(page.get_by_test_id("pipeline-strip")).to_contain_text("fill zero temperature")
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
+    click_data_column_action(page, "drop-missing", "temperature")
+    expect(page.get_by_test_id("feature-factory-diagnosis")).to_contain_text("NA исчезли")
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
     click_data_column_action(page, "impute-median", "temperature")
     expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
 

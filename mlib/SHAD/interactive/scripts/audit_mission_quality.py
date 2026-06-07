@@ -1,0 +1,192 @@
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+MISSIONS_TS = ROOT / "SHAD/interactive/src/game/missions.ts"
+REPORT_MD = ROOT / "SHAD/interactive/mission_quality_report.md"
+
+MECHANIC_TAGS = {
+    "geometry-lab",
+    "state-machine",
+    "structure-builder",
+    "sampler",
+    "model-arena",
+    "code-trace",
+    "trace",
+    "strategy-compare",
+    "feature-engineering",
+}
+VALIDATION_TAGS = {"model-tested", "mistake-diagnostics", "mistake-path", "lecture-linked"}
+
+
+@dataclass
+class MissionAudit:
+    const_name: str
+    mission_id: str
+    title: str
+    score: int
+    max_score: int
+    warnings: list[str]
+
+
+def find_balanced(text: str, start: int, open_char: str, close_char: str) -> tuple[str, int]:
+    depth = 0
+    in_string: str | None = None
+    escaped = False
+    for index in range(start, len(text)):
+        char = text[index]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == in_string:
+                in_string = None
+            continue
+        if char in {"'", '"', "`"}:
+            in_string = char
+            continue
+        if char == open_char:
+            depth += 1
+        elif char == close_char:
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1], index + 1
+    raise ValueError(f"Unbalanced {open_char}{close_char} block")
+
+
+def split_top_level_objects(array_text: str) -> list[str]:
+    objects: list[str] = []
+    index = 0
+    while index < len(array_text):
+        next_object = array_text.find("{", index)
+        if next_object == -1:
+            break
+        item, index = find_balanced(array_text, next_object, "{", "}")
+        objects.append(item)
+    return objects
+
+
+def string_field(block: str, field: str) -> str:
+    match = re.search(rf"{field}:\s*['\"]([^'\"]+)['\"]", block)
+    return match.group(1) if match else ""
+
+
+def array_field_items(block: str, field: str) -> list[str]:
+    marker = f"{field}:"
+    start = block.find(marker)
+    if start == -1:
+        return []
+    bracket_start = block.find("[", start)
+    if bracket_start == -1:
+        return []
+    array_text, _ = find_balanced(block, bracket_start, "[", "]")
+    return re.findall(r"['\"]([^'\"]+)['\"]", array_text)
+
+
+def mission_blocks(text: str) -> list[tuple[str, str]]:
+    blocks: list[tuple[str, str]] = []
+    pattern = re.compile(r"export const (\w+Mission): MissionDefinition = ")
+    for match in pattern.finditer(text):
+        block_start = text.find("{", match.end())
+        block, _ = find_balanced(text, block_start, "{", "}")
+        blocks.append((match.group(1), block))
+    return blocks
+
+
+def levels_for_mission(block: str) -> list[str]:
+    marker = "levels:"
+    start = block.find(marker)
+    if start == -1:
+        return []
+    bracket_start = block.find("[", start)
+    if bracket_start == -1:
+        return []
+    levels_array, _ = find_balanced(block, bracket_start, "[", "]")
+    return split_top_level_objects(levels_array)
+
+
+def audit_mission(const_name: str, block: str) -> MissionAudit:
+    warnings: list[str] = []
+    score = 0
+    max_score = 0
+    mission_id = string_field(block, "id") or const_name
+    title = string_field(block, "title") or mission_id
+    levels = levels_for_mission(block)
+    tags = set(array_field_items(block, "qualityTags"))
+
+    for level in levels:
+      level_id = string_field(level, "id") or "unknown"
+      checks = {
+          "hintLevels": "hintLevels" in level,
+          "mistakeFeedback": "mistakeFeedback" in level,
+          "takeaway": "takeaway:" in level,
+          "successConditionLabel": "successConditionLabel:" in level,
+          "nextPrompt": "nextPrompt:" in level,
+      }
+      objective = string_field(level, "objective")
+      takeaway = string_field(level, "takeaway")
+      if objective and takeaway and objective == takeaway:
+          checks["takeaway differs from objective"] = False
+      else:
+          checks["takeaway differs from objective"] = True
+      for check, ok in checks.items():
+          max_score += 1
+          if ok:
+              score += 1
+          else:
+              warnings.append(f"{level_id}: missing {check}")
+
+    max_score += 2
+    if tags & MECHANIC_TAGS:
+        score += 1
+    else:
+        warnings.append("mission: qualityTags miss mechanic tag")
+    if tags & VALIDATION_TAGS:
+        score += 1
+    else:
+        warnings.append("mission: qualityTags miss validation tag")
+
+    return MissionAudit(const_name, mission_id, title, score, max_score, warnings)
+
+
+def write_report(audits: list[MissionAudit]) -> None:
+    lines = [
+        "# SHAD Interactive: mission quality report",
+        "",
+        "Generated by `make mission-audit`. The audit is intentionally a warning tool: it catches",
+        "missing authoring fields, but human review still decides whether a task is interesting.",
+        "",
+        "| Mission | Score | Warnings |",
+        "| --- | ---: | --- |",
+    ]
+    for audit in audits:
+        warning_text = "<br>".join(audit.warnings) if audit.warnings else "none"
+        lines.append(f"| `{audit.title}` | {audit.score}/{audit.max_score} | {warning_text} |")
+    lines.extend(
+        [
+            "",
+            "## Next Review Questions",
+            "",
+            "- Which level still has only one obvious action?",
+            "- Which error is explained mostly by text rather than visible state?",
+            "- Which mission should move from `prototype` to `available` after UX review?",
+        ],
+        )
+    REPORT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main() -> None:
+    text = MISSIONS_TS.read_text(encoding="utf-8")
+    audits = [audit_mission(name, block) for name, block in mission_blocks(text)]
+    write_report(audits)
+    for audit in audits:
+        print(f"{audit.title}: {audit.score}/{audit.max_score} ({len(audit.warnings)} warnings)")
+    print(f"Report written to {REPORT_MD.relative_to(ROOT)}")
+
+
+if __name__ == "__main__":
+    main()

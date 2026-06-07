@@ -54,6 +54,8 @@
 - [ ] Curriculum graph validation проходит.
 - [ ] Playwright smoke делает screenshot route.
 - [ ] Playwright happy path проходит все уровни миссии.
+- [ ] `make mission-audit` не показывает warnings или warnings осознанно
+  записаны в `mission_quality_report.md`.
 - [ ] `git diff --check` чистый.
 
 ## 7. Accessibility
@@ -84,6 +86,7 @@
 make lint-python
 make lint-js
 make test-js
+make mission-audit
 make interactive-build
 SHAD_INTERACTIVE_URL=http://127.0.0.1:5173 .venv/bin/python SHAD/interactive/scripts/smoke_playwright.py
 ```

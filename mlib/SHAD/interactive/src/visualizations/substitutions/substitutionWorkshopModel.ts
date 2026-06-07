@@ -24,6 +24,13 @@ export type SubstitutionDiagnosis = {
   mismatchPositions: number[]
 }
 
+export type CycleEdgeState = {
+  from: number
+  to: number
+  targetTo?: number
+  correct: boolean
+}
+
 export const substitutionLevels: Record<string, SubstitutionLevelSpec> = {
   'make-cycle': {
     id: 'make-cycle',
@@ -136,6 +143,15 @@ export function targetDistance(permutation: Permutation, target?: Permutation): 
 export function mismatchPositions(permutation: Permutation, target?: Permutation): number[] {
   if (!target) return []
   return permutation.flatMap((value, index) => (value === target[index] ? [] : [index + 1]))
+}
+
+export function cycleEdgeStates(permutation: Permutation, target?: Permutation): CycleEdgeState[] {
+  return permutation.map((value, index) => ({
+    from: index + 1,
+    to: value,
+    targetTo: target?.[index],
+    correct: target ? target[index] === value : true,
+  }))
 }
 
 export function diagnoseSubstitutionState({

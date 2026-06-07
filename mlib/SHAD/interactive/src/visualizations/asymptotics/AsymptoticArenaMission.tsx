@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CodeTracePanel } from '../../game/components/programming/CodeTracePanel'
+import { StrategyRace } from '../../game/components/programming/StrategyRace'
 import { StrategyCompare } from '../../game/components/programming/StrategyCompare'
 import { MissionShell } from '../../game/components/MissionShell'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
@@ -15,6 +16,7 @@ import {
   estimateCost,
   growthPoints,
   metricsForStrategy,
+  strategyRaceEntries,
   type AlgorithmStrategyId,
   type InputScenarioId,
 } from './asymptoticArenaModel'
@@ -70,6 +72,7 @@ function AsymptoticArenaLevel({
   const levelSuccess = diagnosis.invariantOk
   const cost = estimateCost(strategyId, scenario)
   const metrics = metricsForStrategy(strategyId, scenario)
+  const raceEntries = strategyRaceEntries(scenario)
   const growthByStrategy = Object.fromEntries(
     asymptoticStrategies.map((strategy) => [
       strategy.id,
@@ -160,17 +163,24 @@ function AsymptoticArenaLevel({
             </section>
 
             <section className="rounded-md border border-ink/10 bg-panel/35 p-4 shadow-[0_18px_42px_rgba(20,20,19,0.06)]">
-              <CodeTracePanel
-                lines={codeTraceForStrategy(strategyId)}
-                variables={{
-                  n: scenario.n,
-                  q: scenario.queries,
-                  strategy: strategyId,
-                }}
-                metrics={metrics}
-                invariantOk={diagnosis.invariantOk}
-                invariantLabel={diagnosis.invariantOk ? 'cost model matched' : 'cost model broken'}
-              />
+              <div className="space-y-4">
+                <StrategyRace
+                  entries={raceEntries}
+                  selectedStrategyId={strategyId}
+                  recommendedStrategyId={bestStrategy}
+                />
+                <CodeTracePanel
+                  lines={codeTraceForStrategy(strategyId)}
+                  variables={{
+                    n: scenario.n,
+                    q: scenario.queries,
+                    strategy: strategyId,
+                  }}
+                  metrics={metrics}
+                  invariantOk={diagnosis.invariantOk}
+                  invariantLabel={diagnosis.invariantOk ? 'cost model matched' : 'cost model broken'}
+                />
+              </div>
             </section>
           </div>
         </div>

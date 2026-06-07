@@ -7,21 +7,6 @@
       "slug": "complex-spaces-hero",
       "filename_base": "complex_vector_space_concept",
       "append_style_suffix": true
-    },
-    {
-      "slug": "complex-hermitian-geometry",
-      "filename_base": "hermitian_geometry_concept",
-      "append_style_suffix": true
-    },
-    {
-      "slug": "complex-self-adjoint-spectral",
-      "filename_base": "self_adjoint_spectral_concept",
-      "append_style_suffix": true
-    },
-    {
-      "slug": "complex-svd-concept",
-      "filename_base": "svd_concept",
-      "append_style_suffix": true
     }
   ],
   "job_file_metadata": {

@@ -638,6 +638,7 @@ export const mlPlaygroundMission: MissionDefinition = {
     'Возьми любой маленький датасет и подпиши, где train, где test, какая метрика может обмануть.',
   qualityTags: [
     'model-tested',
+    'model-arena',
     'train-test-split',
     'metric-diagnostics',
     'data-table',
@@ -763,8 +764,8 @@ export const featureFactoryMission: MissionDefinition = {
       hint: 'Пропуски в числовом признаке можно чинить устойчивой статистикой.',
       hintLevels: [
         'Смотри на колонку temp: две строки имеют NA.',
+        'Zero быстро закрывает дырку, но создает искусственный кластер.',
         'Удаление строк уменьшит coverage, а медиана сохранит наблюдения.',
-        'Нажми median в заголовке temp.',
       ],
       mistakeFeedback: [
         'В таблице остались NA: модель будет учиться на дырках.',
@@ -834,6 +835,26 @@ export const featureFactoryMission: MissionDefinition = {
       successConditionLabel: 'segment encoded and enabled',
       takeaway: 'Feature engineering превращает сырой столбец в сигнал, который модель может использовать.',
       lectureAnchor: 'Анализ данных: категориальные признаки',
+      nextPrompt: 'Осталось проверить, что train/test не разъехались.',
+    },
+    {
+      id: 'split-check',
+      title: 'Проверь split',
+      objective: 'Выбери seed, где train/test похожи по label ratio и диапазону signal.',
+      hint: 'Хороший split не должен отдавать весь хвост signal одной стороне.',
+      hintLevels: [
+        'Смотри на split inspector: нужны маленькие label gap и range gap.',
+        'Seed может выглядеть случайным, но проверяется по распределениям.',
+        'Balanced seed держит похожие классы и диапазон signal.',
+      ],
+      mistakeFeedback: [
+        'Split перекошен: train/test видят разные распределения.',
+        'Красивый pipeline не спасает, если test уже не похож на будущие данные.',
+      ],
+      successText: 'Split сбалансирован: train/test проверяют одну и ту же задачу.',
+      successConditionLabel: 'label gap <= 20%, range gap <= 45%',
+      takeaway: 'Split - часть эксперимента: он должен проверять обобщение, а не случайную удачу.',
+      lectureAnchor: 'ML: train/test split',
       nextPrompt: 'Теперь можно собирать более сложные модели и разбиения.',
     },
   ],

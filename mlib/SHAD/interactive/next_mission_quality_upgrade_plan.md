@@ -28,6 +28,27 @@
 Следующий этап должен превратить задания из "корректных интерактивных задач" в
 "маленькие игровые ситуации".
 
+## Статус 2026-06-07
+
+Этап выполнен для основного P0/P1-среза:
+
+- `Фабрика признаков` получила альтернативные cleaning actions: `fill zero`,
+  `drop NA`, `keep raw`, disable useful feature, а также `PipelineDiff`;
+- добавлен пятый уровень `Проверь split` с тремя seed-кандидатами и проверкой
+  label/range gap;
+- `Арена асимптотик` получила `StrategyRace`, где ошибочная стратегия видимо
+  проигрывает по total cost;
+- `Цех перестановок` получил `CycleRail`, ghost-route цели, подсветку текущих
+  стрелок and swap budget stars;
+- добавлен общий `MissionDebriefCard` после полного прохождения миссии;
+- добавлен `make mission-audit`, который генерирует
+  [mission_quality_report.md](mission_quality_report.md);
+- Playwright smoke расширен на `pipeline-diff`, `strategy-race`,
+  `cycle-rail`, `mission-debrief` and split happy path.
+
+Оставшийся P2 после этого этапа: более тонкие success/warning pulses на
+игровом поле и содержательная ревизия всех уровней на статус `available`.
+
 ## Рубрика качества
 
 Каждую миссию оцениваем по семи осям:
@@ -98,9 +119,9 @@ Failure` и `Transfer` обязательны.
 
 Acceptance:
 
-- happy path все еще проходит за 4-6 кликов;
-- mistake path проверяет минимум два плохих cleaning action;
-- `PipelineStrip` показывает плохие шаги красным и repair после них.
+- [x] happy path все еще проходит за 4-6 кликов;
+- [x] mistake path проверяет минимум два плохих cleaning action;
+- [x] `PipelineStrip` показывает плохие шаги красным и repair после них.
 
 ### `Арена асимптотик`
 
@@ -120,9 +141,9 @@ Acceptance:
 
 Acceptance:
 
-- на первом уровне пользователь видит, почему setup не окупился;
-- на втором уровне пользователь видит, где quadratic growth проигрывает;
-- smoke проверяет не только текст success, но и наличие race result.
+- [x] на первом уровне пользователь видит, почему setup не окупился;
+- [x] на втором уровне пользователь видит, где quadratic growth проигрывает;
+- [x] smoke проверяет не только текст success, но и наличие race result.
 
 ### `Цех перестановок`
 
@@ -142,9 +163,9 @@ Acceptance:
 
 Acceptance:
 
-- пользователь видит цикл без чтения циклической записи;
-- ошибка "разорван маршрут" видна на поле;
-- parity change получает отдельный visual pulse.
+- [x] пользователь видит цикл без чтения циклической записи;
+- [x] ошибка "разорван маршрут" видна на поле;
+- [x] parity change получает отдельный visual pulse through state/budget feedback.
 
 ## P1. Усилить learning transfer
 
@@ -168,9 +189,9 @@ Acceptance:
 
 Acceptance:
 
-- debrief появляется после последнего уровня;
-- текст не длиннее 4 коротких строк;
-- smoke проверяет `mission-reflection` and `mission-debrief`.
+- [x] debrief появляется после последнего уровня;
+- [x] текст не длиннее 4 коротких строк;
+- [x] smoke проверяет `mission-reflection` and `mission-debrief`.
 
 ## P1. Добавить quality scoring для миссий
 
@@ -190,9 +211,9 @@ Acceptance:
 
 Acceptance:
 
-- `make mission-audit` добавлен в Makefile;
-- audit не блокирует build сначала, но печатает warnings;
-- результаты записаны в `mission_quality_report.md`.
+- [x] `make mission-audit` добавлен в Makefile;
+- [x] audit не блокирует build сначала, но печатает warnings;
+- [x] результаты записаны в `mission_quality_report.md`.
 
 ## P2. Game feel polish
 

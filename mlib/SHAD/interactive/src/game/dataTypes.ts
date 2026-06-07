@@ -42,10 +42,13 @@ export type ThresholdModel = {
 export type DataActionKind =
   | 'mark-missing'
   | 'impute-median'
+  | 'fill-zero'
+  | 'drop-missing'
   | 'drop-row'
   | 'mark-outlier'
   | 'disable-feature'
   | 'encode-category'
+  | 'keep-raw'
   | 'choose-split'
 
 export type DataPipelineStep = {

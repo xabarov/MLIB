@@ -21,6 +21,7 @@ help:
 	@printf "  interactive-build Build SHAD/interactive\n"
 	@printf "  interactive-smoke Run Playwright smoke against local dev server\n"
 	@printf "  interactive-quality Run lint, tests, build, and smoke\n"
+	@printf "  mission-audit    Audit SHAD/interactive mission authoring quality\n"
 	@printf "  compose-dev       Run Docker dev server with hot reload\n"
 	@printf "  compose-prod      Build and run production container\n"
 	@printf "  compose-down      Stop interactive compose services\n"
@@ -77,6 +78,10 @@ interactive-smoke:
 
 .PHONY: interactive-quality
 interactive-quality: lint-python lint-js test-js interactive-build interactive-smoke
+
+.PHONY: mission-audit
+mission-audit:
+	$(PYTHON) $(INTERACTIVE_DIR)/scripts/audit_mission_quality.py
 
 .PHONY: compose-dev
 compose-dev:

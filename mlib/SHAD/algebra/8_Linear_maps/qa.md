@@ -314,6 +314,7 @@ $$
 C=\begin{pmatrix}1 & 1\\ 1 & -1\end{pmatrix},\qquad
 C^{-1}=\begin{pmatrix}\tfrac{1}{2} & \tfrac{1}{2}\\ \tfrac{1}{2} & -\tfrac{1}{2}\end{pmatrix}.
 $$
+Здесь $C=C_{e\leftarrow f}$: она переводит координаты из базиса $f$ в стандартные координаты.
 
 Вычислим $AC$:
 $$

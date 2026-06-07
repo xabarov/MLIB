@@ -5,6 +5,7 @@ import type { MascotState, MissionBadge, MissionDefinition } from '../missionTyp
 import { InvariantBadge } from './InvariantBadge'
 import { LevelStepper } from './LevelStepper'
 import { MascotCoach } from './MascotCoach'
+import { MissionDebriefCard } from './MissionDebriefCard'
 import { MissionHeader } from './MissionHeader'
 import { MissionReflection } from './MissionReflection'
 import { MissionSummary } from './MissionSummary'
@@ -107,6 +108,7 @@ export function MissionShell({
         )}
         <MissionTakeaway level={activeLevel} success={levelSuccess} />
         <MissionSummary definition={definition} completedLevelIds={completedLevels} />
+        <MissionDebriefCard definition={definition} completedLevelIds={completedLevels} />
         <MissionReflection definition={definition} completedLevelIds={completedLevels} />
         <MascotCoach state={mascotState} message={mascotMessage} />
       </aside>

@@ -13,12 +13,17 @@ export type FeatureFactoryLevelId =
   | 'outlier-repair'
   | 'leakage-off'
   | 'encode-category'
+  | 'split-check'
 
 export type FeatureFactoryDiagnosisKind =
   | 'missing-left'
   | 'outlier-left'
   | 'leakage-enabled'
   | 'category-raw'
+  | 'zero-filled'
+  | 'coverage-lost'
+  | 'useful-feature-disabled'
+  | 'split-skewed'
   | 'over-cleaned'
   | 'ready'
 
@@ -33,6 +38,22 @@ export type FeatureFactoryState = {
   rows: DatasetRow[]
   features: FeatureState[]
   steps: DataPipelineStep[]
+  splitSeedId?: string
+}
+
+export type PipelineDiff = {
+  rowsDelta: number
+  missingDelta: number
+  leakageEnabled: boolean
+  testStabilityDelta: number
+  badSteps: number
+}
+
+export type SplitSeedOption = {
+  id: string
+  label: string
+  description: string
+  trainIds: string[]
 }
 
 export const factoryColumns: DatasetColumn[] = [
@@ -90,6 +111,15 @@ export function initialFactoryFeatures(levelId: FeatureFactoryLevelId): FeatureS
 }
 
 export function initialFactoryState(levelId: FeatureFactoryLevelId): FeatureFactoryState {
+  const cleanRows = dropRow(imputeMedian({ rows: factoryBaseRows, features: [], steps: [] }, 'temperature'), 'ff-07').rows
+  if (levelId === 'split-check') {
+    return {
+      rows: applySplitSeedToRows(cleanRows, 'train-heavy'),
+      features: initialFactoryFeatures(levelId),
+      steps: [pipelineStep('choose-split', 'train-heavy', false)],
+      splitSeedId: 'train-heavy',
+    }
+  }
   return {
     rows: factoryBaseRows,
     features: initialFactoryFeatures(levelId),
@@ -101,10 +131,13 @@ function pipelineStep(kind: DataActionKind, targetId: string, valid: boolean): D
   const labels: Record<DataActionKind, string> = {
     'mark-missing': 'mark missing',
     'impute-median': 'median impute',
+    'fill-zero': 'fill zero',
+    'drop-missing': 'drop missing',
     'drop-row': 'drop row',
     'mark-outlier': 'mark outlier',
     'disable-feature': 'disable feature',
     'encode-category': 'encode category',
+    'keep-raw': 'keep raw',
     'choose-split': 'choose split',
   }
   return {
@@ -153,6 +186,30 @@ export function imputeMedian(state: FeatureFactoryState, columnId: string): Feat
   }
 }
 
+export function fillZero(state: FeatureFactoryState, columnId: string): FeatureFactoryState {
+  const rows = state.rows.map((row) => {
+    if (row.values[columnId] !== null) return row
+    return {
+      ...row,
+      values: { ...row.values, [columnId]: 0 },
+      flags: row.flags?.filter((flag) => flag !== 'missing'),
+    }
+  })
+  return {
+    ...state,
+    rows,
+    steps: appendStep(state.steps, 'fill-zero', columnId, false),
+  }
+}
+
+export function dropMissingRows(state: FeatureFactoryState, columnId: string): FeatureFactoryState {
+  return {
+    ...state,
+    rows: state.rows.filter((row) => row.values[columnId] !== null),
+    steps: appendStep(state.steps, 'drop-missing', columnId, false),
+  }
+}
+
 export function dropRow(state: FeatureFactoryState, rowId: string): FeatureFactoryState {
   const row = state.rows.find((item) => item.id === rowId)
   return {
@@ -174,7 +231,8 @@ export function toggleFeature(state: FeatureFactoryState, featureId: string): Fe
       state.steps,
       'disable-feature',
       featureId,
-      featureId === 'leakage_code' && nextEnabled === false,
+      (featureId === 'leakage_code' && nextEnabled === false) ||
+        (featureId !== 'leakage_code' && nextEnabled === true),
     ),
   }
 }
@@ -195,6 +253,13 @@ export function encodeCategory(state: FeatureFactoryState, featureId: string): F
   }
 }
 
+export function keepRawCategory(state: FeatureFactoryState, featureId: string): FeatureFactoryState {
+  return {
+    ...state,
+    steps: appendStep(state.steps, 'keep-raw', featureId, false),
+  }
+}
+
 function hasMissing(rows: DatasetRow[]) {
   return rows.some((row) => Object.values(row.values).some((value) => value === null))
 }
@@ -207,6 +272,46 @@ function featureById(features: FeatureState[], featureId: string) {
   return features.find((feature) => feature.id === featureId)
 }
 
+export const splitSeedOptions: SplitSeedOption[] = [
+  {
+    id: 'train-heavy',
+    label: 'train-heavy',
+    description: 'Train получает низкий signal, а test забирает почти весь положительный хвост.',
+    trainIds: ['ff-01', 'ff-02', 'ff-03', 'ff-04', 'ff-08', 'ff-09'],
+  },
+  {
+    id: 'range-skew',
+    label: 'range-skew',
+    description: 'Label ratio похож, но диапазон signal у test слишком узкий.',
+    trainIds: ['ff-01', 'ff-02', 'ff-04', 'ff-05', 'ff-10', 'ff-11'],
+  },
+  {
+    id: 'balanced',
+    label: 'balanced',
+    description: 'Train/test держат похожие label ratio and signal range.',
+    trainIds: ['ff-01', 'ff-03', 'ff-04', 'ff-06', 'ff-09', 'ff-11'],
+  },
+]
+
+function applySplitSeedToRows(rows: DatasetRow[], seedId: string): DatasetRow[] {
+  const seed = splitSeedOptions.find((option) => option.id === seedId) ?? splitSeedOptions[0]
+  const trainIds = new Set(seed.trainIds)
+  return rows.map((row) => ({
+    ...row,
+    split: trainIds.has(row.id) ? 'train' : 'test',
+  }))
+}
+
+export function chooseSplitSeed(state: FeatureFactoryState, seedId: string): FeatureFactoryState {
+  const rows = applySplitSeedToRows(state.rows, seedId)
+  return {
+    ...state,
+    rows,
+    splitSeedId: seedId,
+    steps: appendStep(state.steps, 'choose-split', seedId, splitQuality(rows).ok),
+  }
+}
+
 export function splitQuality(rows: DatasetRow[]): SplitQuality {
   const train = rows.filter((row) => row.split === 'train')
   const test = rows.filter((row) => row.split === 'test')
@@ -216,6 +321,7 @@ export function splitQuality(rows: DatasetRow[]): SplitQuality {
     const signals = items
       .map((row) => row.values.signal)
       .filter((value): value is number => typeof value === 'number')
+    if (signals.length === 0) return 0
     return Math.max(...signals) - Math.min(...signals)
   }
   const trainRange = range(train)
@@ -234,6 +340,11 @@ export function factoryMetrics(state: FeatureFactoryState): ModelMetric[] {
   const outlierFixed = !hasOutlier(state.rows)
   const leakageOff = featureById(state.features, 'leakage_code')?.enabled === false
   const segmentEncoded = featureById(state.features, 'segment')?.encoded === true
+  const usefulFeaturesEnabled = ['signal', 'temperature', 'segment'].every(
+    (featureId) => featureById(state.features, featureId)?.enabled !== false,
+  )
+  const hasBadZeroFill = state.steps.some((step) => step.kind === 'fill-zero')
+  const splitOk = splitQuality(state.rows).ok
   let train = 0.7
   let test = 0.6
   if (missingFixed) {
@@ -247,6 +358,17 @@ export function factoryMetrics(state: FeatureFactoryState): ModelMetric[] {
   if (segmentEncoded) {
     train += 0.05
     test += 0.07
+  }
+  if (!usefulFeaturesEnabled) {
+    train -= 0.08
+    test -= 0.14
+  }
+  if (hasBadZeroFill) {
+    train -= 0.02
+    test -= 0.12
+  }
+  if (!splitOk) {
+    test -= 0.08
   }
   if (!leakageOff) {
     train += 0.17
@@ -278,11 +400,38 @@ export function diagnoseFactory(
 ): FeatureFactoryDiagnosis {
   const leakage = featureById(state.features, 'leakage_code')
   const segment = featureById(state.features, 'segment')
+  const usefulDisabled = ['signal', 'temperature', 'segment'].some(
+    (featureId) => featureById(state.features, featureId)?.enabled === false,
+  )
+  if (usefulDisabled) {
+    return {
+      kind: 'useful-feature-disabled',
+      message: 'Pipeline выключил полезный признак: стало честнее, но беднее.',
+      repairHint: 'Верни signal, temperature и segment; отключать нужно только leakage.',
+      invariantOk: false,
+    }
+  }
   if (state.rows.length < factoryBaseRows.length - 2) {
     return {
       kind: 'over-cleaned',
       message: 'Pipeline слишком агрессивен: полезные строки исчезают вместе с шумом.',
       repairHint: 'Удаляй только строку с явным outlier-флагом.',
+      invariantOk: false,
+    }
+  }
+  if (levelId === 'missing-values' && state.steps.some((step) => step.kind === 'fill-zero')) {
+    return {
+      kind: 'zero-filled',
+      message: 'Нули закрыли NA, но создали искусственный холодный кластер.',
+      repairHint: 'Откати идею fill zero: медиана сохраняет масштаб temperature.',
+      invariantOk: false,
+    }
+  }
+  if (levelId === 'missing-values' && state.steps.some((step) => step.kind === 'drop-missing')) {
+    return {
+      kind: 'coverage-lost',
+      message: 'NA исчезли, но вместе с ними пропали наблюдения из train/test.',
+      repairHint: 'Для этого уровня лучше сохранить строки и заполнить temperature медианой.',
       invariantOk: false,
     }
   }
@@ -318,11 +467,41 @@ export function diagnoseFactory(
       invariantOk: false,
     }
   }
+  if (levelId === 'split-check' && !splitQuality(state.rows).ok) {
+    return {
+      kind: 'split-skewed',
+      message: 'Split перекошен: train/test видят разные label ratio или диапазоны signal.',
+      repairHint: 'Выбери seed, где label gap и range gap проходят проверку.',
+      invariantOk: false,
+    }
+  }
   return {
     kind: 'ready',
     message: 'Pipeline выглядит честно: данные очищены без утечки и потери смысла.',
     repairHint: 'Теперь этот прием можно переносить в ML-полигон.',
     invariantOk: true,
+  }
+}
+
+export function countMissing(rows: DatasetRow[]): number {
+  return rows.reduce(
+    (count, row) => count + Object.values(row.values).filter((value) => value === null).length,
+    0,
+  )
+}
+
+export function pipelineDiff(state: FeatureFactoryState): PipelineDiff {
+  const baseline = initialFactoryState('missing-values')
+  const baselineMetrics = factoryMetrics(baseline)
+  const currentMetrics = factoryMetrics(state)
+  const metricValue = (metrics: ModelMetric[], id: string) =>
+    metrics.find((metric) => metric.id === id)?.test ?? 0
+  return {
+    rowsDelta: state.rows.length - baseline.rows.length,
+    missingDelta: countMissing(state.rows) - countMissing(baseline.rows),
+    leakageEnabled: featureById(state.features, 'leakage_code')?.enabled === true,
+    testStabilityDelta: metricValue(currentMetrics, 'stability') - metricValue(baselineMetrics, 'stability'),
+    badSteps: state.steps.filter((step) => !step.valid).length,
   }
 }
 

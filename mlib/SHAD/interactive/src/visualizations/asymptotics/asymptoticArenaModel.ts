@@ -40,6 +40,18 @@ export type StrategyDiagnosis = {
   invariantOk: boolean
 }
 
+export type StrategyRaceEntry = {
+  strategyId: AlgorithmStrategyId
+  label: string
+  setup: number
+  comparisons: number
+  queryCost: number
+  memory: number
+  total: number
+  rank: number
+  winner: boolean
+}
+
 export const asymptoticScenarios: Record<InputScenarioId, InputScenario> = {
   'small-random': {
     id: 'small-random',
@@ -143,15 +155,41 @@ export function estimateCost(strategyId: AlgorithmStrategyId, scenario: InputSce
   return { comparisons, setup, memory: n, total: setup + comparisons }
 }
 
-export function bestStrategyForScenario(scenario: InputScenario): AlgorithmStrategyId {
-  const allowed: AlgorithmStrategyId[] =
-    scenario.id === 'many-lookups'
-      ? ['linear-scan', 'binary-search-after-sort', 'hash-index']
-      : scenario.id === 'nearly-sorted'
+export function allowedStrategiesForScenario(scenario: InputScenario): AlgorithmStrategyId[] {
+  return scenario.id === 'many-lookups'
+    ? ['linear-scan', 'binary-search-after-sort', 'hash-index']
+    : scenario.id === 'nearly-sorted'
+      ? ['insertion-sort', 'merge-sort', 'binary-search-after-sort']
+      : scenario.id === 'large-random'
         ? ['insertion-sort', 'merge-sort', 'binary-search-after-sort']
-        : scenario.id === 'large-random'
-          ? ['insertion-sort', 'merge-sort', 'binary-search-after-sort']
-          : ['linear-scan', 'insertion-sort', 'merge-sort', 'binary-search-after-sort']
+        : ['linear-scan', 'insertion-sort', 'merge-sort', 'binary-search-after-sort']
+}
+
+export function strategyRaceEntries(scenario: InputScenario): StrategyRaceEntry[] {
+  const allowed = new Set(allowedStrategiesForScenario(scenario))
+  return asymptoticStrategies
+    .filter((strategy) => allowed.has(strategy.id as AlgorithmStrategyId))
+    .map((strategy) => {
+      const strategyId = strategy.id as AlgorithmStrategyId
+      const cost = estimateCost(strategyId, scenario)
+      return {
+        strategyId,
+        label: strategy.label,
+        setup: cost.setup,
+        comparisons: cost.comparisons,
+        queryCost: Math.max(0, cost.comparisons - cost.setup),
+        memory: cost.memory,
+        total: cost.total,
+        rank: 0,
+        winner: false,
+      }
+    })
+    .sort((a, b) => a.total - b.total)
+    .map((entry, index) => ({ ...entry, rank: index + 1, winner: index === 0 }))
+}
+
+export function bestStrategyForScenario(scenario: InputScenario): AlgorithmStrategyId {
+  const allowed = allowedStrategiesForScenario(scenario)
   return allowed.reduce((best, strategy) =>
     estimateCost(strategy, scenario).total < estimateCost(best, scenario).total ? strategy : best,
   )

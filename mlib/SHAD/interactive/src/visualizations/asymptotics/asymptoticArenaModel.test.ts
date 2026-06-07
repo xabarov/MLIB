@@ -5,6 +5,7 @@ import {
   diagnoseStrategyChoice,
   estimateCost,
   growthPoints,
+  strategyRaceEntries,
 } from './asymptoticArenaModel'
 
 describe('asymptoticArenaModel', () => {
@@ -48,5 +49,16 @@ describe('asymptoticArenaModel', () => {
     const points = growthPoints('merge-sort', asymptoticScenarios['large-random'])
     expect(points).toHaveLength(5)
     expect(points[0].cost).toBeLessThan(points[4].cost)
+  })
+
+  it('ranks strategies for the visible race replay', () => {
+    const smallRace = strategyRaceEntries(asymptoticScenarios['small-random'])
+    const largeRace = strategyRaceEntries(asymptoticScenarios['large-random'])
+
+    expect(smallRace[0].strategyId).toBe('linear-scan')
+    expect(largeRace[0].strategyId).toBe('merge-sort')
+    expect(largeRace.find((entry) => entry.strategyId === 'insertion-sort')?.rank).toBeGreaterThan(
+      1,
+    )
   })
 })

@@ -14,9 +14,31 @@ import {
   swapImages,
   type Permutation,
 } from './substitutionWorkshopModel'
+import { CycleRail } from './CycleRail'
 
 function permutationLabel(permutation: Permutation): string {
   return permutation.map((value, index) => `${index + 1}→${value}`).join(', ')
+}
+
+function SwapBudget({ used, max }: { used: number; max?: number }) {
+  if (max === undefined) return null
+  return (
+    <div className="flex flex-wrap gap-1" data-testid="swap-budget-stars">
+      {Array.from({ length: max }, (_, index) => {
+        const spent = index < used
+        return (
+          <span
+            key={index}
+            className={`h-5 w-5 rounded-full border text-center text-[10px] font-semibold leading-5 ${
+              spent ? 'border-orange/45 bg-orange/18 text-orange' : 'border-ink/10 bg-bg text-ink/35'
+            }`}
+          >
+            {spent ? '×' : '·'}
+          </span>
+        )
+      })}
+    </div>
+  )
 }
 
 export function SubstitutionWorkshopMission() {
@@ -143,8 +165,9 @@ function SubstitutionWorkshopLevel({
       mascotState={mascotState}
       mascotMessage={mascotMessage}
       badges={badges}
+      sceneViewportClassName="min-h-[1120px] pt-[176px] sm:min-h-[980px] sm:pt-[112px] lg:h-full lg:min-h-0 lg:pt-[74px]"
       scene={
-        <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_28%_18%,rgba(124,108,207,0.12),transparent_28%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4">
+        <div className="flex h-full items-start justify-center bg-[radial-gradient(circle_at_28%_18%,rgba(124,108,207,0.12),transparent_28%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4 lg:items-center">
           <div className="relative w-full max-w-4xl">
             {selectedIndex !== null && (
               <MascotOverlay
@@ -155,6 +178,9 @@ function SubstitutionWorkshopLevel({
                 yPercent={4}
               />
             )}
+            <div className="mb-4">
+              <CycleRail permutation={permutation} target={levelSpec.target} />
+            </div>
             <div className="mb-5 grid grid-cols-[repeat(auto-fit,minmax(72px,1fr))] gap-3">
               {permutation.map((value, index) => {
                 const selected = selectedIndex === index
@@ -213,6 +239,12 @@ function SubstitutionWorkshopLevel({
                     {levelSpec.target ? cycleNotation(levelSpec.target) : `sign ${levelSpec.requiredParity}`}
                   </p>
                 </div>
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-2 rounded border border-ink/10 bg-bg/70 px-3 py-2">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-ink/45">
+                  swap budget
+                </span>
+                <SwapBudget used={swapCount} max={levelSpec.maxSwaps} />
               </div>
             </div>
           </div>

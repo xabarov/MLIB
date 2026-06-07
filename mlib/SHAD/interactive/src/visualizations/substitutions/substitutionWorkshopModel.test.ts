@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   cycleNotation,
+  cycleEdgeStates,
   cycles,
   diagnoseSubstitutionState,
   identity,
@@ -70,6 +71,14 @@ describe('substitutionWorkshopModel', () => {
     expect(diagnosis.kind).toBe('near-target')
     expect(diagnosis.mismatchPositions).toEqual([2, 5])
     expect(diagnosis.message).toContain('2, 5')
+  })
+
+  it('reports visible cycle edge states for route feedback', () => {
+    expect(cycleEdgeStates([2, 1, 3], [2, 3, 1])).toEqual([
+      { from: 1, to: 2, targetTo: 2, correct: true },
+      { from: 2, to: 1, targetTo: 3, correct: false },
+      { from: 3, to: 3, targetTo: 1, correct: false },
+    ])
   })
 
   it('diagnoses parity and swap-budget mistakes', () => {

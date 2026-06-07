@@ -5,21 +5,6 @@
       "slug": "complex-spaces-hero",
       "filename_base": "complex_vector_space_concept",
       "prompt": "16:9 educational editorial illustration of a complex vector space, showing real and imaginary axes, elegant vectors from a common origin, subtle coordinate grids, abstract complex geometry suggesting two real dimensions per complex dimension. One main idea: complex linear structure with Re/Im decomposition. Warm paper background, deep ink outlines, dusty blue, terracotta, sage and muted violet accents, generous whitespace, premium academic style. No readable text, no formulas, no digits, no fake axis labels, no decorative clutter."
-    },
-    {
-      "slug": "complex-hermitian-geometry",
-      "filename_base": "hermitian_geometry_concept",
-      "prompt": "16:9 educational illustration of Hermitian geometry, complex vectors with orthogonality and inner product intuition, elegant projections and perpendicular directions, white warm paper background, subtle blue green purple palette, mathematical textbook style, minimal and precise. No readable text, no formulas, no digits, no people, no laptops."
-    },
-    {
-      "slug": "complex-self-adjoint-spectral",
-      "filename_base": "self_adjoint_spectral_concept",
-      "prompt": "16:9 educational mathematical illustration of spectral theory for self-adjoint operators, orthonormal eigen-directions, symmetric geometric transformation of a circle into an ellipse, diagonalization concept, warm paper background, blue green red accents, premium textbook style, lots of whitespace. No readable text, no formulas, no digits, no UI."
-    },
-    {
-      "slug": "complex-svd-concept",
-      "filename_base": "svd_concept",
-      "prompt": "16:9 educational illustration of singular value decomposition, a circle transformed into an ellipse through rotation, axis scaling and another rotation, multi-stage mathematical transformation in one calm composition, warm paper background, blue purple red accents, precise minimal textbook style. No readable text, no formulas, no digits, no people."
     }
   ]
 }
