@@ -4,6 +4,18 @@
 миссий: algorithms, programming и data-analysis игры. Цель - не начинать каждую
 новую миссию с уникального UI, а собрать общий набор проверяемых primitives.
 
+## Статус 2026-06-07
+
+Первый programming slice реализован через **Арену асимптотик**:
+
+- `src/game/programmingTypes.ts` добавляет `CostMetric`, `CodeTraceLine`,
+  `StrategyOption` и `GrowthPoint`;
+- `CodeTracePanel` показывает псевдокод, переменные, инвариант и метрики
+  стоимости;
+- `StrategyCompare` дает выбор стратегии и рост стоимости на разных n;
+- модель `asymptoticArenaModel.ts` покрыта unit tests;
+- следующие primitives в очереди: `DataTableMini` и `MetricBoard`.
+
 ## Целевая первая миссия
 
 Рекомендуемый первый кандидат: **Арена асимптотик**.

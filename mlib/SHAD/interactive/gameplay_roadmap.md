@@ -12,15 +12,16 @@
 Следующий игровой этап: [next_gameplay_learning_stage_plan.md](next_gameplay_learning_stage_plan.md).
 Следующий hardening-этап: [next_pedagogy_hardening_plan.md](next_pedagogy_hardening_plan.md).
 План primitives для programming/data: [programming_data_primitives_plan.md](programming_data_primitives_plan.md).
+Следующий algorithms-этап: [next_asymptotic_arena_plan.md](next_asymptotic_arena_plan.md).
 
 ## Текущее состояние
 
 - Программа уже закрывает алгебру, математический анализ, комбинаторику и
   базовую вероятность; разделы вероятности, алгоритмов и анализа данных еще
   частично впереди.
-- В interactive сейчас есть карта курса и пять playable/prototype миссий:
-  геометрия ядра, цех перестановок, кузница определителя, матричная машина и
-  графовый trace.
+- В interactive сейчас есть карта курса и шесть playable/prototype миссий:
+  геометрия ядра, цех перестановок, кузница определителя, матричная машина,
+  графовый trace и `Арена асимптотик` как первый programming/algorithms slice.
 - Техническая база подходит для расширения: Vite, React, TypeScript, React
   Three Fiber, Zustand, HashRouter, Tailwind CSS, KaTeX, Vitest и Playwright
   smoke.

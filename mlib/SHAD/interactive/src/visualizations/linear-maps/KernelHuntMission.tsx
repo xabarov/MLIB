@@ -140,6 +140,7 @@ export function KernelHuntMission() {
       mascotState={mascotState}
       mascotMessage={mascotMessage}
       badges={badges}
+      sceneViewportClassName="h-[430px] pt-[96px] sm:h-[540px] sm:pt-[74px] lg:h-full"
       scene={
         <KernelLineViz
           candidate={candidate}

@@ -43,5 +43,10 @@ export function recommendedMissionId(completedLevels: Record<string, string[]>):
     const progress = missionCompletionRatio(completedLevels[node.mission.id], node.mission)
     return !progress.complete
   })
-  return firstOpen?.mission.id ?? courseMapNodes[0]?.mission.id ?? ''
+  if (firstOpen) return firstOpen.mission.id
+
+  const reviewTarget = courseMapNodes
+    .flatMap((node) => node.curriculum.reviewAfterMissionIds ?? [])
+    .find((missionId) => missionById.has(missionId))
+  return reviewTarget ?? courseMapNodes[0]?.mission.id ?? ''
 }

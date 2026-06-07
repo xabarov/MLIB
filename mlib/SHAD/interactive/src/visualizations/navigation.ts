@@ -80,4 +80,15 @@ export const navSections: NavSection[] = [
       },
     ],
   },
+  {
+    id: 'algorithms',
+    title: 'Алгоритмы',
+    topics: [
+      {
+        id: 'asymptotics',
+        title: 'Асимптотика',
+        visualizations: [missionEntry('asymptotic-arena')],
+      },
+    ],
+  },
 ]

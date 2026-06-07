@@ -21,6 +21,11 @@ ROUTES = [
         '[data-testid="mission-substitution-workshop"]',
     ),
     ("graph", "#/combinatorics/graphs/dispatcher", '[data-testid="mission-graph-dispatcher"]'),
+    (
+        "asymptotic",
+        "#/algorithms/asymptotics/arena",
+        '[data-testid="mission-asymptotic-arena"]',
+    ),
 ]
 
 VIEWPORTS = [
@@ -97,6 +102,10 @@ def swap_tiles(page, a: int, b: int) -> None:
 def click_graph_order(page, order: list[str]) -> None:
     for vertex in order:
         page.get_by_test_id(f"graph-vertex-{vertex}").click()
+
+
+def choose_strategy(page, strategy_id: str) -> None:
+    page.get_by_test_id(f"strategy-{strategy_id}").click()
 
 
 def capture_route_screenshots(browser) -> None:
@@ -280,6 +289,33 @@ def run_graph_mistake_path(page) -> None:
     )
 
 
+def run_asymptotic_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/asymptotics/arena", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-asymptotic-arena"]', timeout=10_000)
+    choose_strategy(page, "linear-scan")
+    expect(page.get_by_text("Малый вход решен просто")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-large-input").click()
+    choose_strategy(page, "merge-sort")
+    expect(page.get_by_text("Большой вход пережил рост")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-nearly-sorted").click()
+    choose_strategy(page, "insertion-sort")
+    expect(page.get_by_text("Структура входа использована")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-many-lookups").click()
+    choose_strategy(page, "hash-index")
+    expect(page.get_by_text("Preprocessing окупился")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_asymptotic_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/asymptotics/arena", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-asymptotic-arena"]', timeout=10_000)
+    expect(page.get_by_test_id("mission-feedback")).to_contain_text(
+        "setup-not-worth-it", timeout=10_000
+    )
+    choose_strategy(page, "linear-scan")
+    expect(page.get_by_text("Малый вход решен просто")).to_be_visible(timeout=10_000)
+
+
 def run_happy_paths(browser) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 960})
     context.add_init_script("window.localStorage.clear()")
@@ -289,11 +325,13 @@ def run_happy_paths(browser) -> None:
     run_determinant_mistake_path(page)
     run_kernel_mistake_path(page)
     run_graph_mistake_path(page)
+    run_asymptotic_mistake_path(page)
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
     run_substitution_happy_path(page)
     run_graph_happy_path(page)
+    run_asymptotic_happy_path(page)
     context.close()
 
 

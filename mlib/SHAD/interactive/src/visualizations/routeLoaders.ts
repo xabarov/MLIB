@@ -29,3 +29,9 @@ export const SubstitutionWorkshopMission = lazy(() =>
     default: module.SubstitutionWorkshopMission,
   })),
 )
+
+export const AsymptoticArenaMission = lazy(() =>
+  import('./asymptotics/AsymptoticArenaMission').then((module) => ({
+    default: module.AsymptoticArenaMission,
+  })),
+)

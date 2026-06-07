@@ -21,6 +21,7 @@ type MissionShellProps = {
   mascotMessage: string
   badges: MissionBadge[]
   scene: ReactNode
+  sceneViewportClassName?: string
   controls?: ReactNode
   feedback?: ReactNode
 }
@@ -33,6 +34,7 @@ export function MissionShell({
   mascotMessage,
   badges,
   scene,
+  sceneViewportClassName = 'h-[540px] pt-[96px] sm:pt-[74px] lg:h-full',
   controls,
   feedback,
 }: MissionShellProps) {
@@ -72,7 +74,7 @@ export function MissionShell({
             </div>
           </div>
         </div>
-        <div className="h-[540px] pt-[96px] sm:pt-[74px] lg:h-full">{scene}</div>
+        <div className={sceneViewportClassName}>{scene}</div>
       </section>
 
       <aside className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-panel bg-panel/30 p-4 lg:w-[380px] xl:w-[420px]">

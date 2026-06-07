@@ -518,10 +518,114 @@ export const graphDispatcherMission: MissionDefinition = {
   ],
 }
 
+export const asymptoticArenaMission: MissionDefinition = {
+  id: 'asymptotic-arena',
+  route: '/algorithms/asymptotics/arena',
+  title: 'Арена асимптотик',
+  domain: 'algorithms',
+  mechanic: 'code-trace',
+  lessonPath: 'SHAD/mathematical_analysis/4_asymptotics/lesson.md',
+  difficulty: 2,
+  summaryTitle: 'Cost model собран',
+  summaryText:
+    'Ты сравнил стратегии не по названию, а по стоимости: setup, comparisons, память и рост на n стали частью решения.',
+  reflectionPrompt:
+    'Почему O(n log n) не всегда выигрывает на маленьком n, но становится важным на больших входах?',
+  transferTask:
+    'Возьми любую задачу поиска и подпиши, сколько раз платится setup и сколько раз query cost.',
+  qualityTags: ['code-trace', 'strategy-compare', 'model-tested', 'mistake-diagnostics'],
+  estimatedMinutes: 8,
+  nextMissionRoute: '/map',
+  nextMissionLabel: 'Карта курса',
+  levels: [
+    {
+      id: 'small-input',
+      title: 'Малый вход',
+      objective: 'Выбери стратегию для одного маленького случайного входа.',
+      hint: 'На маленьком n подготовка может стоить дороже самой работы.',
+      hintLevels: [
+        'Смотри на setup: он платится до полезной работы.',
+        'Если запрос один, сортировка или индекс могут не окупиться.',
+        'Попробуй стратегию без предварительной подготовки.',
+      ],
+      mistakeFeedback: [
+        'Ты переплатил setup за маленький вход.',
+        'O-нотация не отменяет константы и подготовку на малом n.',
+      ],
+      successText: 'Малый вход решен просто: лишняя подготовка не окупилась.',
+      successConditionLabel: 'minimal total cost for n=12, q=1',
+      takeaway: 'Для малого n простая стратегия может выиграть у более сложной асимптотики.',
+      lectureAnchor: 'Асимптотика: константы и модель стоимости',
+      nextPrompt: 'Теперь увеличим n и посмотрим, где рост ломает простую стратегию.',
+    },
+    {
+      id: 'large-input',
+      title: 'Большой вход',
+      objective: 'Выбери стратегию, которая не взорвется на большом случайном массиве.',
+      hint: 'O(n²) быстро проигрывает O(n log n).',
+      hintLevels: [
+        'Сравни growth bars на n=512 и n=2048.',
+        'Insertion sort хорош не для случайного большого массива.',
+        'Нужна стратегия со стабильным O(n log n).',
+      ],
+      mistakeFeedback: [
+        'Квадратичный рост взрывается на большом случайном входе.',
+        'Не оценивай алгоритм только по маленькому примеру.',
+      ],
+      successText: 'Большой вход пережил рост: O(n log n) удержал стоимость.',
+      successConditionLabel: 'avoid quadratic growth on large random input',
+      takeaway: 'На большом случайном входе рост функции важнее приятных констант.',
+      lectureAnchor: 'Асимптотика: сравнение порядков роста',
+      nextPrompt: 'Следующий вход почти отсортирован: структура данных меняет выбор.',
+    },
+    {
+      id: 'nearly-sorted',
+      title: 'Почти отсортировано',
+      objective: 'Используй структуру входа: массив почти отсортирован.',
+      hint: 'Количество инверсий мало, значит insertion sort может быть дешевым.',
+      hintLevels: [
+        'Disorder всего 8%.',
+        'Алгоритм, чувствительный к инверсиям, получает бонус.',
+        'Попробуй стратегию O(n + inv).',
+      ],
+      mistakeFeedback: [
+        'Ты игнорируешь структуру входа и платишь лишнюю память или setup.',
+        'Самая известная стратегия не всегда лучшая на специальном входе.',
+      ],
+      successText: 'Структура входа использована: почти отсортированный массив решен дешево.',
+      successConditionLabel: 'use low-disorder cost model',
+      takeaway: 'Форма входа может быть такой же важной, как размер n.',
+      lectureAnchor: 'Асимптотика: лучший, средний и худший случаи',
+      nextPrompt: 'Теперь стратегия должна окупить подготовку на серии запросов.',
+    },
+    {
+      id: 'many-lookups',
+      title: 'Много запросов',
+      objective: 'Выбери стратегию для 80 membership-запросов.',
+      hint: 'Setup платится один раз, query cost повторяется много раз.',
+      hintLevels: [
+        'Линейный поиск дешев для одного запроса, но q=80.',
+        'Сравни q·n против n + q.',
+        'Индекс может окупиться, если запросов много.',
+      ],
+      mistakeFeedback: [
+        'Ты не учел, что query cost повторяется 80 раз.',
+        'Preprocessing надо оценивать вместе с количеством будущих запросов.',
+      ],
+      successText: 'Preprocessing окупился: индекс победил серию запросов.',
+      successConditionLabel: 'setup + q beats q*n',
+      takeaway: 'Предобработка окупается, когда ее стоимость делится на много запросов.',
+      lectureAnchor: 'Модель RAM и стоимость операций',
+      nextPrompt: 'Этот язык стоимости дальше пригодится для DP, структур данных и ML.',
+    },
+  ],
+}
+
 export const missionDefinitions = [
   kernelHuntMission,
   determinantForgeMission,
   matrixMachineMission,
   substitutionWorkshopMission,
   graphDispatcherMission,
+  asymptoticArenaMission,
 ] as const

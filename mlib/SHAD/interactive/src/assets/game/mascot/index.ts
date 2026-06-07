@@ -1,10 +1,10 @@
-import hintGestureUrl from './mebi-hint-gesture.png'
-import hintUrl from './mebi-hint.png'
-import idleUrl from './mebi-idle.png'
-import successUrl from './mebi-success.png'
-import thinkingFocusedUrl from './mebi-thinking-focused.png'
-import thinkingUrl from './mebi-thinking.png'
-import warningUrl from './mebi-warning.png'
+import hintGestureUrl from './mebi-hint-gesture.webp'
+import hintUrl from './mebi-hint.webp'
+import idleUrl from './mebi-idle.webp'
+import successUrl from './mebi-success.webp'
+import thinkingFocusedUrl from './mebi-thinking-focused.webp'
+import thinkingUrl from './mebi-thinking.webp'
+import warningUrl from './mebi-warning.webp'
 
 export const mascotImages = {
   idle: idleUrl,

@@ -28,16 +28,32 @@ initial bundle без причины.
 
 Последний проверенный `make interactive-build` показывал:
 
-- `index-*.js`: около 550 kB raw / 170 kB gzip;
-- `KernelHuntMission`: около 923 kB raw / 247 kB gzip;
-- 2D/SVG mission chunks: примерно 5-10 kB raw;
-- активные PNG Меби из `src/assets/game/mascot/`: примерно 469-489 kB каждый;
+- `index-*.js`: 568.93 kB raw / 173.32 kB gzip;
+- `KernelHuntMission`: 926.97 kB raw / 248.32 kB gzip;
+- `AsymptoticArenaMission`: 14.40 kB raw / 4.87 kB gzip;
+- 2D/SVG mission chunks: примерно 8.5-11.5 kB raw;
+- активные WebP Меби из `src/assets/game/mascot/`: примерно 38-41 kB каждый;
+- исходные PNG Меби из `src/assets/game/mascot/`: примерно 458-477 kB каждый;
 - reference/trial PNG больше 1 MB лежат вне импортируемого `mascot/index.ts` и
   не должны попадать в bundle.
 
+### Mascot WebP pass 2026-06-07
+
+Активные runtime imports переключены с PNG на WebP:
+
+- `mebi-hint-gesture`: 460 KiB -> 40 KiB;
+- `mebi-hint`: 477 KiB -> 38 KiB;
+- `mebi-idle`: 475 KiB -> 37 KiB;
+- `mebi-success`: 476 KiB -> 38 KiB;
+- `mebi-thinking-focused`: 466 KiB -> 39 KiB;
+- `mebi-thinking`: 475 KiB -> 37 KiB;
+- `mebi-warning`: 458 KiB -> 38 KiB.
+
+PNG остаются исходниками рядом с WebP, но `src/assets/game/mascot/index.ts`
+импортирует WebP.
+
 Action для следующего performance pass:
 
-- сконвертировать активные PNG Меби в WebP/AVIF-кандидаты;
 - проверить визуальное качество на светлом фоне и панелях;
 - оставить PNG fallback только если WebP дает заметные артефакты;
 - не импортировать reference/trial assets в runtime code.

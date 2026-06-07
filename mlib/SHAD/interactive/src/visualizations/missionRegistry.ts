@@ -1,4 +1,5 @@
 import {
+  asymptoticArenaMission,
   determinantForgeMission,
   graphDispatcherMission,
   kernelHuntMission,
@@ -7,6 +8,7 @@ import {
 } from '../game/missions'
 import type { VizEntry } from './registryTypes'
 import {
+  AsymptoticArenaMission,
   DeterminantForgeMission,
   GraphDispatcherMission,
   KernelHuntMission,
@@ -100,6 +102,23 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`\mathrm{frontier}\rightarrow\mathrm{current}\rightarrow\mathrm{visited}`,
       description:
         'BFS и DFS становятся trace-состояниями: очередь, стек, посещенные вершины и стоимость шагов.',
+    },
+  },
+  {
+    id: 'asymptotic-arena',
+    path: '/algorithms/asymptotics/arena',
+    title: 'Арена асимптотик',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: asymptoticArenaMission.lessonPath,
+    mission: asymptoticArenaMission,
+    component: AsymptoticArenaMission,
+    meta: {
+      title: 'Арена асимптотик',
+      formula: String.raw`\mathrm{total}=\mathrm{setup}+\mathrm{comparisons}`,
+      description:
+        'Стратегии сравниваются по модели стоимости: рост, setup, память и число запросов становятся игровыми условиями.',
     },
   },
 ]
