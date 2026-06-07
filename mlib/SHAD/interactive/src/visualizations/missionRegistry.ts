@@ -6,6 +6,8 @@ import {
   kernelHuntMission,
   matrixMachineMission,
   mlPlaygroundMission,
+  quadraticLensMission,
+  svdLensMission,
   substitutionWorkshopMission,
 } from '../game/missions'
 import type { VizEntry } from './registryTypes'
@@ -17,6 +19,8 @@ import {
   KernelHuntMission,
   MatrixMachineMission,
   MlPlaygroundMission,
+  QuadraticLensMission,
+  SvdLensMission,
   SubstitutionWorkshopMission,
 } from './routeLoaders'
 
@@ -72,6 +76,40 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`A=[Ae_1\ Ae_2]`,
       description:
         'Матрица задается образами базисных векторов: эти образы становятся ее столбцами.',
+    },
+  },
+  {
+    id: 'quadratic-lens',
+    path: '/algebra/quadratic-forms/lens',
+    title: 'Квадратичная линза',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: quadraticLensMission.lessonPath,
+    mission: quadraticLensMission,
+    component: QuadraticLensMission,
+    meta: {
+      title: 'Квадратичная линза',
+      formula: String.raw`q(x,y)=ax^2+2bxy+cy^2`,
+      description:
+        'Квадратичная форма превращается в эллипс, седло или вырожденное направление; главные оси убирают смешанный член.',
+    },
+  },
+  {
+    id: 'svd-lens',
+    path: '/algebra/svd/lens',
+    title: 'SVD-линза',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 3,
+    lessonPath: svdLensMission.lessonPath,
+    mission: svdLensMission,
+    component: SvdLensMission,
+    meta: {
+      title: 'SVD-линза',
+      formula: String.raw`A=U\Sigma V^T`,
+      description:
+        'Единичный круг проходит через матрицу и становится эллипсом: его полуоси показывают сингулярные числа, а PCA появляется как rank-1 тень данных.',
     },
   },
   {

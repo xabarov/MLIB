@@ -24,6 +24,18 @@ export const MatrixMachineMission = lazy(() =>
   })),
 )
 
+export const QuadraticLensMission = lazy(() =>
+  import('./quadratic-lens/QuadraticLensMission').then((module) => ({
+    default: module.QuadraticLensMission,
+  })),
+)
+
+export const SvdLensMission = lazy(() =>
+  import('./svd-lens/SvdLensMission').then((module) => ({
+    default: module.SvdLensMission,
+  })),
+)
+
 export const SubstitutionWorkshopMission = lazy(() =>
   import('./substitutions/SubstitutionWorkshopMission').then((module) => ({
     default: module.SubstitutionWorkshopMission,

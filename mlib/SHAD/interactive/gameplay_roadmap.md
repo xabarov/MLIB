@@ -16,17 +16,21 @@
 Следующий data/ML-этап: [next_data_ml_playground_plan.md](next_data_ml_playground_plan.md).
 Следующий feature/data-cleaning этап: [next_feature_factory_plan.md](next_feature_factory_plan.md).
 Следующий quality/game-feel этап: [next_mission_quality_upgrade_plan.md](next_mission_quality_upgrade_plan.md).
+Следующий этап спектральной геометрии: [next_spectral_geometry_stage_plan.md](next_spectral_geometry_stage_plan.md).
+Следующий SVD/PCA этап: [next_svd_pca_stage_plan.md](next_svd_pca_stage_plan.md).
 
 ## Текущее состояние
 
 - Программа уже закрывает алгебру, математический анализ, комбинаторику и
   базовую вероятность; разделы вероятности, алгоритмов и анализа данных еще
   частично впереди.
-- В interactive сейчас есть карта курса и восемь playable/prototype миссий:
+- В interactive сейчас есть карта курса и десять playable/prototype миссий:
   геометрия ядра, цех перестановок, кузница определителя, матричная машина,
-  графовый trace, `Арена асимптотик` как первый programming/algorithms slice и
-  `ML-полигон` как первый data/ML slice, а также `Фабрика признаков` как
-  первый data-cleaning / feature engineering slice.
+  `Квадратичная линза` как мост от форм к спектральной геометрии,
+  `SVD-линза` как мост к PCA и низкоранговому приближению, графовый trace,
+  `Арена асимптотик` как первый programming/algorithms slice и `ML-полигон` как
+  первый data/ML slice, а также `Фабрика признаков` как первый data-cleaning /
+  feature engineering slice.
 - Техническая база подходит для расширения: Vite, React, TypeScript, React
   Three Fiber, Zustand, HashRouter, Tailwind CSS, KaTeX, Vitest и Playwright
   smoke.
@@ -36,6 +40,12 @@
 - Следующий качественный фокус после первых data/ML миссий - не новая тема, а
   улучшение самих заданий: меньше one-click уровней, больше видимых ошибок,
   repair-механик, result moments and transfer back to lectures.
+- Следующий содержательный фокус после quality/game-feel этапа - вернуться к
+  линейной алгебре и закрыть мост от форм к спектральной геометрии:
+  квадратичные формы, главные оси, собственные направления и SVD.
+- Следующий прикладной фокус после `Квадратичной линзы` - `SVD-линза`: круг
+  превращается в эллипс, сингулярные направления становятся осями, а финальный
+  уровень связывает SVD с PCA и низкоранговым приближением.
 - Authoring flow фиксируется отдельными документами:
   [mission_authoring_guide.md](mission_authoring_guide.md),
   [mission_quality_checklist.md](mission_quality_checklist.md),

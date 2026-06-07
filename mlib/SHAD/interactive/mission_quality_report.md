@@ -8,6 +8,8 @@ missing authoring fields, but human review still decides whether a task is inter
 | `Охота за ядром` | 26/26 | none |
 | `Кузница определителя` | 26/26 | none |
 | `Матрица как машина` | 26/26 | none |
+| `Квадратичная линза` | 32/32 | none |
+| `SVD-линза` | 32/32 | none |
 | `Цех перестановок` | 26/26 | none |
 | `Графовый диспетчер` | 26/26 | none |
 | `Арена асимптотик` | 26/26 | none |

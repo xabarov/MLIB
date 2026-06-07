@@ -15,6 +15,8 @@ ROUTES = [
     ("kernel", "#/algebra/linear-maps/kernel", '[data-testid="mission-kernel-hunt"]'),
     ("determinant", "#/algebra/determinants/forge", '[data-testid="mission-determinant-forge"]'),
     ("matrix", "#/algebra/matrices/machine", '[data-testid="mission-matrix-machine"]'),
+    ("quadratic-lens", "#/algebra/quadratic-forms/lens", '[data-testid="mission-quadratic-lens"]'),
+    ("svd-lens", "#/algebra/svd/lens", '[data-testid="mission-svd-lens"]'),
     (
         "substitution",
         "#/algebra/substitutions/workshop",
@@ -94,6 +96,28 @@ def fill_determinant(page, ux: str, uy: str, vx: str, vy: str) -> None:
     page.get_by_test_id("determinant-input-u-y").fill(uy)
     page.get_by_test_id("determinant-input-v-x").fill(vx)
     page.get_by_test_id("determinant-input-v-y").fill(vy)
+
+
+def fill_quadratic(page, a: str, b: str, c: str) -> None:
+    page.get_by_test_id("coefficient-a").fill(a)
+    page.get_by_test_id("coefficient-b").fill(b)
+    page.get_by_test_id("coefficient-c").fill(c)
+
+
+def set_quadratic_rotation(page, theta: str) -> None:
+    page.get_by_test_id("basis-rotation").fill(theta)
+
+
+def set_quadratic_direction(page, target: str, x: str, y: str) -> None:
+    page.get_by_test_id(f"{target}-x").fill(x)
+    page.get_by_test_id(f"{target}-y").fill(y)
+
+
+def fill_svd_matrix(page, a: str, b: str, c: str, d: str) -> None:
+    page.get_by_test_id("svd-matrix-a").fill(a)
+    page.get_by_test_id("svd-matrix-b").fill(b)
+    page.get_by_test_id("svd-matrix-c").fill(c)
+    page.get_by_test_id("svd-matrix-d").fill(d)
 
 
 def swap_tiles(page, a: int, b: int) -> None:
@@ -245,6 +269,95 @@ def run_matrix_mistake_path(page) -> None:
     page.get_by_test_id("matrix-reset").click()
     expect(page.get_by_test_id("matrix-diagnosis")).to_contain_text(
         "Матрица еще не настроена", timeout=10_000
+    )
+
+
+def run_quadratic_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/quadratic-forms/lens", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-quadratic-lens"]', timeout=10_000)
+    expect(page.get_by_test_id("quadratic-lens-canvas")).to_be_visible(timeout=10_000)
+    fill_quadratic(page, "2", "0.2", "1")
+    expect(page.get_by_text("Эллипс закрыт").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-cross-term-rotation").click()
+    page.get_by_text("snap axes").click()
+    expect(page.get_by_text("Оси совпали с главными направлениями").first).to_be_visible(
+        timeout=10_000
+    )
+    page.get_by_test_id("level-saddle-signature").click()
+    set_quadratic_direction(page, "positive", "1", "0")
+    set_quadratic_direction(page, "negative", "0", "1")
+    expect(page.get_by_text("Седло поймано").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-degenerate-direction").click()
+    fill_quadratic(page, "1", "0", "0")
+    set_quadratic_direction(page, "null", "0", "1")
+    expect(page.get_by_text("Ненулевое направление стало нулевой энергией").first).to_be_visible(
+        timeout=10_000
+    )
+    page.get_by_test_id("level-signature-repair").click()
+    fill_quadratic(page, "1", "0", "-1")
+    expect(page.get_by_text("Сигнатура исправлена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
+
+
+def run_quadratic_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/quadratic-forms/lens", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-quadratic-lens"]', timeout=10_000)
+    fill_quadratic(page, "1", "0", "-1")
+    expect(page.get_by_test_id("quadratic-diagnosis")).to_contain_text(
+        "не положительная энергия", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    fill_quadratic(page, "2", "0.2", "1")
+    expect(page.get_by_text("Эллипс закрыт").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-cross-term-rotation").click()
+    set_quadratic_rotation(page, "0.1")
+    expect(page.get_by_test_id("quadratic-diagnosis")).to_contain_text(
+        "смешанный член", timeout=10_000
+    )
+
+
+def run_svd_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/svd/lens", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-svd-lens"]', timeout=10_000)
+    expect(page.get_by_test_id("svd-lens-canvas")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("svd-output-ellipse")).to_be_visible(timeout=10_000)
+    page.get_by_role("button", name="lens").click()
+    expect(page.get_by_text("Круг прошел через линзу").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-right-directions").click()
+    page.get_by_role("button", name="snap v").click()
+    expect(page.get_by_text("Правые сингулярные направления найдены").first).to_be_visible(
+        timeout=10_000
+    )
+    page.get_by_test_id("level-singular-vs-eigen").click()
+    page.get_by_test_id("svd-choice-singular-values").click()
+    expect(page.get_by_text("Ловушка пройдена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-rank-one-shadow").click()
+    page.get_by_test_id("svd-rank-toggle-sigma-2").click()
+    expect(page.get_by_text("Слабая ось отброшена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-pca-cloud").click()
+    page.get_by_role("button", name="PCA axis").click()
+    expect(page.get_by_text("Облако сжато").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
+
+
+def run_svd_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/svd/lens", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-svd-lens"]', timeout=10_000)
+    fill_svd_matrix(page, "1", "0", "0", "1")
+    expect(page.get_by_test_id("svd-diagnosis")).to_contain_text(
+        "не в тот эллипс", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_role("button", name="lens").click()
+    expect(page.get_by_text("Круг прошел через линзу").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-right-directions").click()
+    page.get_by_role("button", name="snap v").click()
+    expect(page.get_by_text("Правые сингулярные направления найдены").first).to_be_visible(
+        timeout=10_000
+    )
+    page.get_by_test_id("level-singular-vs-eigen").click()
+    expect(page.get_by_test_id("svd-diagnosis")).to_contain_text(
+        "собственные значения A", timeout=10_000
     )
 
 
@@ -429,6 +542,8 @@ def run_happy_paths(browser) -> None:
     page = context.new_page()
     run_substitution_mistake_path(page)
     run_matrix_mistake_path(page)
+    run_quadratic_mistake_path(page)
+    run_svd_mistake_path(page)
     run_determinant_mistake_path(page)
     run_kernel_mistake_path(page)
     run_graph_mistake_path(page)
@@ -438,6 +553,8 @@ def run_happy_paths(browser) -> None:
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
+    run_quadratic_happy_path(page)
+    run_svd_happy_path(page)
     run_substitution_happy_path(page)
     run_graph_happy_path(page)
     run_asymptotic_happy_path(page)

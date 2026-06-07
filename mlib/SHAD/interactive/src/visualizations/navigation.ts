@@ -67,6 +67,16 @@ export const navSections: NavSection[] = [
         title: 'Матрицы',
         visualizations: [missionEntry('matrix-machine')],
       },
+      {
+        id: 'quadratic-forms',
+        title: 'Квадратичные формы',
+        visualizations: [missionEntry('quadratic-lens')],
+      },
+      {
+        id: 'svd-pca',
+        title: 'SVD и PCA',
+        visualizations: [missionEntry('svd-lens')],
+      },
     ],
   },
   {
