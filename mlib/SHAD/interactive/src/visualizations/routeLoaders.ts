@@ -35,3 +35,15 @@ export const AsymptoticArenaMission = lazy(() =>
     default: module.AsymptoticArenaMission,
   })),
 )
+
+export const MlPlaygroundMission = lazy(() =>
+  import('./ml-playground/MlPlaygroundMission').then((module) => ({
+    default: module.MlPlaygroundMission,
+  })),
+)
+
+export const FeatureFactoryMission = lazy(() =>
+  import('./feature-factory/FeatureFactoryMission').then((module) => ({
+    default: module.FeatureFactoryMission,
+  })),
+)

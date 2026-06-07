@@ -621,6 +621,224 @@ export const asymptoticArenaMission: MissionDefinition = {
   ],
 }
 
+export const mlPlaygroundMission: MissionDefinition = {
+  id: 'ml-playground',
+  route: '/data/ml/playground',
+  title: 'ML-полигон',
+  domain: 'data-analysis',
+  mechanic: 'model-arena',
+  difficulty: 2,
+  mascotRole: 'data-point',
+  summaryTitle: 'Test-контроль включен',
+  summaryText:
+    'Ты выбрал модель не по красивой train-метрике, а по честному контролю: threshold, F1, leakage и test split стали частью решения.',
+  reflectionPrompt:
+    'Почему идеальная train-метрика может быть хуже честной, но не идеальной test-метрики?',
+  transferTask:
+    'Возьми любой маленький датасет и подпиши, где train, где test, какая метрика может обмануть.',
+  qualityTags: [
+    'model-tested',
+    'train-test-split',
+    'metric-diagnostics',
+    'data-table',
+    'mistake-path',
+  ],
+  estimatedMinutes: 8,
+  nextMissionRoute: '/map',
+  nextMissionLabel: 'Карта курса',
+  levels: [
+    {
+      id: 'simple-threshold',
+      title: 'Простой порог',
+      objective: 'Настрой порог так, чтобы обучающие точки разделились почти без ошибок.',
+      hint: 'Ищи промежуток между последней синей train-точкой и первой зеленой.',
+      hintLevels: [
+        'Сначала смотри только на train.',
+        'Порог по signal должен стоять между 44 и 52.',
+        'Попробуй threshold около 50-58.',
+      ],
+      mistakeFeedback: [
+        'Порог пока режет train-облако слишком грубо.',
+        'Не переключайся на noise: он выглядит числом, но не несет сигнал.',
+      ],
+      successText: 'Train-порог пойман: обучающие точки почти по правильную сторону.',
+      successConditionLabel: 'train accuracy >= 90%',
+      takeaway: 'Пороговая модель начинается с явного правила, а не с магии.',
+      lectureAnchor: 'ML: threshold classifier',
+      nextPrompt: 'Теперь тот же порог должен пройти test-контроль.',
+    },
+    {
+      id: 'test-control',
+      title: 'Не обмани test',
+      objective: 'Подними порог так, чтобы качество сохранилось на test.',
+      hint: 'Train может быть идеальным при слишком низком пороге, но test ловит ложные плюсы.',
+      hintLevels: [
+        'Смотри на test accuracy, не только на train.',
+        'Точки test около 48-55 не должны стать классом 1.',
+        'Ищи границу около 58-60.',
+      ],
+      mistakeFeedback: [
+        'Train выглядит красиво, но test уже спорит.',
+        'Обобщение проверяется на отложенных точках.',
+      ],
+      successText: 'Test-контроль пройден: модель не просто запомнила train.',
+      successConditionLabel: 'test accuracy >= 83% with honest signal',
+      takeaway: 'Train показывает подгонку, test проверяет обобщение.',
+      lectureAnchor: 'ML: train/test split',
+      nextPrompt: 'Теперь accuracy будет обманывать на несбалансированных данных.',
+    },
+    {
+      id: 'f1-threshold',
+      title: 'Порог против F1',
+      objective: 'Настрой порог так, чтобы не потерять редкий положительный класс.',
+      hint: 'Высокий порог может дать терпимую accuracy, но убить recall.',
+      hintLevels: [
+        'Положительных точек мало.',
+        'Смотри на recall и F1.',
+        'Опусти порог к первой положительной точке.',
+      ],
+      mistakeFeedback: [
+        'Accuracy терпимая, но recall положительного класса провалился.',
+        'На несбалансированных данных одна accuracy слишком спокойна.',
+      ],
+      successText: 'F1 сбалансирован: редкий класс больше не потерян.',
+      successConditionLabel: 'test F1 and recall are high enough',
+      takeaway: 'F1 связывает precision и recall, когда accuracy маскирует проблему.',
+      lectureAnchor: 'ML: precision, recall, F1',
+      nextPrompt: 'Финальный уровень: поймаем нечестный признак.',
+    },
+    {
+      id: 'leakage-trap',
+      title: 'Поймай leakage',
+      objective: 'Отключи подозрительный leak-признак и настрой честный signal.',
+      hint: 'Если признак почти знает ответ, это не модель, а утечка.',
+      hintLevels: [
+        'Leakage дает слишком красивую train-метрику.',
+        'Переключись на signal.',
+        'После отключения leak снова настрой threshold около 58-60.',
+      ],
+      mistakeFeedback: [
+        'Этот признак слишком знает ответ. Похоже на утечку.',
+        'Идеальная метрика не считается победой, если она получена нечестно.',
+      ],
+      successText: 'Утечка отключена: честная модель выдержала test.',
+      successConditionLabel: 'no leakage feature and stable test metric',
+      takeaway: 'Leakage делает метрику красивой, но ломает смысл проверки.',
+      lectureAnchor: 'ML: data leakage',
+      nextPrompt: 'Эта же логика пригодится для feature engineering и decision trees.',
+    },
+  ],
+}
+
+export const featureFactoryMission: MissionDefinition = {
+  id: 'feature-factory',
+  route: '/data/features/factory',
+  title: 'Фабрика признаков',
+  domain: 'data-analysis',
+  mechanic: 'model-arena',
+  difficulty: 2,
+  mascotRole: 'error-marker',
+  summaryTitle: 'Pipeline собран',
+  summaryText:
+    'Ты починил данные как инженер признаков: пропуски, выбросы, leakage и категории стали явными шагами pipeline, а не скрытой магией.',
+  reflectionPrompt:
+    'Почему удаление строк может быть таким же опасным, как оставление пропусков?',
+  transferTask:
+    'Возьми маленькую таблицу и подпиши, какие колонки требуют impute, encoding или leakage-проверки.',
+  qualityTags: [
+    'model-tested',
+    'feature-engineering',
+    'data-table',
+    'pipeline-diagnostics',
+    'mistake-path',
+  ],
+  estimatedMinutes: 8,
+  nextMissionRoute: '/map',
+  nextMissionLabel: 'Карта курса',
+  levels: [
+    {
+      id: 'missing-values',
+      title: 'Залатай пропуски',
+      objective: 'Заполни NA в temperature медианой без потери test-строк.',
+      hint: 'Пропуски в числовом признаке можно чинить устойчивой статистикой.',
+      hintLevels: [
+        'Смотри на колонку temp: две строки имеют NA.',
+        'Удаление строк уменьшит coverage, а медиана сохранит наблюдения.',
+        'Нажми median в заголовке temp.',
+      ],
+      mistakeFeedback: [
+        'В таблице остались NA: модель будет учиться на дырках.',
+        'Не выкидывай строки, если пропуск можно честно заполнить.',
+      ],
+      successText: 'Пропуски залатаны: temperature снова числовой признак.',
+      successConditionLabel: 'no NA in temperature',
+      takeaway: 'Imputation сохраняет наблюдения, если правило известно заранее и не подсматривает test.',
+      lectureAnchor: 'Анализ данных: пропуски и предобработка',
+      nextPrompt: 'Теперь отделим выброс от полезных крайних значений.',
+    },
+    {
+      id: 'outlier-repair',
+      title: 'Выброс под пресс',
+      objective: 'Убери только строку ff-07, которая ломает распределение signal.',
+      hint: 'Выброс - не любой большой signal, а точка с флагом и странной связью с label.',
+      hintLevels: [
+        'Строка ff-07 имеет signal 94, но label 0.',
+        'Она помечена как outlier.',
+        'Нажми drop именно у ff-07.',
+      ],
+      mistakeFeedback: [
+        'Выброс ff-07 все еще тянет границу к себе.',
+        'Слишком агрессивная чистка уничтожает полезные наблюдения.',
+      ],
+      successText: 'Выброс удален без потери нормального хвоста.',
+      successConditionLabel: 'ff-07 removed, useful rows kept',
+      takeaway: 'Outlier repair должен быть точечным: чистим аномалию, а не весь край распределения.',
+      lectureAnchor: 'Анализ данных: выбросы',
+      nextPrompt: 'Теперь поймаем колонку, которая слишком много знает.',
+    },
+    {
+      id: 'leakage-off',
+      title: 'Отключи подсказчика',
+      objective: 'Выключи leakage code и оставь честные признаки.',
+      hint: 'Признак leak почти совпадает с ответом на train, но на test ведет себя подозрительно.',
+      hintLevels: [
+        'Leakage-признак отмечен как risk.',
+        'Красиво на train не значит честно.',
+        'Нажми off у leakage code.',
+      ],
+      mistakeFeedback: [
+        'Leakage-признак включен: train выглядит слишком красиво.',
+        'Идеальная метрика не считается победой, если признак знает ответ.',
+      ],
+      successText: 'Leakage отключен: pipeline снова честный.',
+      successConditionLabel: 'leakage code disabled',
+      takeaway: 'Leakage надо отключать до обучения, иначе test перестает быть независимой проверкой.',
+      lectureAnchor: 'ML: data leakage',
+      nextPrompt: 'Финальный шаг: сделаем категорию понятной модели.',
+    },
+    {
+      id: 'encode-category',
+      title: 'Закодируй segment',
+      objective: 'Преобразуй категориальный segment в модельный признак.',
+      hint: 'Категория хранит сигнал, но модель не обязана понимать буквы.',
+      hintLevels: [
+        'segment - категориальная колонка.',
+        'Ее нужно явно закодировать.',
+        'Нажми encode у segment.',
+      ],
+      mistakeFeedback: [
+        'Категория segment пока сырая: модель не понимает буквы как числа.',
+        'Не выключай полезный категориальный признак, лучше закодируй его.',
+      ],
+      successText: 'Категория закодирована: признак готов к модели.',
+      successConditionLabel: 'segment encoded and enabled',
+      takeaway: 'Feature engineering превращает сырой столбец в сигнал, который модель может использовать.',
+      lectureAnchor: 'Анализ данных: категориальные признаки',
+      nextPrompt: 'Теперь можно собирать более сложные модели и разбиения.',
+    },
+  ],
+}
+
 export const missionDefinitions = [
   kernelHuntMission,
   determinantForgeMission,
@@ -628,4 +846,6 @@ export const missionDefinitions = [
   substitutionWorkshopMission,
   graphDispatcherMission,
   asymptoticArenaMission,
+  mlPlaygroundMission,
+  featureFactoryMission,
 ] as const

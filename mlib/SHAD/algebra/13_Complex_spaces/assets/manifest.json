@@ -22,11 +22,6 @@
       "slug": "complex-svd-concept",
       "filename_base": "svd_concept",
       "append_style_suffix": true
-    },
-    {
-      "slug": "complex-forms-concept",
-      "filename_base": "forms_concept",
-      "append_style_suffix": true
     }
   ],
   "job_file_metadata": {

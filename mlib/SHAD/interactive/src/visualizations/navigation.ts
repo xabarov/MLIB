@@ -91,4 +91,15 @@ export const navSections: NavSection[] = [
       },
     ],
   },
+  {
+    id: 'data',
+    title: 'Data',
+    topics: [
+      {
+        id: 'ml-basics',
+        title: 'ML и метрики',
+        visualizations: [missionEntry('ml-playground'), missionEntry('feature-factory')],
+      },
+    ],
+  },
 ]

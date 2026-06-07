@@ -1,18 +1,22 @@
 import {
   asymptoticArenaMission,
   determinantForgeMission,
+  featureFactoryMission,
   graphDispatcherMission,
   kernelHuntMission,
   matrixMachineMission,
+  mlPlaygroundMission,
   substitutionWorkshopMission,
 } from '../game/missions'
 import type { VizEntry } from './registryTypes'
 import {
   AsymptoticArenaMission,
   DeterminantForgeMission,
+  FeatureFactoryMission,
   GraphDispatcherMission,
   KernelHuntMission,
   MatrixMachineMission,
+  MlPlaygroundMission,
   SubstitutionWorkshopMission,
 } from './routeLoaders'
 
@@ -119,6 +123,40 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`\mathrm{total}=\mathrm{setup}+\mathrm{comparisons}`,
       description:
         'Стратегии сравниваются по модели стоимости: рост, setup, память и число запросов становятся игровыми условиями.',
+    },
+  },
+  {
+    id: 'ml-playground',
+    path: '/data/ml/playground',
+    title: 'ML-полигон',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: mlPlaygroundMission.lessonPath,
+    mission: mlPlaygroundMission,
+    component: MlPlaygroundMission,
+    meta: {
+      title: 'ML-полигон',
+      formula: String.raw`\mathrm{score}_{test}\neq\mathrm{score}_{train}`,
+      description:
+        'Пороговая модель проверяется на train/test: метрики, ошибки и leakage становятся игровыми условиями.',
+    },
+  },
+  {
+    id: 'feature-factory',
+    path: '/data/features/factory',
+    title: 'Фабрика признаков',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: featureFactoryMission.lessonPath,
+    mission: featureFactoryMission,
+    component: FeatureFactoryMission,
+    meta: {
+      title: 'Фабрика признаков',
+      formula: String.raw`\mathrm{raw\ data}\rightarrow\mathrm{features}\rightarrow\mathrm{honest\ score}`,
+      description:
+        'Пропуски, выбросы, leakage и категории становятся pipeline-шагами, которые меняют устойчивость модели.',
     },
   },
 ]

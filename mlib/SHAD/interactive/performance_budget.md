@@ -26,12 +26,15 @@ initial bundle без причины.
 
 ### Baseline 2026-06-07
 
-Последний проверенный `make interactive-build` показывал:
+Последний проверенный `make interactive-build` после `Фабрики признаков`
+показывал:
 
-- `index-*.js`: 568.93 kB raw / 173.32 kB gzip;
+- `index-*.js`: 583.14 kB raw / 176.98 kB gzip;
 - `KernelHuntMission`: 926.97 kB raw / 248.32 kB gzip;
 - `AsymptoticArenaMission`: 14.40 kB raw / 4.87 kB gzip;
-- 2D/SVG mission chunks: примерно 8.5-11.5 kB raw;
+- `FeatureFactoryMission`: 15.61 kB raw / 5.07 kB gzip;
+- `MlPlaygroundMission`: 16.45 kB raw / 5.68 kB gzip;
+- 2D/SVG mission chunks: примерно 8.5-22.5 kB raw;
 - активные WebP Меби из `src/assets/game/mascot/`: примерно 38-41 kB каждый;
 - исходные PNG Меби из `src/assets/game/mascot/`: примерно 458-477 kB каждый;
 - reference/trial PNG больше 1 MB лежат вне импортируемого `mascot/index.ts` и

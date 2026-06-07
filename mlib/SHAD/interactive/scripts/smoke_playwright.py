@@ -26,6 +26,8 @@ ROUTES = [
         "#/algorithms/asymptotics/arena",
         '[data-testid="mission-asymptotic-arena"]',
     ),
+    ("ml", "#/data/ml/playground", '[data-testid="mission-ml-playground"]'),
+    ("feature-factory", "#/data/features/factory", '[data-testid="mission-feature-factory"]'),
 ]
 
 VIEWPORTS = [
@@ -106,6 +108,30 @@ def click_graph_order(page, order: list[str]) -> None:
 
 def choose_strategy(page, strategy_id: str) -> None:
     page.get_by_test_id(f"strategy-{strategy_id}").click()
+
+
+def set_ml_threshold(page, threshold: str) -> None:
+    page.get_by_test_id("ml-threshold-input").fill(threshold)
+
+
+def choose_ml_feature(page, feature_id: str) -> None:
+    page.get_by_test_id(f"ml-feature-{feature_id}").click()
+
+
+def click_data_column_action(page, action_id: str, column_id: str) -> None:
+    page.get_by_test_id(f"data-column-action-{action_id}-{column_id}").first.click()
+
+
+def click_data_row_action(page, action_id: str, row_id: str) -> None:
+    page.get_by_test_id(f"data-row-action-{action_id}-{row_id}").first.click()
+
+
+def toggle_feature(page, feature_id: str) -> None:
+    page.get_by_test_id(f"feature-toggle-{feature_id}").click()
+
+
+def encode_feature(page, feature_id: str) -> None:
+    page.get_by_test_id(f"feature-encode-{feature_id}").click()
 
 
 def capture_route_screenshots(browser) -> None:
@@ -316,6 +342,67 @@ def run_asymptotic_mistake_path(page) -> None:
     expect(page.get_by_text("Малый вход решен просто")).to_be_visible(timeout=10_000)
 
 
+def run_ml_playground_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/data/ml/playground", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-ml-playground"]', timeout=10_000)
+    set_ml_threshold(page, "50")
+    expect(page.get_by_text("Train-порог пойман").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-test-control").click()
+    set_ml_threshold(page, "58")
+    expect(page.get_by_text("Test-контроль пройден").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-f1-threshold").click()
+    set_ml_threshold(page, "59")
+    expect(page.get_by_text("F1 сбалансирован").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-leakage-trap").click()
+    choose_ml_feature(page, "signal")
+    set_ml_threshold(page, "58")
+    expect(page.get_by_text("Утечка отключена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_ml_playground_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/data/ml/playground", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-ml-playground"]', timeout=10_000)
+    set_ml_threshold(page, "50")
+    expect(page.get_by_text("Train-порог пойман").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-test-control").click()
+    expect(page.get_by_test_id("mission-feedback")).to_contain_text(
+        "train-test-gap", timeout=10_000
+    )
+    set_ml_threshold(page, "58")
+    expect(page.get_by_text("Test-контроль пройден").first).to_be_visible(timeout=10_000)
+
+
+def run_feature_factory_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/data/features/factory", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
+    click_data_column_action(page, "impute-median", "temperature")
+    expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-outlier-repair").click()
+    click_data_row_action(page, "drop-row", "ff-07")
+    expect(page.get_by_text("Выброс удален").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-leakage-off").click()
+    toggle_feature(page, "leakage_code")
+    expect(page.get_by_text("Leakage отключен").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-encode-category").click()
+    encode_feature(page, "segment")
+    expect(page.get_by_text("Категория закодирована").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_feature_factory_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/data/features/factory", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-feature-factory"]', timeout=10_000)
+    expect(page.get_by_test_id("feature-factory-diagnosis")).to_contain_text(
+        "остались NA", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    click_data_column_action(page, "impute-median", "signal")
+    expect(page.get_by_test_id("pipeline-strip")).to_contain_text("median impute signal")
+    click_data_column_action(page, "impute-median", "temperature")
+    expect(page.get_by_text("Пропуски залатаны").first).to_be_visible(timeout=10_000)
+
+
 def run_happy_paths(browser) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 960})
     context.add_init_script("window.localStorage.clear()")
@@ -326,12 +413,16 @@ def run_happy_paths(browser) -> None:
     run_kernel_mistake_path(page)
     run_graph_mistake_path(page)
     run_asymptotic_mistake_path(page)
+    run_ml_playground_mistake_path(page)
+    run_feature_factory_mistake_path(page)
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
     run_substitution_happy_path(page)
     run_graph_happy_path(page)
     run_asymptotic_happy_path(page)
+    run_ml_playground_happy_path(page)
+    run_feature_factory_happy_path(page)
     context.close()
 
 

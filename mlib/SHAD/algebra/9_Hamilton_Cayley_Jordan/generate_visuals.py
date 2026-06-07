@@ -176,9 +176,9 @@ def draw_kernel_growth_jordan_sizes(out_name: str = "kernel_growth_jordan_sizes.
 
 def draw_root_subspaces_jordan_blocks(out_name: str = "root_subspaces_jordan_blocks.png") -> None:
     _apply_style()
-    fig, ax = plt.subplots(figsize=(10.2, 5.0))
+    fig, ax = plt.subplots(figsize=(11.2, 5.0))
     ax.axis("off")
-    ax.set_xlim(0, 12)
+    ax.set_xlim(0, 13)
     ax.set_ylim(0, 6)
 
     # Big space
@@ -198,15 +198,25 @@ def draw_root_subspaces_jordan_blocks(out_name: str = "root_subspaces_jordan_blo
     ax.text(4.15, 4.0, r"$=$", fontsize=24, ha="center")
     ax.text(4.1, 2.25, r"$\oplus$", fontsize=22, ha="center")
 
-    # Jordan blocks to the right
-    ax.add_patch(Rectangle((8.4, 3.35), 2.6, 1.0, facecolor=C_BLUE, edgecolor=C_INK, linewidth=1.1, alpha=0.28))
-    ax.add_patch(Rectangle((8.4, 2.0), 1.9, 1.0, facecolor=C_BLUE, edgecolor=C_INK, linewidth=1.1, alpha=0.18))
-    ax.add_patch(Rectangle((8.4, 0.75), 1.2, 1.0, facecolor=C_ORANGE, edgecolor=C_INK, linewidth=1.1, alpha=0.28))
-    ax.text(9.7, 3.85, r"$J_3(\lambda_1)$", ha="center", va="center", fontsize=14)
-    ax.text(9.35, 2.5, r"$J_2(\lambda_1)$", ha="center", va="center", fontsize=14)
-    ax.text(9.0, 1.25, r"$J_1(\lambda_2)$", ha="center", va="center", fontsize=14)
+    ax.text(
+        7.35,
+        3.0,
+        "в каждом корневом\nподпространстве\nпоявляются свои\nжордановы блоки",
+        ha="center",
+        va="center",
+        fontsize=10.5,
+        color=C_INK,
+    )
+    ax.annotate("", xy=(8.65, 3.7), xytext=(7.85, 3.45), arrowprops=dict(arrowstyle="->", lw=1.6, color=C_GRAY))
+    ax.annotate("", xy=(8.65, 2.45), xytext=(7.85, 2.65), arrowprops=dict(arrowstyle="->", lw=1.6, color=C_GRAY))
 
-    ax.text(7.6, 3.0, "в каждом корневом\nподпространстве\nпоявляются свои\nжордановы блоки", ha="center", va="center", fontsize=11, color=C_INK)
+    # Jordan blocks to the right
+    ax.add_patch(Rectangle((8.9, 3.35), 2.6, 1.0, facecolor=C_BLUE, edgecolor=C_INK, linewidth=1.1, alpha=0.28))
+    ax.add_patch(Rectangle((8.9, 2.0), 1.9, 1.0, facecolor=C_BLUE, edgecolor=C_INK, linewidth=1.1, alpha=0.18))
+    ax.add_patch(Rectangle((8.9, 0.75), 1.2, 1.0, facecolor=C_ORANGE, edgecolor=C_INK, linewidth=1.1, alpha=0.28))
+    ax.text(10.2, 3.85, r"$J_3(\lambda_1)$", ha="center", va="center", fontsize=14)
+    ax.text(9.85, 2.5, r"$J_2(\lambda_1)$", ha="center", va="center", fontsize=14)
+    ax.text(9.5, 1.25, r"$J_1(\lambda_2)$", ha="center", va="center", fontsize=14)
     ax.text(0.6, 5.35, "Разложение по корневым подпространствам и жордановы клетки", fontsize=16, weight="bold")
     _save(fig, out_name)
 

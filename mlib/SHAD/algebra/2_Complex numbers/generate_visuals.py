@@ -169,6 +169,49 @@ def draw_roots_of_unity_cube(out_name: str = "roots_of_unity_cube.png"):
     plt.close(fig)
 
 
+def draw_primitive_roots_six(out_name: str = "primitive_roots_six.png"):
+    """Корни шестой степени с выделением первообразных: k=1 и k=5."""
+    _apply_style()
+    n = 6
+    primitive = {1, 5}
+    fig, ax = plt.subplots(figsize=(7.4, 7.0))
+    ax.set_facecolor(C_BG)
+    fig.patch.set_facecolor(C_BG)
+    ax.set_aspect("equal")
+
+    t = np.linspace(0, 2 * math.pi, 480)
+    ax.plot(np.cos(t), np.sin(t), color=C_GRAY, lw=1.7, zorder=1)
+    ax.axhline(0, color=C_GRAY, lw=0.9, alpha=0.6)
+    ax.axvline(0, color=C_GRAY, lw=0.9, alpha=0.6)
+
+    for k in range(n):
+        ang = 2 * math.pi * k / n
+        x, y = math.cos(ang), math.sin(ang)
+        color = C_ORANGE if k in primitive else C_BLUE
+        size = 280 if k in primitive else 190
+        ax.scatter([x], [y], s=size, c=color, edgecolors=C_INK, linewidths=1.4, zorder=4)
+        ax.text(
+            1.22 * x,
+            1.22 * y,
+            rf"$k={k}$",
+            ha="center",
+            va="center",
+            fontsize=11,
+            color=C_INK,
+        )
+
+    ax.text(-1.55, 1.35, r"$\gcd(k,6)=1$", fontsize=13, weight="bold", color=C_ORANGE)
+    ax.text(-1.55, 1.17, r"первообразные: $k=1,5$", fontsize=11, color=C_INK)
+    ax.text(-1.55, -1.42, r"остальные возвращаются к $1$ раньше", fontsize=11, color=C_INK)
+    ax.set_xlim(-1.75, 1.75)
+    ax.set_ylim(-1.65, 1.65)
+    ax.axis("off")
+    ax.set_title(r"Первообразные корни уравнения $z^6=1$", fontsize=14, weight="bold", color=C_INK)
+    fig.tight_layout()
+    fig.savefig(ASSETS / out_name, dpi=180, bbox_inches="tight", facecolor=C_BG)
+    plt.close(fig)
+
+
 def gif_cube_roots_highlight(out_name: str = "roots_cube_roots_pulse.gif", duration: float = 0.35):
     """Поочерёдная подсветка трёх корней из единости."""
     _apply_style()
@@ -216,6 +259,7 @@ def main():
     draw_complex_plane_points()
     draw_modulus_argument()
     draw_roots_of_unity_cube()
+    draw_primitive_roots_six()
     gif_cube_roots_highlight()
     print(f"Generated visuals in {ASSETS}")
 

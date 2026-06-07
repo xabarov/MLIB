@@ -164,6 +164,71 @@ def draw_disjoint_transpositions(out_name: str = "disjoint_transpositions.png"):
     plt.close(fig)
 
 
+def draw_disjoint_cycles_commute(out_name: str = "disjoint_cycles_commute.png"):
+    """Точная схема для независимых циклов: (1 3 5) и (2 4)."""
+    _apply_style()
+    fig, ax = plt.subplots(figsize=(9.8, 4.8))
+    ax.set_facecolor(C_BG)
+    fig.patch.set_facecolor(C_BG)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    cycles = [
+        ([1, 3, 5], (-1.8, 0.0), C_BLUE, r"$\alpha=(1\ 3\ 5)$"),
+        ([2, 4], (2.0, 0.0), C_ORANGE, r"$\beta=(2\ 4)$"),
+    ]
+
+    for labels, center, color, title in cycles:
+        cx, cy = center
+        n = len(labels)
+        angles = np.linspace(np.pi / 2, np.pi / 2 + 2 * np.pi, n, endpoint=False)
+        pos = {}
+        for label, angle in zip(labels, angles):
+            x = cx + 0.82 * np.cos(angle)
+            y = cy + 0.82 * np.sin(angle)
+            pos[label] = (x, y)
+            ax.scatter([x], [y], s=700, c=color, edgecolors=C_INK, linewidths=1.4, zorder=3)
+            ax.text(x, y, str(label), ha="center", va="center", fontsize=14, weight="bold", color=C_INK)
+        for a, b in zip(labels, labels[1:] + labels[:1]):
+            x1, y1 = pos[a]
+            x2, y2 = pos[b]
+            ax.add_patch(
+                FancyArrowPatch(
+                    (x1, y1),
+                    (x2, y2),
+                    connectionstyle="arc3,rad=0.18",
+                    arrowstyle="-|>",
+                    mutation_scale=13,
+                    lw=2.0,
+                    color=C_INK,
+                    alpha=0.82,
+                    shrinkA=18,
+                    shrinkB=18,
+                    zorder=2,
+                )
+            )
+        ax.text(cx, cy - 1.35, title, ha="center", va="center", fontsize=13, color=C_INK)
+
+    ax.text(-1.8, 1.55, r"$\{1,3,5\}$", ha="center", fontsize=12, color=C_BLUE)
+    ax.text(2.0, 1.55, r"$\{2,4\}$", ha="center", fontsize=12, color=C_ORANGE)
+    ax.text(0.1, 0.15, r"$\alpha\beta=\beta\alpha$", ha="center", va="center", fontsize=18, weight="bold", color=C_INK)
+    ax.text(
+        0.1,
+        -0.92,
+        "циклы действуют на разных элементах",
+        ha="center",
+        va="center",
+        fontsize=11,
+        color=C_INK,
+    )
+    ax.set_xlim(-3.4, 3.4)
+    ax.set_ylim(-1.9, 2.0)
+    ax.set_title("Независимые циклы коммутируют", fontsize=15, weight="bold", color=C_INK)
+    fig.tight_layout()
+    fig.savefig(ASSETS / out_name, dpi=180, bbox_inches="tight", facecolor=C_BG)
+    plt.close(fig)
+
+
 def draw_factorial_growth(out_name: str = "factorial_growth.png"):
     _apply_style()
     ns = np.arange(1, 11)
@@ -281,6 +346,7 @@ def main():
         out_name="cycle_1_4_3.png",
         universe=6,
     )
+    draw_disjoint_cycles_commute()
     draw_disjoint_transpositions()
     draw_factorial_growth()
     gif_cycle_highlight([1, 4, 3], out_name="cycle_1_4_3_trace.gif", universe=6)

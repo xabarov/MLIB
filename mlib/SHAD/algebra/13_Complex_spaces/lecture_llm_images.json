@@ -20,11 +20,6 @@
       "slug": "complex-svd-concept",
       "filename_base": "svd_concept",
       "prompt": "16:9 educational illustration of singular value decomposition, a circle transformed into an ellipse through rotation, axis scaling and another rotation, multi-stage mathematical transformation in one calm composition, warm paper background, blue purple red accents, precise minimal textbook style. No readable text, no formulas, no digits, no people."
-    },
-    {
-      "slug": "complex-forms-concept",
-      "filename_base": "forms_concept",
-      "prompt": "16:9 educational illustration comparing quadratic and Hermitian forms geometry, elliptic contour lines and hyperbolic contour lines side by side, subtle matrix-inspired structure without readable symbols, warm paper background, dusty blue terracotta sage accents, modern minimal mathematical textbook style. No dense formulas, no people, no black background, no clutter."
     }
   ]
 }

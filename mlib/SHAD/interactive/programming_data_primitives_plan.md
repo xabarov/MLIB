@@ -14,7 +14,30 @@
   стоимости;
 - `StrategyCompare` дает выбор стратегии и рост стоимости на разных n;
 - модель `asymptoticArenaModel.ts` покрыта unit tests;
-- следующие primitives в очереди: `DataTableMini` и `MetricBoard`.
+
+Первый data/ML slice реализован через **ML-полигон**:
+
+- `src/game/dataTypes.ts` добавляет `DatasetRow`, `ModelMetric`,
+  `ConfusionCounts` и `ThresholdModel`;
+- `DataTableMini` показывает train/test rows, predictions and flags;
+- `MetricBoard` показывает train/test metrics and confusion counts;
+- `DecisionPlane` дает SVG playground для threshold classifier;
+- модель `mlPlaygroundModel.ts` покрыта unit tests.
+
+Первый data-cleaning / feature engineering slice реализован через
+**Фабрику признаков**:
+
+- `src/game/dataTypes.ts` добавляет `DataPipelineStep`, `FeatureState` and
+  `SplitQuality`;
+- `DataTableMini` поддерживает row/column actions with target filters;
+- `FeatureTogglePanel`, `PipelineStrip` and `SplitInspector` дают общий UI для
+  будущих data-cleaning миссий;
+- модель `featureFactoryModel.ts` покрыта unit tests;
+- Playwright smoke проходит route `#/data/features/factory` and happy/mistake
+  paths.
+
+Следующими кандидатами остаются decision tree split board, split seed picker
+and ranking metric playground.
 
 ## Целевая первая миссия
 

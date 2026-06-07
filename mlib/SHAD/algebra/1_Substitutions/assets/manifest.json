@@ -7,11 +7,6 @@
       "slug": "substitutions-hero-symmetric-group",
       "filename_base": "hero_symmetric_group",
       "append_style_suffix": true
-    },
-    {
-      "slug": "substitutions-cycles-independence",
-      "filename_base": "cycles_disjoint_metaphor",
-      "append_style_suffix": true
     }
   ],
   "job_file_metadata": {
