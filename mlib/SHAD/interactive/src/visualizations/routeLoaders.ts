@@ -30,6 +30,18 @@ export const QuadraticLensMission = lazy(() =>
   })),
 )
 
+export const OrthogonalWorkshopMission = lazy(() =>
+  import('./orthogonal-workshop/OrthogonalWorkshopMission').then((module) => ({
+    default: module.OrthogonalWorkshopMission,
+  })),
+)
+
+export const UnitaryCompassMission = lazy(() =>
+  import('./unitary-compass/UnitaryCompassMission').then((module) => ({
+    default: module.UnitaryCompassMission,
+  })),
+)
+
 export const SvdLensMission = lazy(() =>
   import('./svd-lens/SvdLensMission').then((module) => ({
     default: module.SvdLensMission,

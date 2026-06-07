@@ -16,6 +16,16 @@ ROUTES = [
     ("determinant", "#/algebra/determinants/forge", '[data-testid="mission-determinant-forge"]'),
     ("matrix", "#/algebra/matrices/machine", '[data-testid="mission-matrix-machine"]'),
     ("quadratic-lens", "#/algebra/quadratic-forms/lens", '[data-testid="mission-quadratic-lens"]'),
+    (
+        "orthogonal-workshop",
+        "#/algebra/euclidean/orthogonal-workshop",
+        '[data-testid="mission-orthogonal-workshop"]',
+    ),
+    (
+        "unitary-compass",
+        "#/algebra/complex/unitary-compass",
+        '[data-testid="mission-unitary-compass"]',
+    ),
     ("svd-lens", "#/algebra/svd/lens", '[data-testid="mission-svd-lens"]'),
     (
         "substitution",
@@ -118,6 +128,20 @@ def fill_svd_matrix(page, a: str, b: str, c: str, d: str) -> None:
     page.get_by_test_id("svd-matrix-b").fill(b)
     page.get_by_test_id("svd-matrix-c").fill(c)
     page.get_by_test_id("svd-matrix-d").fill(d)
+
+
+def fill_orthogonal_matrix(page, a: str, b: str, c: str, d: str) -> None:
+    page.get_by_test_id("orthogonal-matrix-a").fill(a)
+    page.get_by_test_id("orthogonal-matrix-b").fill(b)
+    page.get_by_test_id("orthogonal-matrix-c").fill(c)
+    page.get_by_test_id("orthogonal-matrix-d").fill(d)
+
+
+def fill_unitary_matrix(page, a_re: str, a_im: str, b_re: str, b_im: str) -> None:
+    page.get_by_test_id("unitary-u-a-re").fill(a_re)
+    page.get_by_test_id("unitary-u-a-im").fill(a_im)
+    page.get_by_test_id("unitary-u-b-re").fill(b_re)
+    page.get_by_test_id("unitary-u-b-im").fill(b_im)
 
 
 def swap_tiles(page, a: int, b: int) -> None:
@@ -361,6 +385,117 @@ def run_svd_mistake_path(page) -> None:
     )
 
 
+def run_orthogonal_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/euclidean/orthogonal-workshop", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-orthogonal-workshop"]', timeout=10_000)
+    expect(page.get_by_test_id("orthogonal-workshop-canvas")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("orthogonal-residual")).to_be_visible(timeout=10_000)
+    page.get_by_role("button", name="project").click()
+    expect(page.get_by_text("Тень найдена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-independent-is-not-orthogonal").click()
+    page.get_by_role("button", name="orthogonalize").click()
+    expect(page.get_by_text("Векторы ненулевые").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-normalize-without-turning").click()
+    page.get_by_role("button", name="normalize").click()
+    expect(page.get_by_text("Вектор нормирован").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-gram-schmidt-two").click()
+    page.get_by_role("button", name="gram-schmidt").click()
+    expect(page.get_by_text("Грам-Шмидт сработал").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-orthogonal-operator").click()
+    page.get_by_role("button", name="snap Q").click()
+    expect(page.get_by_text("Оператор ортогонален").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
+
+
+def run_orthogonal_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/euclidean/orthogonal-workshop", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-orthogonal-workshop"]', timeout=10_000)
+    page.get_by_role("button", name="project").click()
+    expect(page.get_by_text("Тень найдена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-independent-is-not-orthogonal").click()
+    page.get_by_test_id("orthogonal-vector-b-x").fill("1.1")
+    expect(page.get_by_test_id("orthogonal-diagnosis")).to_contain_text("dot", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_role("button", name="orthogonalize").click()
+    expect(page.get_by_text("Векторы ненулевые").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-normalize-without-turning").click()
+    page.get_by_role("button", name="normalize").click()
+    expect(page.get_by_text("Вектор нормирован").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-gram-schmidt-two").click()
+    page.get_by_role("button", name="gram-schmidt").click()
+    expect(page.get_by_text("Грам-Шмидт сработал").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-orthogonal-operator").click()
+    fill_orthogonal_matrix(page, "1", "1", "0", "1")
+    expect(page.get_by_test_id("orthogonal-diagnosis")).to_contain_text(
+        "не ортогональный оператор", timeout=10_000
+    )
+
+
+def run_unitary_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/complex/unitary-compass", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-unitary-compass"]', timeout=10_000)
+    expect(page.get_by_test_id("unitary-compass-canvas")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("complex-vector-plane")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("unitary-hermitian-choice").click()
+    expect(page.get_by_text("Ловушка поймана").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-conjugate-slot").click()
+    page.get_by_test_id("unitary-conjugate-second-choice").click()
+    expect(page.get_by_text("Conjugate slot выбран").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-phase-preserve").click()
+    page.get_by_test_id("unitary-phase-pi-half").click()
+    expect(page.get_by_text("Фаза повернулась").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-fake-hermitian").click()
+    page.get_by_test_id("unitary-make-hermitian").click()
+    expect(page.get_by_text("Матрица стала Hermitian").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-unitary-motion").click()
+    page.get_by_test_id("unitary-snap-u").click()
+    expect(page.get_by_text("U*U = I").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-a-star-a-bridge").click()
+    page.get_by_test_id("unitary-choice-astar-a").click()
+    expect(page.get_by_text("A* A построена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-debrief")).to_be_visible(timeout=10_000)
+
+
+def run_unitary_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/complex/unitary-compass", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-unitary-compass"]', timeout=10_000)
+    page.get_by_test_id("unitary-bilinear-choice").click()
+    expect(page.get_by_test_id("unitary-diagnosis")).to_contain_text(
+        "B(ix, ix)", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    page.get_by_test_id("unitary-hermitian-choice").click()
+    expect(page.get_by_text("Ловушка поймана").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-conjugate-slot").click()
+    page.get_by_test_id("unitary-bilinear-choice").click()
+    expect(page.get_by_test_id("unitary-diagnosis")).to_contain_text(
+        "B(ix, ix)", timeout=10_000
+    )
+    page.get_by_test_id("unitary-conjugate-second-choice").click()
+    expect(page.get_by_text("Conjugate slot выбран").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-phase-preserve").click()
+    page.get_by_test_id("unitary-phase-pi-half").click()
+    expect(page.get_by_text("Фаза повернулась").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-fake-hermitian").click()
+    expect(page.get_by_test_id("unitary-diagnosis")).to_contain_text(
+        "A != A*", timeout=10_000
+    )
+    page.get_by_test_id("unitary-make-hermitian").click()
+    expect(page.get_by_text("Матрица стала Hermitian").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-unitary-motion").click()
+    fill_unitary_matrix(page, "1", "0", "1", "0")
+    expect(page.get_by_test_id("unitary-diagnosis")).to_contain_text(
+        "не unitary", timeout=10_000
+    )
+    page.get_by_test_id("unitary-snap-u").click()
+    expect(page.get_by_text("U*U = I").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-a-star-a-bridge").click()
+    page.get_by_test_id("unitary-choice-ata").click()
+    expect(page.get_by_test_id("unitary-diagnosis")).to_contain_text(
+        "transpose без сопряжения", timeout=10_000
+    )
+
+
 def run_substitution_happy_path(page) -> None:
     page.goto(f"{BASE_URL}/#/algebra/substitutions/workshop", wait_until="domcontentloaded")
     page.wait_for_selector('[data-testid="mission-substitution-workshop"]', timeout=10_000)
@@ -543,6 +678,8 @@ def run_happy_paths(browser) -> None:
     run_substitution_mistake_path(page)
     run_matrix_mistake_path(page)
     run_quadratic_mistake_path(page)
+    run_orthogonal_mistake_path(page)
+    run_unitary_mistake_path(page)
     run_svd_mistake_path(page)
     run_determinant_mistake_path(page)
     run_kernel_mistake_path(page)
@@ -554,6 +691,8 @@ def run_happy_paths(browser) -> None:
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
     run_quadratic_happy_path(page)
+    run_orthogonal_happy_path(page)
+    run_unitary_happy_path(page)
     run_svd_happy_path(page)
     run_substitution_happy_path(page)
     run_graph_happy_path(page)

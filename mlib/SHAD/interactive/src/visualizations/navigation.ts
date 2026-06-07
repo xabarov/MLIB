@@ -73,6 +73,16 @@ export const navSections: NavSection[] = [
         visualizations: [missionEntry('quadratic-lens')],
       },
       {
+        id: 'euclidean-spaces',
+        title: 'Евклидовы пространства',
+        visualizations: [missionEntry('orthogonal-workshop')],
+      },
+      {
+        id: 'complex-spaces',
+        title: 'Комплексные пространства',
+        visualizations: [missionEntry('unitary-compass')],
+      },
+      {
         id: 'svd-pca',
         title: 'SVD и PCA',
         visualizations: [missionEntry('svd-lens')],

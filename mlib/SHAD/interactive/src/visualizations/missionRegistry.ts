@@ -6,9 +6,11 @@ import {
   kernelHuntMission,
   matrixMachineMission,
   mlPlaygroundMission,
+  orthogonalWorkshopMission,
   quadraticLensMission,
   svdLensMission,
   substitutionWorkshopMission,
+  unitaryCompassMission,
 } from '../game/missions'
 import type { VizEntry } from './registryTypes'
 import {
@@ -19,9 +21,11 @@ import {
   KernelHuntMission,
   MatrixMachineMission,
   MlPlaygroundMission,
+  OrthogonalWorkshopMission,
   QuadraticLensMission,
   SvdLensMission,
   SubstitutionWorkshopMission,
+  UnitaryCompassMission,
 } from './routeLoaders'
 
 export const missionEntries: VizEntry[] = [
@@ -110,6 +114,40 @@ export const missionEntries: VizEntry[] = [
       formula: String.raw`A=U\Sigma V^T`,
       description:
         'Единичный круг проходит через матрицу и становится эллипсом: его полуоси показывают сингулярные числа, а PCA появляется как rank-1 тень данных.',
+    },
+  },
+  {
+    id: 'orthogonal-workshop',
+    path: '/algebra/euclidean/orthogonal-workshop',
+    title: 'Евклидова мастерская',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 2,
+    lessonPath: orthogonalWorkshopMission.lessonPath,
+    mission: orthogonalWorkshopMission,
+    component: OrthogonalWorkshopMission,
+    meta: {
+      title: 'Евклидова мастерская',
+      formula: String.raw`x=\mathrm{proj}_U x+r,\quad r\perp U`,
+      description:
+        'Проекция, остаток и Грам-Шмидт становятся игровыми операциями над ортогональностью.',
+    },
+  },
+  {
+    id: 'unitary-compass',
+    path: '/algebra/complex/unitary-compass',
+    title: 'Унитарный компас',
+    kind: 'mission',
+    status: 'prototype',
+    difficulty: 3,
+    lessonPath: unitaryCompassMission.lessonPath,
+    mission: unitaryCompassMission,
+    component: UnitaryCompassMission,
+    meta: {
+      title: 'Унитарный компас',
+      formula: String.raw`\langle x,y\rangle=\sum x_k\overline{y_k},\quad U^*U=I`,
+      description:
+        'Комплексная фаза, сопряжение и унитарность становятся проверяемой геометрией.',
     },
   },
   {
