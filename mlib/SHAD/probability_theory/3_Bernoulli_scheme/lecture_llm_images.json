@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "bernoulli-scheme-hero",
+      "filename_base": "hero_bernoulli",
+      "prompt": "16:9 educational editorial illustration for a university probability theory lecture on the Bernoulli scheme — repeated independent trials with two outcomes. Show a sequence of abstract trial symbols (circles or coins) arranged in a horizontal row, some highlighted in terracotta (success) and others in dusty blue (failure), suggesting a random binary sequence. Below, a soft bar-chart silhouette hints at a probability distribution forming over repeated experiments. One main idea: counting successes in a series of independent identical trials. Warm paper background, deep ink contours, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits."
+    }
+  ]
+}
