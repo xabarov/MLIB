@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "clt-characteristic-functions-hero",
+      "filename_base": "hero_clt",
+      "prompt": "16:9 educational editorial illustration for a probability theory lecture on characteristic functions and the Central Limit Theorem. Visualize multiple different abstract wave or frequency curves on the left side — representing characteristic functions of different distributions — all converging and blending into a single smooth symmetric bell curve on the right side. The transformation is graceful and flowing, with blue and terracotta wave patterns merging into a warm ink bell shape. Warm off-white paper background, deep ink contours, premium academic textbook style, generous whitespace. No text, no formulas, no numbers."
+    }
+  ]
+}
