@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "inequalities-convergence-hero",
+      "filename_base": "hero_inequalities",
+      "prompt": "16:9 educational editorial illustration for a probability theory lecture on inequalities and convergence of random variables. Visualize a sequence of funnel-shaped or nested filter layers, each one smaller and more refined, representing a sequence of random variables converging toward a limit point. Use abstract geometric shapes — dots, curves, and funnels — arranged in a left-to-right flow, with warm off-white paper background, deep ink contours, blue and terracotta accents. Premium academic textbook style, generous whitespace. No readable text, no formulas, no digits."
+    }
+  ]
+}
