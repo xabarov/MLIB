@@ -41,7 +41,7 @@ def _apply_style() -> None:
     )
 
 
-def _save(fig: "plt.Figure", name: str) -> None:
+def _save(fig, name: str) -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     fig.savefig(ASSETS / name, dpi=180, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
