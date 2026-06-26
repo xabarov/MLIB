@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "random-variables-hero",
+      "filename_base": "hero_random_variables",
+      "prompt": "16:9 educational editorial illustration for a university probability theory lecture on random variables, distribution functions, and density. Show a flowing abstract curve rising from left to right (suggesting a cumulative distribution function), with soft scattered points below it suggesting a sample, and a gentle bell-shaped silhouette in the background hinting at density. The main idea: a random variable maps outcomes to numbers, and its law is captured by the distribution function. Warm paper background, deep ink contours, dusty blue and terracotta accents, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits."
+    }
+  ]
+}
