@@ -1,0 +1,20 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "conditional-probability-hero",
+      "filename_base": "hero_conditional_probability",
+      "prompt": "16:9 educational editorial illustration for a university probability theory lecture on conditional probability, Bayes' theorem, and independence. Show a large warm sample space region with many soft scattered points, and one highlighted sub-region B (dusty blue), inside which a smaller overlap area A∩B is marked in terracotta. The focal idea is: restricting attention to B and measuring the fraction that falls in A. One main idea only. Warm paper background, deep ink contours, premium academic textbook style, generous whitespace. No readable text, no formulas, no digits."
+    },
+    {
+      "slug": "conditional-restriction",
+      "filename_base": "conditional_probability_restriction",
+      "prompt": "Educational diagram illustration for a probability theory lecture. Show two nested regions on a warm paper background: a large outer rectangle representing sample space Omega (deep ink border), inside it a soft dusty-blue ellipse B, and inside B a smaller terracotta ellipse representing A∩B. Scattered soft dots fill the space. The visual emphasis is the zoom / restriction from the full space into B, with A∩B highlighted inside. Clean, minimal, no text, no formulas, academic editorial style, 16:9 ratio."
+    },
+    {
+      "slug": "total-probability-partition",
+      "filename_base": "total_probability_partition",
+      "prompt": "Educational diagram for a probability theory lecture on the law of total probability. Show a large warm paper rectangle (sample space Omega) partitioned into three vertical sections H1, H2, H3 with soft muted colors (dusty blue, sage, warm gray). Across all three sections runs a curved horizontal band representing event A, with pieces A∩H1, A∩H2, A∩H3 highlighted in terracotta. The idea: event A is split by the partition. Clean editorial style, generous whitespace, no text, no formulas, 16:9 ratio."
+    }
+  ]
+}
