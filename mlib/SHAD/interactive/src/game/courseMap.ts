@@ -13,6 +13,7 @@ export type CourseMapNode = {
 }
 
 const missionById = new Map(missionDefinitions.map((mission) => [mission.id, mission]))
+const curriculumById = new Map(curriculumGraph.map((node) => [node.id, node]))
 
 export const courseMapNodes: CourseMapNode[] = curriculumGraph.flatMap((curriculum) =>
   curriculum.missionIds.map((missionId) => {
@@ -38,15 +39,46 @@ export function missionCompletionRatio(completed: string[] | undefined, mission:
   }
 }
 
-export function recommendedMissionId(completedLevels: Record<string, string[]>): string {
-  const firstOpen = courseMapNodes.find((node) => {
-    const progress = missionCompletionRatio(completedLevels[node.mission.id], node.mission)
-    return !progress.complete
-  })
-  if (firstOpen) return firstOpen.mission.id
+export function isMissionComplete(
+  missionId: string,
+  completedLevels: Record<string, string[]>,
+): boolean {
+  const mission = missionById.get(missionId)
+  if (!mission) return false
+  return missionCompletionRatio(completedLevels[missionId], mission).complete
+}
 
+function isCurriculumNodeComplete(
+  nodeId: string,
+  completedLevels: Record<string, string[]>,
+): boolean {
+  const node = curriculumById.get(nodeId)
+  // Unknown prerequisite ids should not block a recommendation.
+  if (!node) return true
+  return node.missionIds.every((missionId) => isMissionComplete(missionId, completedLevels))
+}
+
+export function recommendedMissionId(completedLevels: Record<string, string[]>): string {
+  // 1. First incomplete mission whose prerequisites are all complete: it is the
+  //    next thing the learner is actually ready to play.
+  const ready = courseMapNodes.find((node) => {
+    if (isMissionComplete(node.mission.id, completedLevels)) return false
+    const prerequisites = node.curriculum.prerequisites ?? []
+    return prerequisites.every((id) => isCurriculumNodeComplete(id, completedLevels))
+  })
+  if (ready) return ready.mission.id
+
+  // 2. Otherwise the first incomplete mission, even if its prerequisites are not
+  //    finished yet, so the map never stalls on a gap.
+  const anyOpen = courseMapNodes.find(
+    (node) => !isMissionComplete(node.mission.id, completedLevels),
+  )
+  if (anyOpen) return anyOpen.mission.id
+
+  // 3. Everything is complete: suggest a review candidate, but only one that has
+  //    actually been finished, so review points back at real progress.
   const reviewTarget = courseMapNodes
     .flatMap((node) => node.curriculum.reviewAfterMissionIds ?? [])
-    .find((missionId) => missionById.has(missionId))
+    .find((missionId) => isMissionComplete(missionId, completedLevels))
   return reviewTarget ?? courseMapNodes[0]?.mission.id ?? ''
 }

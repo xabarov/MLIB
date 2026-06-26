@@ -7,6 +7,12 @@ export type Matrix2 = {
 
 export type MatrixMachineTarget = Matrix2 & {
   id: string
+  /**
+   * Challenge levels hide the per-column guide dots and the inline numeric
+   * target. The goal becomes matching the image of the unit square, so both
+   * columns must be reconstructed instead of dragged onto a visible marker.
+   */
+  challenge?: boolean
 }
 
 export type MatrixMachineDiagnosisKind =
@@ -29,6 +35,10 @@ export const matrixMachineTargets: Record<string, MatrixMachineTarget> = {
   'shear-y': { id: 'shear-y', u: [1, 0], v: [1, 1] },
   'flip-x': { id: 'flip-x', u: [-1, 0], v: [0, 1] },
   'quarter-turn': { id: 'quarter-turn', u: [0, 1], v: [-1, 0] },
+  // Challenge levels: both columns are off-axis, so no level can be solved by
+  // nudging a single handle onto an identity default.
+  parallelogram: { id: 'parallelogram', u: [2, 1], v: [1, 2], challenge: true },
+  'rotate-stretch': { id: 'rotate-stretch', u: [1, 1], v: [-1, 1], challenge: true },
 }
 
 const snap = 0.25
@@ -43,6 +53,19 @@ export function matrixFromColumns(u: Vec2, v: Vec2): [[number, number], [number,
   return [
     [u[0], v[0]],
     [u[1], v[1]],
+  ]
+}
+
+/**
+ * Image of the unit square under the matrix with columns u, v: the polygon
+ * 0 -> u -> u+v -> v. Used to show "matrix as a machine acting on a shape".
+ */
+export function unitSquareImage(u: Vec2, v: Vec2): Vec2[] {
+  return [
+    [0, 0],
+    [u[0], u[1]],
+    [u[0] + v[0], u[1] + v[1]],
+    [v[0], v[1]],
   ]
 }
 

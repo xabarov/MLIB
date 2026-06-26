@@ -20,7 +20,7 @@ const toneClass: Record<BadgeTone, string> = {
 export function InvariantBadge({ label, value, tone = 'neutral' }: InvariantBadgeProps) {
   return (
     <span
-      className={`inline-flex min-h-10 min-w-0 flex-col justify-center rounded-md border px-3 py-1.5 shadow-[0_1px_0_rgba(20,20,19,0.05)] ${toneClass[tone]}`}
+      className={`inline-flex min-h-10 min-w-0 flex-col justify-center rounded-md border px-2.5 py-1.5 shadow-[0_1px_0_rgba(20,20,19,0.05)] sm:px-3 ${toneClass[tone]}`}
     >
       <span className="text-[10px] font-semibold uppercase tracking-wide text-ink/50">
         {label}

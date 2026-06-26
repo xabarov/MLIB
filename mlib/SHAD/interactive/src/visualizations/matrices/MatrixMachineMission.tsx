@@ -13,19 +13,32 @@ import {
   matrixMachineTargets,
   svgPointToMatrixCoord,
   targetError,
+  unitSquareImage,
   type Vec2,
 } from './matrixMachineModel'
 
 type DragTarget = 'u' | 'v' | null
 
-function VectorReadout({ label, value, target }: { label: string; value: Vec2; target: Vec2 }) {
+function VectorReadout({
+  label,
+  value,
+  target,
+  showTarget = true,
+}: {
+  label: string
+  value: Vec2
+  target: Vec2
+  showTarget?: boolean
+}) {
   return (
     <p className="text-xs text-ink/65">
       <span className="font-semibold text-ink">{label}</span> = (
       {formatMatrixNumber(value[0])}, {formatMatrixNumber(value[1])}){' '}
-      <span className="text-ink/45">
-        цель ({formatMatrixNumber(target[0])}, {formatMatrixNumber(target[1])})
-      </span>
+      {showTarget && (
+        <span className="text-ink/45">
+          цель ({formatMatrixNumber(target[0])}, {formatMatrixNumber(target[1])})
+        </span>
+      )}
     </p>
   )
 }
@@ -106,6 +119,10 @@ export function MatrixMachineMission() {
   })
 
   const matrix = matrixFromColumns(u, v)
+  const isChallenge = Boolean(target.challenge)
+  const toPoints = (pts: Vec2[]) => pts.map((p) => `${p[0]},${p[1]}`).join(' ')
+  const targetPolygon = toPoints(unitSquareImage(target.u, target.v))
+  const currentPolygon = toPoints(unitSquareImage(u, v))
   const badges: MissionBadge[] = [
     {
       id: 'target-error',
@@ -204,10 +221,29 @@ export function MatrixMachineMission() {
               <line x1={-4} y1={0} x2={4} y2={0} className="stroke-ink/45" strokeWidth="0.035" />
               <line x1={0} y1={-4} x2={0} y2={4} className="stroke-ink/45" strokeWidth="0.035" />
 
-              <line x1={0} y1={0} x2={target.u[0]} y2={target.u[1]} className="stroke-orange/30" strokeWidth="0.13" strokeLinecap="round" />
-              <line x1={0} y1={0} x2={target.v[0]} y2={target.v[1]} className="stroke-target/30" strokeWidth="0.13" strokeLinecap="round" />
-              <circle cx={target.u[0]} cy={target.u[1]} r={0.12} className="fill-orange/30" />
-              <circle cx={target.v[0]} cy={target.v[1]} r={0.12} className="fill-target/30" />
+              <polygon
+                points={targetPolygon}
+                className="fill-target/5 stroke-target/40"
+                strokeWidth="0.05"
+                strokeLinejoin="round"
+                strokeDasharray="0.18 0.12"
+                data-testid="matrix-target-shape"
+              />
+              <polygon
+                points={currentPolygon}
+                className="fill-orange/10 stroke-orange/50"
+                strokeWidth="0.04"
+                strokeLinejoin="round"
+              />
+
+              {!isChallenge && (
+                <>
+                  <line x1={0} y1={0} x2={target.u[0]} y2={target.u[1]} className="stroke-orange/30" strokeWidth="0.13" strokeLinecap="round" />
+                  <line x1={0} y1={0} x2={target.v[0]} y2={target.v[1]} className="stroke-target/30" strokeWidth="0.13" strokeLinecap="round" />
+                  <circle cx={target.u[0]} cy={target.u[1]} r={0.12} className="fill-orange/30" />
+                  <circle cx={target.v[0]} cy={target.v[1]} r={0.12} className="fill-target/30" />
+                </>
+              )}
 
               <line x1={0} y1={0} x2={u[0]} y2={u[1]} className="stroke-orange" strokeWidth="0.075" strokeLinecap="round" />
               <line x1={0} y1={0} x2={v[0]} y2={v[1]} className="stroke-target" strokeWidth="0.075" strokeLinecap="round" />
@@ -235,13 +271,23 @@ export function MatrixMachineMission() {
       }
       controls={
         <div className="space-y-2">
-          <div className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs text-ink">
-            Целевая матрица: [[{formatMatrixNumber(target.u[0])},{' '}
-            {formatMatrixNumber(target.v[0])}], [{formatMatrixNumber(target.u[1])},{' '}
-            {formatMatrixNumber(target.v[1])}]]
-          </div>
-          <VectorReadout label="A e1" value={u} target={target.u} />
-          <VectorReadout label="A e2" value={v} target={target.v} />
+          {isChallenge ? (
+            <div
+              className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs text-ink"
+              data-testid="matrix-goal"
+            >
+              Цель-вызов: подгони образ единичного квадрата под бледный контур.
+              Координаты столбцов скрыты - открой их в подсказках, если нужно.
+            </div>
+          ) : (
+            <div className="rounded border border-target/20 bg-target/10 px-2 py-1 text-xs text-ink">
+              Целевая матрица: [[{formatMatrixNumber(target.u[0])},{' '}
+              {formatMatrixNumber(target.v[0])}], [{formatMatrixNumber(target.u[1])},{' '}
+              {formatMatrixNumber(target.v[1])}]]
+            </div>
+          )}
+          <VectorReadout label="A e1" value={u} target={target.u} showTarget={!isChallenge} />
+          <VectorReadout label="A e2" value={v} target={target.v} showTarget={!isChallenge} />
           <div
             className="rounded border border-ink/10 bg-paper/80 px-2 py-1.5 text-xs leading-relaxed text-ink/70"
             data-testid="matrix-diagnosis"

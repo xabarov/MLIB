@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MissionShell } from '../../game/components/MissionShell'
 import { MascotOverlay } from '../../game/components/MascotOverlay'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { substitutionWorkshopMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -88,6 +90,16 @@ function SubstitutionWorkshopLevel({
     [activeLevel.id, permutation, swapCount],
   )
 
+  const showRepairMarker =
+    swapCount > 0 &&
+    !levelSuccess &&
+    (overBudget || ['wrong-parity', 'target-mismatch'].includes(diagnosis.kind))
+  const repairMarkerLabel = overBudget
+    ? 'over budget'
+    : diagnosis.kind === 'wrong-parity'
+      ? 'sign ≠ target'
+      : 'не та цель'
+
   useEffect(() => {
     if (!levelSuccess) return
     completeActiveLevel()
@@ -169,6 +181,15 @@ function SubstitutionWorkshopLevel({
       scene={
         <div className="flex h-full items-start justify-center bg-[radial-gradient(circle_at_28%_18%,rgba(124,108,207,0.12),transparent_28%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4 lg:items-center">
           <div className="relative w-full max-w-4xl">
+            <ResultMoment show={levelSuccess} label="перестановка собрана" />
+            {showRepairMarker && (
+              <RepairMarker
+                tone={overBudget ? 'danger' : 'warning'}
+                label={repairMarkerLabel}
+                xPercent={50}
+                yPercent={2}
+              />
+            )}
             {selectedIndex !== null && (
               <MascotOverlay
                 role="pivot"

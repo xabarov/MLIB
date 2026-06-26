@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import { RotateCcw, Target } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { svdLensMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -262,6 +264,18 @@ export function SvdLensMission() {
     touched,
   })
 
+  const repairLabelByKind: Record<string, string> = {
+    'wrong-ellipse': 'не тот эллипс',
+    'wrong-directions': 'не те оси',
+    'eigenvalue-trap': 'это λ, не σ',
+    'signed-sigma': 'σ ≥ 0',
+    'wrong-rank': 'не тот ранг',
+    'weak-component-kept': 'слабая компонента',
+    'pca-axis-off': 'ось PCA мимо',
+  }
+  const repairLabel = repairLabelByKind[diagnosis.kind] ?? 'почини σ'
+  const showRepairMarker = touched && !levelSuccess && diagnosis.kind in repairLabelByKind
+
   useEffect(() => {
     if (!levelSuccess) return
     completeActiveLevel()
@@ -398,7 +412,11 @@ export function SvdLensMission() {
       badges={badges}
       sceneViewportClassName="min-h-[640px] pt-[116px] sm:pt-[84px] lg:h-full"
       scene={
-        <div className="grid h-full grid-rows-[1fr_auto] gap-3 bg-[radial-gradient(circle_at_18%_14%,rgba(106,155,204,0.15),transparent_30%),radial-gradient(circle_at_82%_78%,rgba(95,141,99,0.14),transparent_28%),linear-gradient(180deg,#fffdf7,#f5f2e8)] p-3">
+        <div className="relative grid h-full grid-rows-[1fr_auto] gap-3 bg-[radial-gradient(circle_at_18%_14%,rgba(106,155,204,0.15),transparent_30%),radial-gradient(circle_at_82%_78%,rgba(95,141,99,0.14),transparent_28%),linear-gradient(180deg,#fffdf7,#f5f2e8)] p-3">
+          <ResultMoment show={levelSuccess} label="круг стал эллипсом" />
+          {showRepairMarker && (
+            <RepairMarker tone="warning" label={repairLabel} xPercent={50} yPercent={2} />
+          )}
           <div className="grid min-h-0 gap-3 lg:grid-cols-[1fr_130px_1fr]">
             <svg
               ref={svgRef}

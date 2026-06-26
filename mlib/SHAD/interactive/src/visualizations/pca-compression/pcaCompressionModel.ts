@@ -125,6 +125,23 @@ export function maxAbsCell(matrix: MatrixData): number {
   )
 }
 
+export type ResidualHotspot = { row: number; col: number; value: number }
+
+/**
+ * Location and value of the largest-magnitude residual cell. A high global
+ * retained energy can still hide one bright local artifact - this surfaces it
+ * so the metric tradeoff stays visible on the residual map.
+ */
+export function worstResidualCell(matrix: MatrixData): ResidualHotspot {
+  let best: ResidualHotspot = { row: 0, col: 0, value: 0 }
+  matrix.forEach((row, r) => {
+    row.forEach((value, c) => {
+      if (Math.abs(value) > Math.abs(best.value)) best = { row: r, col: c, value }
+    })
+  })
+  return best
+}
+
 export function normalizeMatrixForHeatmap(matrix: MatrixData): MatrixData {
   const max = maxAbsCell(matrix)
   if (max < compressionTolerance) return cloneMatrix(matrix)

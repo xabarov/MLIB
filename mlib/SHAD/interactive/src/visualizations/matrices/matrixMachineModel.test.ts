@@ -5,6 +5,7 @@ import {
   matrixMachineLevelSuccess,
   snapMatrixCoord,
   targetError,
+  unitSquareImage,
 } from './matrixMachineModel'
 
 describe('matrixMachineModel', () => {
@@ -20,6 +21,22 @@ describe('matrixMachineModel', () => {
     expect(matrixMachineLevelSuccess('shear-y', [1, 0], [1, 1])).toBe(true)
     expect(matrixMachineLevelSuccess('flip-x', [-1, 0], [0, 1])).toBe(true)
     expect(matrixMachineLevelSuccess('quarter-turn', [0, 1], [-1, 0])).toBe(true)
+  })
+
+  it('recognizes challenge targets that need both columns', () => {
+    expect(matrixMachineLevelSuccess('parallelogram', [2, 1], [1, 2])).toBe(true)
+    expect(matrixMachineLevelSuccess('rotate-stretch', [1, 1], [-1, 1])).toBe(true)
+    // A single correct column is not enough for a challenge level.
+    expect(matrixMachineLevelSuccess('parallelogram', [2, 1], [0, 1])).toBe(false)
+  })
+
+  it('maps the unit square to a parallelogram via the columns', () => {
+    expect(unitSquareImage([2, 1], [1, 2])).toEqual([
+      [0, 0],
+      [2, 1],
+      [3, 3],
+      [1, 2],
+    ])
   })
 
   it('reports target error and snapped coordinates', () => {

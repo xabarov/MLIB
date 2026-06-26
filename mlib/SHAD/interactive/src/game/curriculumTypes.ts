@@ -1,4 +1,10 @@
-export type CurriculumSection = 'algebra' | 'combinatorics' | 'algorithms' | 'data-analysis'
+export type CurriculumSection =
+  | 'algebra'
+  | 'combinatorics'
+  | 'algorithms'
+  | 'data-analysis'
+  | 'probability'
+  | 'calculus'
 
 export type CurriculumStatus = 'available' | 'prototype' | 'planned' | 'needs-review'
 export type CurriculumCoverageStatus = 'seed' | 'playable' | 'diagnosed' | 'review-ready'

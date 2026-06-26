@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import { RotateCcw, Target } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { quadraticLensMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -225,6 +227,18 @@ export function QuadraticLensMission() {
     touched,
   })
 
+  const repairLabelByKind: Record<string, string> = {
+    'not-positive': 'не эллипс',
+    'manual-zero-cross-term': 'крути базис, не b',
+    'same-sign-directions': 'оси одного знака',
+    'zero-direction': 'нулевое направление',
+    'not-degenerate': 'не вырождено',
+    'all-zero-form': 'форма нулевая',
+    'wrong-signature': 'не та сигнатура',
+  }
+  const repairLabel = repairLabelByKind[diagnosis.kind] ?? 'почини форму'
+  const showRepairMarker = touched && !levelSuccess && diagnosis.kind in repairLabelByKind
+
   useEffect(() => {
     if (!levelSuccess) return
     completeActiveLevel()
@@ -378,7 +392,11 @@ export function QuadraticLensMission() {
       badges={badges}
       sceneViewportClassName="h-[560px] pt-[108px] sm:pt-[78px] lg:h-full"
       scene={
-        <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_22%_16%,rgba(95,141,99,0.16),transparent_30%),radial-gradient(circle_at_82%_74%,rgba(106,155,204,0.18),transparent_28%),linear-gradient(180deg,#fffdf7,#f6f3e8)] p-4">
+        <div className="relative flex h-full items-center justify-center bg-[radial-gradient(circle_at_22%_16%,rgba(95,141,99,0.16),transparent_30%),radial-gradient(circle_at_82%_74%,rgba(106,155,204,0.18),transparent_28%),linear-gradient(180deg,#fffdf7,#f6f3e8)] p-4">
+          <ResultMoment show={levelSuccess} label="главные оси найдены" />
+          {showRepairMarker && (
+            <RepairMarker tone="warning" label={repairLabel} xPercent={50} yPercent={3} />
+          )}
           <svg
             ref={svgRef}
             viewBox="-4 -4 8 8"

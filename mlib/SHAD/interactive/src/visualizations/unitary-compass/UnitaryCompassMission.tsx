@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { RotateCcw, Sparkles, Target } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { unitaryCompassMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -254,6 +256,18 @@ export function UnitaryCompassMission() {
     return bridgeDiagnosis
   })()
 
+  const repairLabelByKind: Record<string, string> = {
+    'zero-vector': 'нулевой вектор',
+    'bilinear-trap': 'i² ловушка',
+    'wrong-conjugate-slot': 'не тот слот',
+    'not-hermitian': 'не эрмитова',
+    'not-unitary': 'не унитарна',
+    'not-positive-semidefinite': 'A*A ≱ 0',
+  }
+  const repairLabel = repairLabelByKind[diagnosis.kind] ?? 'почини объект'
+  const showRepairMarker = touched && !levelSuccess && diagnosis.kind in repairLabelByKind
+  const repairTone = diagnosis.kind === 'zero-vector' ? 'danger' : 'warning'
+
   useEffect(() => {
     if (levelSuccess) completeActiveLevel()
   }, [completeActiveLevel, levelSuccess])
@@ -344,7 +358,11 @@ export function UnitaryCompassMission() {
       badges={badges}
       sceneViewportClassName="min-h-[650px] pt-[112px] sm:pt-[82px] lg:h-full lg:min-h-0"
       scene={
-        <div className="grid h-full min-h-[650px] gap-3 bg-[radial-gradient(circle_at_20%_20%,rgba(84,120,164,0.16),transparent_28%),radial-gradient(circle_at_82%_74%,rgba(207,109,80,0.13),transparent_26%),linear-gradient(180deg,#fffdf7,#f5f2e8)] p-3 lg:grid-cols-[1fr_0.88fr]">
+        <div className="relative grid h-full min-h-[650px] gap-3 bg-[radial-gradient(circle_at_20%_20%,rgba(84,120,164,0.16),transparent_28%),radial-gradient(circle_at_82%_74%,rgba(207,109,80,0.13),transparent_26%),linear-gradient(180deg,#fffdf7,#f5f2e8)] p-3 lg:grid-cols-[1fr_0.88fr]">
+          <ResultMoment show={levelSuccess} label="скалярное произведение сохранено" />
+          {showRepairMarker && (
+            <RepairMarker tone={repairTone} label={repairLabel} xPercent={50} yPercent={1} />
+          )}
           <div className="grid content-start gap-3">
             <svg
               viewBox="-2.25 -2.25 4.5 4.5"

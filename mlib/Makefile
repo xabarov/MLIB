@@ -22,6 +22,7 @@ help:
 	@printf "  interactive-smoke Run Playwright smoke against local dev server\n"
 	@printf "  interactive-quality Run lint, tests, build, and smoke\n"
 	@printf "  mission-audit    Audit SHAD/interactive mission authoring quality\n"
+	@printf "  bundle-budget    Check SHAD/interactive bundle size budgets\n"
 	@printf "  compose-dev       Run Docker dev server with hot reload\n"
 	@printf "  compose-prod      Build and run production container\n"
 	@printf "  compose-down      Stop interactive compose services\n"
@@ -82,6 +83,10 @@ interactive-quality: lint-python lint-js test-js interactive-build interactive-s
 .PHONY: mission-audit
 mission-audit:
 	$(PYTHON) $(INTERACTIVE_DIR)/scripts/audit_mission_quality.py
+
+.PHONY: bundle-budget
+bundle-budget:
+	$(PYTHON) $(INTERACTIVE_DIR)/scripts/check_bundle_budget.py --no-build
 
 .PHONY: compose-dev
 compose-dev:

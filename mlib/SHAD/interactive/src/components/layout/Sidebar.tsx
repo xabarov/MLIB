@@ -11,6 +11,15 @@ import { NavLink } from 'react-router-dom'
 import { useNavigationStore } from '../../store/navigationStore'
 import { navSections } from '../../visualizations/registry'
 
+const SECTION_ACCENT: Record<string, string> = {
+  algebra: 'var(--color-target)',
+  combinatorics: 'var(--color-green)',
+  algorithms: 'var(--color-purple)',
+  data: 'var(--color-energy)',
+  probability: 'var(--color-blue)',
+  calculus: 'var(--color-success)',
+}
+
 export function Sidebar() {
   const collapsed = useNavigationStore((s) => s.sidebarCollapsed)
   const mobileNavOpen = useNavigationStore((s) => s.mobileNavOpen)
@@ -46,7 +55,7 @@ export function Sidebar() {
       <div className="flex items-center justify-between border-b border-panel px-4 py-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-ink/50">SHAD</p>
-          <h1 className="text-sm font-semibold text-ink">Миссии</h1>
+          <h1 className="font-display text-base font-semibold tracking-tight text-ink">Миссии</h1>
         </div>
         <button
           type="button"
@@ -84,18 +93,20 @@ export function Sidebar() {
         </NavLink>
         {navSections.map((section) => {
           const sectionOpen = expandedSections[section.id] ?? true
+          const sectionAccent = SECTION_ACCENT[section.id] ?? 'var(--color-orange)'
           return (
             <div key={section.id} className="mb-2">
               <button
                 type="button"
                 onClick={() => toggleSection(section.id)}
-                className="flex w-full items-center gap-1 rounded px-2 py-1.5 text-left text-sm font-semibold text-ink hover:bg-panel/80"
+                className="flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-left text-sm font-semibold text-ink hover:bg-panel/80"
               >
                 {sectionOpen ? (
-                  <ChevronDown className="size-4 shrink-0" />
+                  <ChevronDown className="size-4 shrink-0 text-ink/45" />
                 ) : (
-                  <ChevronRight className="size-4 shrink-0" />
+                  <ChevronRight className="size-4 shrink-0 text-ink/45" />
                 )}
+                <span className="size-2 shrink-0 rounded-full" style={{ background: sectionAccent }} aria-hidden />
                 {section.title}
               </button>
 

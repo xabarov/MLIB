@@ -3,6 +3,8 @@ import { CodeTracePanel } from '../../game/components/programming/CodeTracePanel
 import { StrategyRace } from '../../game/components/programming/StrategyRace'
 import { StrategyCompare } from '../../game/components/programming/StrategyCompare'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { asymptoticArenaMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -80,6 +82,16 @@ function AsymptoticArenaLevel({
     ]),
   )
 
+  const repairLabelByKind: Record<string, string> = {
+    'quadratic-explodes': 'O(n^2) взрыв',
+    'setup-not-worth-it': 'setup зря',
+    'preprocessing-pays-off': 'нужен препроцесс',
+    'constant-wins-small-n': 'проще для малого n',
+    'memory-tradeoff': 'память дорога',
+    'wrong-cost-model': 'модель не та',
+  }
+  const repairLabel = repairLabelByKind[diagnosis.kind] ?? 'не оптимально'
+
   useEffect(() => {
     if (!levelSuccess) return
     completeActiveLevel()
@@ -130,7 +142,11 @@ function AsymptoticArenaLevel({
       sceneViewportClassName="min-h-[1180px] pt-[176px] sm:min-h-[1040px] sm:pt-[112px] lg:h-full lg:min-h-0 lg:pt-[74px]"
       scene={
         <div className="flex h-full items-start justify-center bg-[radial-gradient(circle_at_68%_18%,rgba(77,134,168,0.14),transparent_28%),linear-gradient(180deg,#fffdf7,#faf9f5)] p-4 lg:items-center">
-          <div className="grid w-full max-w-5xl gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="relative grid w-full max-w-5xl gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+            <ResultMoment show={levelSuccess} label="стратегия-победитель" />
+            {!levelSuccess && (
+              <RepairMarker tone="warning" label={repairLabel} xPercent={50} yPercent={1} />
+            )}
             <section className="rounded-md border border-ink/10 bg-paper/90 p-4 shadow-[0_18px_42px_rgba(20,20,19,0.08)]">
               <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
                 <div>

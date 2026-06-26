@@ -13,6 +13,7 @@ import {
   shiftedCloudMatrix,
   storageCost,
   svdSmallMatrix,
+  worstResidualCell,
 } from './pcaCompressionModel'
 
 describe('pcaCompressionModel', () => {
@@ -110,5 +111,14 @@ describe('pcaCompressionModel', () => {
     ]
 
     expect(values.every(Number.isFinite)).toBe(true)
+  })
+
+  it('locates the worst residual cell as a hotspot', () => {
+    const residual = [
+      [0.01, -0.02],
+      [0.05, 0.4],
+    ]
+    expect(worstResidualCell(residual)).toEqual({ row: 1, col: 1, value: 0.4 })
+    expect(worstResidualCell([[0, 0], [0, 0]])).toEqual({ row: 0, col: 0, value: 0 })
   })
 })

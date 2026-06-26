@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Check, Crosshair, RotateCcw, ScanSearch } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { pcaCompressionMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -19,8 +21,10 @@ import {
   shiftedCloudMatrix,
   shape,
   svdSmallMatrix,
+  worstResidualCell,
   type CompressionDiagnosis,
   type MatrixData,
+  type ResidualHotspot,
 } from './pcaCompressionModel'
 
 type LevelPreset = {
@@ -90,11 +94,13 @@ function Heatmap({
   matrix,
   testId,
   residual = false,
+  hotspot = null,
 }: {
   title: string
   matrix: MatrixData
   testId: string
   residual?: boolean
+  hotspot?: ResidualHotspot | null
 }) {
   const [rows, cols] = shape(matrix)
   const max = maxAbsCell(matrix)
@@ -106,20 +112,40 @@ function Heatmap({
           {rows}x{cols}
         </p>
       </div>
-      <div
-        className="grid aspect-square w-full overflow-hidden rounded-md border border-ink/15 bg-paper shadow-[inset_0_0_0_1px_rgba(255,255,255,0.45)]"
-        style={{ gridTemplateColumns: `repeat(${Math.max(cols, 1)}, minmax(0, 1fr))` }}
-        data-testid={testId}
-      >
-        {matrix.flatMap((row, rowIndex) =>
-          row.map((value, colIndex) => (
-            <div
-              key={`${rowIndex}-${colIndex}`}
-              className="border-r border-b border-bg/70"
-              style={{ backgroundColor: cellTone(value, max, residual) }}
-              title={`${formatCompressionNumber(value)}`}
-            />
-          )),
+      <div className="relative">
+        <div
+          className="grid aspect-square w-full overflow-hidden rounded-md border border-ink/15 bg-paper shadow-[inset_0_0_0_1px_rgba(255,255,255,0.45)]"
+          style={{ gridTemplateColumns: `repeat(${Math.max(cols, 1)}, minmax(0, 1fr))` }}
+          data-testid={testId}
+        >
+          {matrix.flatMap((row, rowIndex) =>
+            row.map((value, colIndex) => {
+              const isHotspot =
+                hotspot != null && hotspot.row === rowIndex && hotspot.col === colIndex
+              return (
+                <div
+                  key={`${rowIndex}-${colIndex}`}
+                  className={`border-r border-b border-bg/70 ${
+                    isHotspot ? 'outline outline-2 -outline-offset-2 outline-danger' : ''
+                  }`}
+                  style={{ backgroundColor: cellTone(value, max, residual) }}
+                  title={`${formatCompressionNumber(value)}`}
+                />
+              )
+            }),
+          )}
+        </div>
+        {hotspot != null && (
+          <span
+            className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full border border-danger/55 bg-danger/15 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-danger shadow-sm"
+            style={{
+              left: `${((hotspot.col + 0.5) / Math.max(cols, 1)) * 100}%`,
+              top: `${((hotspot.row + 0.5) / Math.max(rows, 1)) * 100}%`,
+            }}
+            data-testid="pca-residual-hotspot"
+          >
+            {formatCompressionNumber(hotspot.value)}
+          </span>
         )}
       </div>
     </div>
@@ -132,25 +158,37 @@ function ComponentToggle({
   sigma,
   preview,
   onToggle,
+  recommended = false,
 }: {
   active: boolean
   index: number
   sigma: number
   preview: MatrixData
   onToggle: () => void
+  recommended?: boolean
 }) {
   const normalized = normalizeMatrixForHeatmap(preview)
   return (
     <button
       type="button"
-      className={`min-w-[118px] rounded-md border p-2 text-left transition ${
+      className={`relative min-w-[118px] rounded-md border p-2 text-left transition ${
         active
           ? 'border-target bg-target/12 shadow-[0_8px_22px_rgba(48,90,96,0.14)]'
-          : 'border-ink/10 bg-paper/82 hover:border-target/50'
+          : recommended
+            ? 'border-orange/50 bg-orange/8 hover:border-orange'
+            : 'border-ink/10 bg-paper/82 hover:border-target/50'
       }`}
       onClick={onToggle}
       data-testid={`pca-component-toggle-${index}`}
     >
+      {recommended && (
+        <span
+          className="absolute -right-1 -top-1 rounded-full border border-orange/55 bg-orange/15 px-1 text-[8px] font-black uppercase text-orange"
+          data-testid={`pca-component-next-${index}`}
+        >
+          next
+        </span>
+      )}
       <div className="mb-1 flex items-center justify-between gap-2">
         <span className="text-[10px] font-black uppercase tracking-wide text-ink/55">c{index + 1}</span>
         <span className="text-[10px] tabular-nums text-ink/55">s={formatCompressionNumber(sigma)}</span>
@@ -250,6 +288,10 @@ export function PcaCompressionMission() {
   const displayResidual = centered
     ? reconstructionErrorForCenteredRank(dataset, selectedIndexes.length, true).residual
     : result.residual
+  const residualHotspot = worstResidualCell(displayResidual)
+  const showResidualHotspot = Math.abs(residualHotspot.value) > 0.12
+  const nextComponentIndex =
+    components.find((component) => !selectedIndexes.includes(component.index))?.index ?? null
   const rankBudgetDiagnosis = diagnoseCompressionBudget(result, qualityByLevel['rank-budget'])
   const componentDiagnosis = diagnoseCompressionBudget(result, qualityByLevel['component-detective'])
   const qualityDiagnosis = diagnoseCompressionBudget(result, qualityByLevel['quality-gate'])
@@ -307,6 +349,16 @@ export function PcaCompressionMission() {
                   message: 'Compressed features mix the two pattern families.',
                   repairHint: 'Включи centering and keep 2D PCA coordinates.',
                 }
+
+  const repairLabelByKind: Record<string, string> = {
+    'over-budget': 'over budget',
+    underfit: 'мало компонент',
+    'local-artifact': 'локальный артефакт',
+    'mean-not-centered': 'не центрировано',
+    'component-mismatch': 'не та компонента',
+  }
+  const repairLabel = repairLabelByKind[activeDiagnosis.kind] ?? 'почини сжатие'
+  const showRepairMarker = touched && !levelSuccess && activeDiagnosis.kind !== 'ready'
 
   const mascotState = chooseMascotState({
     success: levelSuccess,
@@ -397,13 +449,28 @@ export function PcaCompressionMission() {
       sceneViewportClassName="min-h-[660px] pt-[116px] sm:pt-[84px] lg:h-full"
       scene={
         <div
-          className="grid min-h-full content-start gap-3 bg-[linear-gradient(135deg,#fffdf7_0%,#f3efe2_48%,#eef4ee_100%)] p-3"
+          className="relative grid min-h-full content-start gap-3 bg-[linear-gradient(135deg,#fffdf7_0%,#f3efe2_48%,#eef4ee_100%)] p-3"
           data-testid="pca-compression-canvas"
         >
+          <ResultMoment show={levelSuccess} label="low-rank копия принята" />
+          {showRepairMarker && (
+            <RepairMarker
+              tone={activeDiagnosis.kind === 'over-budget' ? 'danger' : 'warning'}
+              label={repairLabel}
+              xPercent={50}
+              yPercent={1}
+            />
+          )}
           <div className="grid min-h-0 gap-3 lg:grid-cols-[1fr_0.95fr_1fr]">
             <Heatmap title={centered ? 'centered data' : 'original'} matrix={workingMatrix} testId="pca-original-grid" />
             <Heatmap title="reconstruction" matrix={displayReconstruction} testId="pca-reconstruction-grid" />
-            <Heatmap title="residual error" matrix={displayResidual} testId="pca-error-grid" residual />
+            <Heatmap
+              title="residual error"
+              matrix={displayResidual}
+              testId="pca-error-grid"
+              residual
+              hotspot={showResidualHotspot ? residualHotspot : null}
+            />
           </div>
 
           <div className="grid gap-3 rounded-md border border-ink/10 bg-bg/80 p-3 shadow-[0_14px_28px_rgba(20,20,19,0.10)] lg:grid-cols-[1.4fr_0.8fr]">
@@ -421,6 +488,7 @@ export function PcaCompressionMission() {
                     sigma={component.sigma}
                     preview={componentMatrix(component, rows, cols)}
                     onToggle={() => toggleComponent(component.index)}
+                    recommended={!levelSuccess && component.index === nextComponentIndex}
                   />
                 ))}
               </div>

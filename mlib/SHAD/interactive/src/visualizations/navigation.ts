@@ -20,6 +20,16 @@ export const navSections: NavSection[] = [
         visualizations: [missionEntry('substitution-workshop')],
       },
       {
+        id: 'complex-numbers',
+        title: 'Комплексные числа',
+        visualizations: [missionEntry('roots-orbit')],
+      },
+      {
+        id: 'linear-equations',
+        title: 'Линейные уравнения',
+        visualizations: [missionEntry('gauss-station')],
+      },
+      {
         id: 'linear-maps',
         title: 'Линейные отображения и операторы',
         visualizations: [
@@ -87,6 +97,11 @@ export const navSections: NavSection[] = [
         title: 'SVD и PCA',
         visualizations: [missionEntry('svd-lens'), missionEntry('pca-compression-lab')],
       },
+      {
+        id: 'eigenvalues',
+        title: 'Собственные значения',
+        visualizations: [missionEntry('eigen-chase')],
+      },
     ],
   },
   {
@@ -94,9 +109,19 @@ export const navSections: NavSection[] = [
     title: 'Комбинаторика и графы',
     topics: [
       {
+        id: 'pascal',
+        title: 'Треугольник Паскаля',
+        visualizations: [missionEntry('pascal-triangle')],
+      },
+      {
         id: 'graphs',
         title: 'Графы и обходы',
         visualizations: [missionEntry('graph-dispatcher')],
+      },
+      {
+        id: 'euler',
+        title: 'Эйлеровы пути',
+        visualizations: [missionEntry('euler-trail')],
       },
     ],
   },
@@ -109,6 +134,26 @@ export const navSections: NavSection[] = [
         title: 'Асимптотика',
         visualizations: [missionEntry('asymptotic-arena')],
       },
+      {
+        id: 'heaps',
+        title: 'Кучи',
+        visualizations: [missionEntry('heap-forge')],
+      },
+      {
+        id: 'dsu',
+        title: 'Непересекающиеся множества',
+        visualizations: [missionEntry('dsu-forest')],
+      },
+      {
+        id: 'dynamic-programming',
+        title: 'Динамическое программирование',
+        visualizations: [missionEntry('dp-station')],
+      },
+      {
+        id: 'bst',
+        title: 'Деревья поиска',
+        visualizations: [missionEntry('bst-quest')],
+      },
     ],
   },
   {
@@ -119,6 +164,53 @@ export const navSections: NavSection[] = [
         id: 'ml-basics',
         title: 'ML и метрики',
         visualizations: [missionEntry('ml-playground'), missionEntry('feature-factory')],
+      },
+    ],
+  },
+  {
+    id: 'probability',
+    title: 'Вероятность',
+    topics: [
+      {
+        id: 'bernoulli',
+        title: 'Бернулли и частоты',
+        visualizations: [missionEntry('bernoulli-lab')],
+      },
+      {
+        id: 'monte-carlo',
+        title: 'Монте-Карло',
+        visualizations: [missionEntry('monte-carlo')],
+      },
+      {
+        id: 'bayes',
+        title: 'Условная вероятность',
+        visualizations: [missionEntry('bayes-fork')],
+      },
+      {
+        id: 'expectation',
+        title: 'Ожидание и дисперсия',
+        visualizations: [missionEntry('expectation-lab')],
+      },
+    ],
+  },
+  {
+    id: 'calculus',
+    title: 'Анализ',
+    topics: [
+      {
+        id: 'gradient',
+        title: 'Градиент и спуск',
+        visualizations: [missionEntry('gradient-slope')],
+      },
+      {
+        id: 'taylor',
+        title: 'Полином Тейлора',
+        visualizations: [missionEntry('taylor-lab')],
+      },
+      {
+        id: 'fourier',
+        title: 'Ряды Фурье',
+        visualizations: [missionEntry('fourier-synth')],
       },
     ],
   },

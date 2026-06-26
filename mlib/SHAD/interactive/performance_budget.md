@@ -41,6 +41,54 @@ initial bundle без причины.
 - reference/trial PNG больше 1 MB лежат вне импортируемого `mascot/index.ts` и
   не должны попадать в bundle.
 
+### Baseline 2026-06-08
+
+`npm run build` после установки зависимостей (Node 25, npm 11) показал:
+
+- `index-*.js` (initial): 631.28 kB raw / 188.31 kB gzip (на диске 616.5 kB);
+- `KernelHuntMission`: 926.97 kB raw / 248.32 kB gzip — lazy chunk с Three.js;
+- остальные mission chunks: 9-23 kB raw, все ниже light-лимита 80 kB;
+- `index-*.css`: 92.20 kB raw / 18.53 kB gzip;
+- активные WebP Меби: 38-41 kB каждый;
+- `dist/` целиком: ~3.3 MB.
+
+Наблюдения:
+
+- initial JS вырос с 584 kB (2026-06-07) до 631 kB — это 88% от лимита 700 kB;
+  следующий рост требует решения (вынести KaTeX/часть UI в lazy chunk).
+- 30 исходных PNG Меби (~25 MB) остаются под git в `src/assets/game/`, но
+  **не** импортируются runtime-кодом и в bundle не попадают. Это вес репозитория,
+  не bundle; решение об их выносе/удалении принимается отдельно.
+
+### KaTeX split 2026-06-08
+
+`VizPage` теперь lazy (`src/routes.tsx`): маршруты миссий грузятся отдельным
+chunk вместе с `VizPanel`, `MathBlock` и KaTeX. Карта курса (initial route) больше
+не тянет KaTeX.
+
+- `index-*.js` (initial): 642 kB -> **370 kB raw / 112 kB gzip** (90% -> 53%
+  бюджета);
+- новый `VizPage-*.js`: ~263 kB raw (KaTeX + mission shell), lazy, грузится при
+  первом заходе в миссию;
+- `KernelHuntMission`: без изменений, ~927 kB lazy (Three.js).
+
+`scripts/check_bundle_budget.py` помечает `VizPage` и `KernelHuntMission` как
+heavy-lazy exempt: они обязаны оставаться lazy, но не входят в light-лимит 80 kB.
+Это вернуло запас для новых миссий без роста initial route.
+
+### Typography 2026-06-09
+
+Подключены self-hosted веб-шрифты (замена системного `Trebuchet MS`):
+
+- Literata (display) и Golos Text (body), вариативные, cyrillic+latin;
+- 4 файла woff2 (~22-86 kB, суммарно ~194 kB), `font-display: swap`,
+  `unicode-range` по сабсетам;
+- шрифты — отдельные ассеты, в initial JS не попадают; CSS вырос на ~7 kB
+  за счёт `@font-face`.
+
+Правило: новые веса/начертания добавлять только при явной типографической
+необходимости; держать суммарный вес шрифтов под контролем.
+
 ### Mascot WebP pass 2026-06-07
 
 Активные runtime imports переключены с PNG на WebP:
@@ -99,12 +147,39 @@ Split/lazy loading обязателен, если:
 - сцена содержит raster assets больше нескольких сотен kB;
 - миссия не нужна на первом экране карты.
 
+## Автоматическая проверка
+
+`scripts/check_bundle_budget.py` парсит `dist/` после сборки и проверяет бюджеты
+из раздела "Бюджеты v1":
+
+```bash
+make interactive-build   # сначала собрать
+make bundle-budget       # затем проверить dist/
+```
+
+или одной командой со сборкой:
+
+```bash
+python scripts/check_bundle_budget.py
+```
+
+Скрипт:
+
+- находит entry-chunk из `dist/index.html` и проверяет его против 700 kB;
+- предупреждает, если initial JS перевалил за 85% лимита;
+- проверяет, что лёгкие mission chunks ниже 80 kB;
+- помечает Three.js-миссию (`KernelHuntMission`) как exempt, но требует, чтобы
+  она оставалась lazy chunk, а не entry;
+- проверяет CSS против 150 kB;
+- возвращает ненулевой код при жёстком нарушении (готово для CI).
+
 ## Проверка
 
 Перед завершением новой миссии:
 
 ```bash
 make interactive-build
+make bundle-budget
 ```
 
 Посмотреть:

@@ -7,7 +7,8 @@
 План закрытого игрового среза: [next_stage_plan.md](next_stage_plan.md).
 План следующего содержательного этапа: [next_content_stage_plan.md](next_content_stage_plan.md).
 План этапа карты и trace-механики: [next_course_map_trace_plan.md](next_course_map_trace_plan.md).
-Текущий следующий этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
+Текущий следующий этап: [next_consolidation_plan.md](next_consolidation_plan.md).
+Этап системы производства миссий: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
 Guide для новых миссий: [mission_authoring_guide.md](mission_authoring_guide.md).
 Checklist качества миссии: [mission_quality_checklist.md](mission_quality_checklist.md).
 
@@ -66,6 +67,18 @@ make compose-down
 Прототип определителя: `#/algebra/determinants/forge`.
 Прототип матричной машины: `#/algebra/matrices/machine`.
 Прототип графового trace: `#/combinatorics/graphs/dispatcher`.
+Бернулли-лаборатория (вероятность): `#/probability/bernoulli/lab`.
+Градиентный склон (анализ): `#/calculus/gradient/slope`.
+Куча-кузница (структуры данных): `#/algorithms/heaps/forge`.
+Орбита корней (комплексные числа): `#/algebra/complex-numbers/roots`.
+Фурье-синтезатор (анализ): `#/calculus/fourier/synth`.
+Монте-Карло (геом. вероятность): `#/probability/monte-carlo/area`.
+Гаусс-станция (линейные уравнения): `#/algebra/linear-equations/gauss`.
+Лес связности (DSU): `#/algorithms/dsu/forest`.
+DP-станция (редакционное расстояние): `#/algorithms/dynamic-programming/edit-distance`.
+Собственные векторы (eigen): `#/algebra/eigenvalues/chase`.
+Эйлеров путь (графы): `#/combinatorics/euler/trail`.
+Дерево поиска (BST): `#/algorithms/bst/quest`.
 
 В исходных лекциях используем dev-friendly ссылки `../../interactive/#/...`.
 Для опубликованной статической сборки их можно заменить на
@@ -129,3 +142,12 @@ make compose-down
 ## Палитра
 
 Токены в `src/theme/tokens.ts` совпадают с [lecture_visual_design_system.md](../lecture_visual_generation/lecture_visual_design_system.md).
+
+## Типографика
+
+- Display (заголовки): **Literata** (тёплая антиква, optical sizing, кириллица).
+- Body: **Golos Text** (humanist sans, родная кириллица). KaTeX — для формул.
+- Оба self-hosted (woff2, cyrillic+latin) в `src/assets/fonts/`, без CDN.
+- Утилита `font-display` (Tailwind-токен `--font-display`) для заголовков;
+  `.draft-grid` — бумажная текстура; `:focus-visible` — кольца фокуса.
+- Аудит и план дизайна: [next_ui_design_plan.md](next_ui_design_plan.md).

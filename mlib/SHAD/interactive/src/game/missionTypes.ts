@@ -5,6 +5,8 @@ export type MissionDomain =
   | 'combinatorics'
   | 'algorithms'
   | 'data-analysis'
+  | 'probability'
+  | 'calculus'
 
 export type MissionMechanic =
   | 'geometry-lab'

@@ -1,6 +1,38 @@
-import { ArrowRight, BookOpen, CheckCircle2, KeyRound, Play, Route } from 'lucide-react'
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  Dices,
+  KeyRound,
+  ListOrdered,
+  Network,
+  Play,
+  Route,
+  Shapes,
+  Target,
+  Workflow,
+  type LucideIcon,
+} from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { CourseMapNode } from '../courseMap'
+
+const STATION_ACCENT: Record<string, string> = {
+  algebra: 'var(--color-target)',
+  combinatorics: 'var(--color-green)',
+  algorithms: 'var(--color-purple)',
+  'data-analysis': 'var(--color-energy)',
+  probability: 'var(--color-blue)',
+  calculus: 'var(--color-success)',
+}
+
+const MECHANIC_ICON: Record<string, LucideIcon> = {
+  'geometry-lab': Shapes,
+  'state-machine': Workflow,
+  'structure-builder': Network,
+  sampler: Dices,
+  'model-arena': Target,
+  'code-trace': ListOrdered,
+}
 
 type MissionCardProps = {
   node: CourseMapNode
@@ -12,26 +44,62 @@ type MissionCardProps = {
 
 export function MissionCard({ node, completed, total, keys, recommended }: MissionCardProps) {
   const complete = completed >= total
+  const accent = STATION_ACCENT[node.station] ?? 'var(--color-orange)'
+  const MechIcon = MECHANIC_ICON[node.mission.mechanic] ?? Shapes
   const progressPct = total === 0 ? 0 : Math.round((completed / total) * 100)
+  const ringR = 19
+  const ringC = 2 * Math.PI * ringR
+  const ringColor = complete ? 'var(--color-success)' : accent
 
   return (
     <article
-      className={`relative flex min-h-56 flex-col justify-between rounded-md border bg-paper p-4 shadow-[0_18px_42px_rgba(20,20,19,0.08)] transition ${
+      className={`relative flex h-full w-full min-h-56 flex-col justify-between rounded-md border border-l-[3px] bg-paper p-4 shadow-[0_18px_42px_rgba(20,20,19,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_50px_rgba(20,20,19,0.12)] ${
         recommended
           ? 'border-orange/55 ring-2 ring-orange/16'
           : complete
             ? 'border-success/35'
             : 'border-ink/10'
       }`}
+      style={{ borderLeftColor: accent }}
       data-testid={`course-card-${node.mission.id}`}
     >
       <div>
         <div className="mb-3 flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-orange">
-              {node.label}
-            </p>
-            <h2 className="mt-1 text-lg font-semibold leading-tight text-ink">{node.mission.title}</h2>
+          <div className="flex min-w-0 items-start gap-2.5">
+            <span
+              className="relative mt-0.5 grid size-11 shrink-0 place-items-center"
+              aria-hidden
+              title={`${progressPct}% пройдено`}
+            >
+              <svg className="absolute inset-0 size-11 -rotate-90" viewBox="0 0 44 44">
+                <circle cx="22" cy="22" r={ringR} fill="none" stroke="var(--color-panel)" strokeWidth="3" />
+                <circle
+                  cx="22"
+                  cy="22"
+                  r={ringR}
+                  fill="none"
+                  stroke={ringColor}
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray={ringC}
+                  strokeDashoffset={ringC * (1 - progressPct / 100)}
+                />
+              </svg>
+              <span
+                className="grid size-8 place-items-center rounded-full"
+                style={{ color: accent, background: `color-mix(in srgb, ${accent} 12%, transparent)` }}
+              >
+                <MechIcon className="size-4" />
+              </span>
+            </span>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: accent }}>
+                {node.label}
+              </p>
+              <h2 className="mt-1 font-display text-xl font-semibold leading-tight tracking-tight text-ink">
+                {node.mission.title}
+              </h2>
+            </div>
           </div>
           <span
             className={`inline-flex shrink-0 items-center rounded border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide ${
@@ -64,14 +132,7 @@ export function MissionCard({ node, completed, total, keys, recommended }: Missi
           )}
         </div>
 
-        <div className="mt-4 h-2 overflow-hidden rounded-full bg-panel">
-          <div
-            className={`h-full rounded-full ${complete ? 'bg-success' : 'bg-orange'}`}
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-
-        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+        <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
           <span className="inline-flex items-center gap-1 rounded border border-ink/10 bg-bg px-2 py-1 text-ink/70">
             <CheckCircle2 className="size-3.5" />
             {completed}/{total} уровней

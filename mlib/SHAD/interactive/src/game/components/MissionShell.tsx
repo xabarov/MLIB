@@ -54,7 +54,7 @@ export function MissionShell({
       className="flex min-h-0 flex-1 flex-col bg-bg lg:flex-row"
       data-testid={`mission-${definition.id}`}
     >
-      <section className="relative min-h-[430px] flex-1 overflow-hidden border-b border-panel lg:border-r lg:border-b-0">
+      <section className="relative min-h-[300px] flex-1 overflow-hidden border-b border-panel sm:min-h-[430px] lg:border-r lg:border-b-0">
         <div className="absolute inset-x-0 top-0 z-20 border-b border-ink/10 bg-bg/92 px-3 py-2 backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="min-w-[180px]">

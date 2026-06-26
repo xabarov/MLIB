@@ -13,6 +13,19 @@
 Следующий authoring-system этап: [next_mission_authoring_system_plan.md](next_mission_authoring_system_plan.md).
 Следующий игровой этап: [next_gameplay_learning_stage_plan.md](next_gameplay_learning_stage_plan.md).
 Следующий hardening-этап: [next_pedagogy_hardening_plan.md](next_pedagogy_hardening_plan.md).
+Текущий этап консолидации и готовности: [next_consolidation_plan.md](next_consolidation_plan.md).
+Фаза B (вероятность через Sampler) начата: добавлена `Бернулли-лаборатория`.
+Фаза C (анализ через GeometryLab) начата: добавлен `Градиентный склон`.
+StructureBuilder реализован: добавлена `Куча-кузница` (двоичная min-heap).
+Корни из единицы (lecture-linked): добавлена `Орбита корней`.
+Ряды Фурье (lecture-linked): добавлен `Фурье-синтезатор`.
+Геометрическая вероятность (lecture-linked): добавлен `Монте-Карло`.
+Метод Гаусса (state-machine, lecture-linked): добавлена `Гаусс-станция`.
+DSU / union-find (structure-builder): добавлен `Лес связности`.
+Динамическое программирование (code-trace): добавлена `DP-станция` (редакционное расстояние).
+Собственные значения (lecture-linked): добавлены `Собственные векторы`.
+Эйлеровы пути (lecture-linked): добавлен `Эйлеров путь` (нарисуй не отрывая руки).
+Деревья поиска (structure-builder): добавлено `Дерево поиска` (BST).
 План primitives для programming/data: [programming_data_primitives_plan.md](programming_data_primitives_plan.md).
 Следующий algorithms-этап: [next_asymptotic_arena_plan.md](next_asymptotic_arena_plan.md).
 Следующий data/ML-этап: [next_data_ml_playground_plan.md](next_data_ml_playground_plan.md).

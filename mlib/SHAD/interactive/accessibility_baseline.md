@@ -40,5 +40,16 @@
 - проверить, есть ли fallback для drag;
 - убедиться, что reduced motion не ломает смысл reward/feedback.
 
-Текущий реализованный baseline: reward-анимация отключается через
-`prefers-reduced-motion`, а графовая миссия имеет keyboard path для SVG-вершин.
+## Фокус и типографика (2026-06-09)
+
+- Видимый фокус клавиатуры: глобальное правило `:focus-visible` в `index.css`
+  даёт оранжевый outline + offset на все интерактивные элементы (ссылки,
+  кнопки, inputs, SVG-группы с `role="button"`). Раньше видимого фокуса не было.
+- Шрифты подобраны под читаемость кириллицы: body — Golos Text (humanist sans,
+  родная кириллица), заголовки — Literata (антиква с кириллицей). Оба
+  self-hosted, `font-display: swap`.
+- `card-rise`-анимация входа карты добавлена в `prefers-reduced-motion`-блок.
+
+Текущий реализованный baseline: reward-анимация и card-rise отключаются через
+`prefers-reduced-motion`, графовая/эйлерова миссии имеют keyboard path для
+SVG-вершин, а клавиатурный фокус виден на всех интерактивных элементах.

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Orbit, RotateCcw, Target } from 'lucide-react'
 import { MissionShell } from '../../game/components/MissionShell'
+import { FieldPulse, type FieldPulseTone } from '../../game/components/FieldPulse'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { orthogonalWorkshopMission } from '../../game/missions'
 import type { MissionBadge } from '../../game/missionTypes'
@@ -268,6 +271,27 @@ export function OrthogonalWorkshopMission() {
     return matrixDiagnosis
   })()
 
+  const fieldMarker = ((): { tone: 'warning' | 'danger'; label: string } => {
+    switch (diagnosis.kind) {
+      case 'zero-vector':
+        return { tone: 'danger', label: 'нулевой вектор' }
+      case 'dependent':
+        return { tone: 'danger', label: 'зависимы' }
+      case 'not-normalized':
+        return { tone: 'warning', label: 'norm ≠ 1' }
+      case 'not-orthogonal-operator':
+        return { tone: 'warning', label: 'QᵀQ ≠ I' }
+      case 'reflection-vs-rotation':
+        return { tone: 'warning', label: 'det = -1' }
+      case 'not-orthogonal':
+        return { tone: 'warning', label: 'dot ≠ 0' }
+      default:
+        return { tone: 'warning', label: 'почини поле' }
+    }
+  })()
+  const showFieldMarker = touched && !levelSuccess && diagnosis.kind !== 'ready'
+  const pulseTone: FieldPulseTone = levelSuccess ? 'success' : fieldMarker.tone
+
   useEffect(() => {
     if (levelSuccess) completeActiveLevel()
   }, [completeActiveLevel, levelSuccess])
@@ -372,12 +396,22 @@ export function OrthogonalWorkshopMission() {
       sceneViewportClassName="min-h-[620px] pt-[112px] sm:pt-[82px] lg:h-full lg:min-h-0"
       scene={
         <div className="grid h-full min-h-[620px] gap-3 bg-[radial-gradient(circle_at_18%_18%,rgba(95,141,99,0.13),transparent_30%),linear-gradient(180deg,#fffdf7,#f5f2e8)] p-3 lg:grid-cols-[1.1fr_0.9fr]">
-          <svg
-            viewBox="-4 -4 8 8"
-            className="min-h-[300px] w-full rounded border border-ink/10 bg-paper shadow-soft"
-            data-testid="orthogonal-workshop-canvas"
-            aria-label="Orthogonal workshop geometry"
+          <FieldPulse
+            tone={pulseTone}
+            active={levelSuccess || showFieldMarker}
+            label="orthogonal workshop field"
+            className="relative min-h-[300px] w-full"
           >
+            <ResultMoment show={levelSuccess} label={`${activeLevel.title}: остаток под прямым углом`} />
+            {showFieldMarker && (
+              <RepairMarker tone={fieldMarker.tone} label={fieldMarker.label} xPercent={50} yPercent={12} />
+            )}
+            <svg
+              viewBox="-4 -4 8 8"
+              className="min-h-[300px] w-full rounded border border-ink/10 bg-paper shadow-soft"
+              data-testid="orthogonal-workshop-canvas"
+              aria-label="Orthogonal workshop geometry"
+            >
             <defs>
               <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
                 <path d="M0,0 L6,3 L0,6 Z" className="fill-ink" />
@@ -471,7 +505,8 @@ export function OrthogonalWorkshopMission() {
                 </>
               )}
             </g>
-          </svg>
+            </svg>
+          </FieldPulse>
 
           <div className="grid content-start gap-3">
             <div className="rounded border border-ink/10 bg-bg/80 p-3">

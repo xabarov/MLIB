@@ -45,6 +45,22 @@ ROUTES = [
     ),
     ("ml", "#/data/ml/playground", '[data-testid="mission-ml-playground"]'),
     ("feature-factory", "#/data/features/factory", '[data-testid="mission-feature-factory"]'),
+    ("bernoulli", "#/probability/bernoulli/lab", '[data-testid="mission-bernoulli-lab"]'),
+    ("gradient", "#/calculus/gradient/slope", '[data-testid="mission-gradient-slope"]'),
+    ("heap", "#/algorithms/heaps/forge", '[data-testid="mission-heap-forge"]'),
+    ("roots", "#/algebra/complex-numbers/roots", '[data-testid="mission-roots-orbit"]'),
+    ("fourier", "#/calculus/fourier/synth", '[data-testid="mission-fourier-synth"]'),
+    ("monte-carlo", "#/probability/monte-carlo/area", '[data-testid="mission-monte-carlo"]'),
+    ("bayes-fork", "#/probability/bayes/fork", '[data-testid="mission-bayes-fork"]'),
+    ("expectation", "#/probability/expectation/lab", '[data-testid="mission-expectation-lab"]'),
+    ("taylor", "#/calculus/taylor/lab", '[data-testid="mission-taylor-lab"]'),
+    ("pascal", "#/combinatorics/pascal/triangle", '[data-testid="mission-pascal-triangle"]'),
+    ("gauss", "#/algebra/linear-equations/gauss", '[data-testid="mission-gauss-station"]'),
+    ("dsu", "#/algorithms/dsu/forest", '[data-testid="mission-dsu-forest"]'),
+    ("dp", "#/algorithms/dynamic-programming/edit-distance", '[data-testid="mission-dp-station"]'),
+    ("eigen", "#/algebra/eigenvalues/chase", '[data-testid="mission-eigen-chase"]'),
+    ("euler", "#/combinatorics/euler/trail", '[data-testid="mission-euler-trail"]'),
+    ("bst", "#/algorithms/bst/quest", '[data-testid="mission-bst-quest"]'),
 ]
 
 VIEWPORTS = [
@@ -288,6 +304,15 @@ def run_matrix_happy_path(page) -> None:
     expect(
         page.get_by_text("Матрица поворота собрана из двух образов базисных векторов.").first
     ).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-parallelogram").click()
+    expect(page.get_by_test_id("matrix-goal")).to_be_visible(timeout=10_000)
+    fill_matrix(page, "2", "1", "1", "2")
+    expect(page.get_by_text("Единичный квадрат лег на контур").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-rotate-stretch").click()
+    fill_matrix(page, "1", "1", "-1", "1")
+    expect(
+        page.get_by_text("Квадрат повернулся на 45 градусов").first
+    ).to_be_visible(timeout=10_000)
 
 
 def run_matrix_mistake_path(page) -> None:
@@ -310,6 +335,7 @@ def run_quadratic_happy_path(page) -> None:
     expect(page.get_by_test_id("quadratic-lens-canvas")).to_be_visible(timeout=10_000)
     fill_quadratic(page, "2", "0.2", "1")
     expect(page.get_by_text("Эллипс закрыт").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-cross-term-rotation").click()
     page.get_by_text("snap axes").click()
     expect(page.get_by_text("Оси совпали с главными направлениями").first).to_be_visible(
@@ -339,6 +365,7 @@ def run_quadratic_mistake_path(page) -> None:
         "не положительная энергия", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     fill_quadratic(page, "2", "0.2", "1")
     expect(page.get_by_text("Эллипс закрыт").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-cross-term-rotation").click()
@@ -355,6 +382,7 @@ def run_svd_happy_path(page) -> None:
     expect(page.get_by_test_id("svd-output-ellipse")).to_be_visible(timeout=10_000)
     page.get_by_role("button", name="lens").click()
     expect(page.get_by_text("Круг прошел через линзу").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-right-directions").click()
     page.get_by_role("button", name="snap v").click()
     expect(page.get_by_text("Правые сингулярные направления найдены").first).to_be_visible(
@@ -380,6 +408,7 @@ def run_svd_mistake_path(page) -> None:
         "не в тот эллипс", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     page.get_by_role("button", name="lens").click()
     expect(page.get_by_text("Круг прошел через линзу").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-right-directions").click()
@@ -401,6 +430,7 @@ def run_pca_compression_happy_path(page) -> None:
     expect(page.get_by_test_id("pca-reconstruction-grid")).to_be_visible(timeout=10_000)
     expect(page.get_by_test_id("pca-error-grid")).to_be_visible(timeout=10_000)
     expect(page.get_by_text("Сжатие уложилось").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-component-detective").click()
     page.get_by_test_id("pca-component-toggle-1").click()
     expect(page.get_by_text("Нужная компонента найдена").first).to_be_visible(timeout=10_000)
@@ -424,6 +454,8 @@ def run_pca_compression_mistake_path(page) -> None:
         "Too much energy", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("pca-residual-hotspot")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     page.get_by_test_id("pca-fit-budget").click()
     expect(page.get_by_text("Сжатие уложилось").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-component-detective").click()
@@ -449,6 +481,7 @@ def run_orthogonal_happy_path(page) -> None:
     expect(page.get_by_test_id("orthogonal-residual")).to_be_visible(timeout=10_000)
     page.get_by_role("button", name="project").click()
     expect(page.get_by_text("Тень найдена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-independent-is-not-orthogonal").click()
     page.get_by_role("button", name="orthogonalize").click()
     expect(page.get_by_text("Векторы ненулевые").first).to_be_visible(timeout=10_000)
@@ -473,6 +506,8 @@ def run_orthogonal_mistake_path(page) -> None:
     page.get_by_test_id("orthogonal-vector-b-x").fill("1.1")
     expect(page.get_by_test_id("orthogonal-diagnosis")).to_contain_text("dot", timeout=10_000)
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("repair-marker")).to_contain_text("dot")
     page.get_by_role("button", name="orthogonalize").click()
     expect(page.get_by_text("Векторы ненулевые").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-normalize-without-turning").click()
@@ -495,6 +530,7 @@ def run_unitary_happy_path(page) -> None:
     expect(page.get_by_test_id("complex-vector-plane")).to_be_visible(timeout=10_000)
     page.get_by_test_id("unitary-hermitian-choice").click()
     expect(page.get_by_text("Ловушка поймана").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-conjugate-slot").click()
     page.get_by_test_id("unitary-conjugate-second-choice").click()
     expect(page.get_by_text("Conjugate slot выбран").first).to_be_visible(timeout=10_000)
@@ -521,6 +557,7 @@ def run_unitary_mistake_path(page) -> None:
         "B(ix, ix)", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     page.get_by_test_id("unitary-hermitian-choice").click()
     expect(page.get_by_text("Ловушка поймана").first).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-conjugate-slot").click()
@@ -563,6 +600,7 @@ def run_substitution_happy_path(page) -> None:
     swap_tiles(page, 1, 3)
     swap_tiles(page, 1, 2)
     expect(page.get_by_text("Цикл собран").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-flip-parity").click()
     swap_tiles(page, 1, 2)
     expect(page.get_by_text("Знак сменился").first).to_be_visible(timeout=10_000)
@@ -587,6 +625,7 @@ def run_substitution_mistake_path(page) -> None:
         "Целевая циклическая структура нарушена", timeout=10_000
     )
     expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     page.get_by_test_id("substitution-reset").click()
     expect(page.get_by_test_id("substitution-diagnosis")).to_contain_text(
         "Состояние еще не нарушает явный запрет", timeout=10_000
@@ -653,8 +692,10 @@ def run_asymptotic_mistake_path(page) -> None:
     expect(page.get_by_test_id("mission-feedback")).to_contain_text(
         "setup-not-worth-it", timeout=10_000
     )
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     choose_strategy(page, "linear-scan")
     expect(page.get_by_text("Малый вход решен просто").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
 
 
 def run_ml_playground_happy_path(page) -> None:
@@ -662,6 +703,7 @@ def run_ml_playground_happy_path(page) -> None:
     page.wait_for_selector('[data-testid="mission-ml-playground"]', timeout=10_000)
     set_ml_threshold(page, "50")
     expect(page.get_by_text("Train-порог пойман").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
     page.get_by_test_id("level-test-control").click()
     set_ml_threshold(page, "58")
     expect(page.get_by_text("Test-контроль пройден").first).to_be_visible(timeout=10_000)
@@ -684,6 +726,7 @@ def run_ml_playground_mistake_path(page) -> None:
     expect(page.get_by_test_id("mission-feedback")).to_contain_text(
         "train-test-gap", timeout=10_000
     )
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
     set_ml_threshold(page, "58")
     expect(page.get_by_text("Test-контроль пройден").first).to_be_visible(timeout=10_000)
 
@@ -733,6 +776,578 @@ def run_feature_factory_mistake_path(page) -> None:
     expect(page.get_by_test_id("repair-marker")).to_have_count(0)
 
 
+def run_bernoulli_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/bernoulli/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bernoulli-lab"]', timeout=10_000)
+    expect(page.get_by_test_id("bernoulli-lab-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("bernoulli-sample-500").click()
+    expect(page.get_by_text("Частота села у 0.5").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-estimate-bias").click()
+    page.get_by_test_id("bernoulli-sample-500").click()
+    page.get_by_test_id("bernoulli-estimate").fill("0.7")
+    expect(page.get_by_text("Оценка совпала").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-law-of-large-numbers").click()
+    page.get_by_test_id("bernoulli-sample-2000").click()
+    expect(page.get_by_text("Хвост частоты застыл").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_bernoulli_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/bernoulli/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bernoulli-lab"]', timeout=10_000)
+    page.get_by_test_id("bernoulli-sample-100").click()
+    expect(page.get_by_test_id("bernoulli-diagnosis")).to_contain_text(
+        "Слишком мало", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("bernoulli-sample-500").click()
+    expect(page.get_by_text("Частота села у 0.5").first).to_be_visible(timeout=10_000)
+
+
+def run_gradient_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/gradient/slope", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-gradient-slope"]', timeout=10_000)
+    expect(page.get_by_test_id("gradient-slope-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("gradient-lr").fill("0.5")
+    expect(page.get_by_text("Точка скатилась в минимум").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-tame-the-step").click()
+    page.get_by_test_id("gradient-lr").fill("0.3")
+    expect(page.get_by_text("Спуск укрощён").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-narrow-valley").click()
+    page.get_by_test_id("gradient-lr").fill("0.1")
+    expect(page.get_by_text("Долина пройдена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_gradient_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/gradient/slope", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-gradient-slope"]', timeout=10_000)
+    page.get_by_test_id("gradient-lr").fill("0.03")
+    expect(page.get_by_test_id("gradient-diagnosis")).to_contain_text(
+        "не доехал", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("gradient-lr").fill("0.5")
+    expect(page.get_by_text("Точка скатилась в минимум").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-tame-the-step").click()
+    page.get_by_test_id("gradient-lr").fill("0.7")
+    expect(page.get_by_test_id("gradient-diagnosis")).to_contain_text(
+        "слишком большой", timeout=10_000
+    )
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+
+
+def run_heap_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/heaps/forge", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-heap-forge"]', timeout=10_000)
+    expect(page.get_by_test_id("heap-forge-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("heap-node-1").click()
+    page.get_by_test_id("heap-node-3").click()
+    expect(page.get_by_text("Ребро починено").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-bubble-up").click()
+    page.get_by_test_id("heap-node-7").click()
+    page.get_by_test_id("heap-node-3").click()
+    page.get_by_test_id("heap-node-3").click()
+    page.get_by_test_id("heap-node-1").click()
+    expect(page.get_by_text("Вставка просеяна").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-sift-down").click()
+    page.get_by_test_id("heap-node-0").click()
+    page.get_by_test_id("heap-node-1").click()
+    expect(page.get_by_text("Корень просеян вниз").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_heap_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/heaps/forge", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-heap-forge"]', timeout=10_000)
+    page.get_by_test_id("heap-node-4").click()
+    page.get_by_test_id("heap-node-6").click()
+    expect(page.get_by_test_id("heap-diagnosis")).to_contain_text("Нарушение", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("heap-node-1").click()
+    page.get_by_test_id("heap-node-3").click()
+    expect(page.get_by_text("Ребро починено").first).to_be_visible(timeout=10_000)
+
+
+def run_roots_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/complex-numbers/roots", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-roots-orbit"]', timeout=10_000)
+    expect(page.get_by_test_id("roots-orbit-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("roots-snap").click()
+    expect(page.get_by_text("Треугольник замкнут").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-square").click()
+    page.get_by_test_id("roots-re").fill("0")
+    page.get_by_test_id("roots-im").fill("1")
+    expect(page.get_by_text("Квадрат собран").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-pentagon").click()
+    page.get_by_test_id("roots-snap").click()
+    expect(page.get_by_text("Пятиугольник закрыт").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_roots_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/complex-numbers/roots", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-roots-orbit"]', timeout=10_000)
+    page.get_by_test_id("roots-re").fill("1.3")
+    expect(page.get_by_test_id("roots-diagnosis")).to_contain_text("спирал", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("roots-snap").click()
+    expect(page.get_by_text("Треугольник замкнут").first).to_be_visible(timeout=10_000)
+
+
+_RANGE_SETTER = (
+    "(node, val) => {"
+    " const s = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;"
+    " s.call(node, String(val));"
+    " node.dispatchEvent(new Event('input', {bubbles: true})); }"
+)
+
+
+def set_range(page, test_id: str, value) -> None:
+    page.get_by_test_id(test_id).evaluate(_RANGE_SETTER, value)
+
+
+def run_fourier_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/fourier/synth", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-fourier-synth"]', timeout=10_000)
+    expect(page.get_by_test_id("fourier-synth-canvas")).to_be_visible(timeout=10_000)
+    set_range(page, "fourier-harmonic-1", 1.0)
+    set_range(page, "fourier-harmonic-2", 0.5)
+    expect(page.get_by_text("Две гармоники совпали").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-square-wave").click()
+    set_range(page, "fourier-harmonic-1", 1.25)
+    set_range(page, "fourier-harmonic-3", 0.40)
+    set_range(page, "fourier-harmonic-5", 0.25)
+    expect(page.get_by_text("Прямоугольник собран").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-sawtooth").click()
+    set_range(page, "fourier-harmonic-1", 0.65)
+    set_range(page, "fourier-harmonic-2", -0.30)
+    set_range(page, "fourier-harmonic-3", 0.20)
+    set_range(page, "fourier-harmonic-4", -0.15)
+    set_range(page, "fourier-harmonic-5", 0.15)
+    expect(page.get_by_text("Пила собрана").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_fourier_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/fourier/synth", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-fourier-synth"]', timeout=10_000)
+    set_range(page, "fourier-harmonic-1", 1.0)
+    expect(page.get_by_test_id("fourier-diagnosis")).to_contain_text("Гармоника", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    set_range(page, "fourier-harmonic-2", 0.5)
+    expect(page.get_by_text("Две гармоники совпали").first).to_be_visible(timeout=10_000)
+
+
+def run_monte_carlo_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/monte-carlo/area", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-monte-carlo"]', timeout=10_000)
+    expect(page.get_by_test_id("monte-carlo-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("mc-sample-1000").click()
+    expect(page.get_by_text("Оценка pi устаканилась").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-triangle").click()
+    page.get_by_test_id("mc-sample-1000").click()
+    expect(page.get_by_text("Площадь треугольника поймана").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-parabola").click()
+    page.get_by_test_id("mc-sample-1000").click()
+    expect(page.get_by_text("Площадь под параболой поймана").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_monte_carlo_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/monte-carlo/area", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-monte-carlo"]', timeout=10_000)
+    page.get_by_test_id("mc-sample-200").click()
+    expect(page.get_by_test_id("mc-diagnosis")).to_contain_text("Мало точек", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("mc-sample-1000").click()
+    expect(page.get_by_text("Оценка pi устаканилась").first).to_be_visible(timeout=10_000)
+
+
+def run_bayes_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/bayes/fork", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bayes-fork"]', timeout=10_000)
+    expect(page.get_by_test_id("bayes-table")).to_be_visible(timeout=10_000)
+    # Level 1: condition on the disease row, read the sensitivity. Start from
+    # level 1 explicitly so the path is independent of any inherited level.
+    page.get_by_test_id("level-conditional-frequency").click()
+    page.get_by_test_id("bayes-sample-2000").click()
+    set_range(page, "bayes-estimate", 0.9)
+    expect(page.get_by_text("доля плюсов среди больных").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    # Level 2: rare disease, one positive -> the base-rate inversion.
+    page.get_by_test_id("level-base-rate").click()
+    page.get_by_test_id("bayes-sample-8000").click()
+    set_range(page, "bayes-estimate", 0.24)
+    expect(page.get_by_text("при редкой болезни даже точный тест").first).to_be_visible(timeout=10_000)
+    # Level 3: two positives sharpen the posterior.
+    page.get_by_test_id("level-two-tests").click()
+    page.get_by_test_id("bayes-sample-8000").click()
+    set_range(page, "bayes-estimate", 0.84)
+    expect(page.get_by_text("второй независимый плюс резко поднял апостериор").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_bayes_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/bayes/fork", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bayes-fork"]', timeout=10_000)
+    # Clear level 1 to unlock the base-rate level where neglect can happen.
+    page.get_by_test_id("bayes-sample-2000").click()
+    set_range(page, "bayes-estimate", 0.9)
+    expect(page.get_by_text("доля плюсов среди больных").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-base-rate").click()
+    page.get_by_test_id("bayes-sample-8000").click()
+    # Base-rate neglect: answering the sensitivity instead of the posterior.
+    set_range(page, "bayes-estimate", 0.95)
+    expect(page.get_by_test_id("bayes-diagnosis")).to_contain_text("чувствительность", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    set_range(page, "bayes-estimate", 0.24)
+    expect(page.get_by_text("при редкой болезни даже точный тест").first).to_be_visible(timeout=10_000)
+
+
+def run_expectation_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/expectation/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-expectation-lab"]', timeout=10_000)
+    expect(page.get_by_test_id("expectation-canvas")).to_be_visible(timeout=10_000)
+    # Level 1: sample mean of a fair die converges to E[X] = 3.5.
+    page.get_by_test_id("level-sample-mean").click()
+    page.get_by_test_id("expectation-sample-1000").click()
+    set_range(page, "expectation-estimate", 3.5)
+    expect(page.get_by_text("Среднее село у 3.5").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    # Level 2: variance is the mean squared deviation, not its root.
+    page.get_by_test_id("level-sample-variance").click()
+    page.get_by_test_id("expectation-sample-5000").click()
+    set_range(page, "expectation-estimate", 2.9)
+    expect(page.get_by_text("Дисперсия поймана").first).to_be_visible(timeout=10_000)
+    # Level 3: estimate the mean of a hidden loaded die.
+    page.get_by_test_id("level-estimate-mean").click()
+    page.get_by_test_id("expectation-sample-1000").click()
+    set_range(page, "expectation-estimate", 3.0)
+    expect(page.get_by_text("восстановило скрытое ожидание").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_expectation_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/probability/expectation/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-expectation-lab"]', timeout=10_000)
+    # Clear level 1 to unlock the variance level.
+    page.get_by_test_id("level-sample-mean").click()
+    page.get_by_test_id("expectation-sample-1000").click()
+    set_range(page, "expectation-estimate", 3.5)
+    expect(page.get_by_text("Среднее село у 3.5").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-sample-variance").click()
+    page.get_by_test_id("expectation-sample-5000").click()
+    # Standard deviation answered where the variance is asked.
+    set_range(page, "expectation-estimate", 1.7)
+    expect(page.get_by_test_id("expectation-diagnosis")).to_contain_text(
+        "стандартное отклонение", timeout=10_000
+    )
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    set_range(page, "expectation-estimate", 2.9)
+    expect(page.get_by_text("Дисперсия поймана").first).to_be_visible(timeout=10_000)
+
+
+def run_taylor_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/taylor/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-taylor-lab"]', timeout=10_000)
+    expect(page.get_by_test_id("taylor-canvas")).to_be_visible(timeout=10_000)
+    # Level 1: tangent line of e^x is 1 + x.
+    page.get_by_test_id("level-tangent").click()
+    set_range(page, "taylor-coeff-0", 1.0)
+    set_range(page, "taylor-coeff-1", 1.0)
+    expect(page.get_by_text("Касательная найдена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    # Level 2: add the quadratic curvature term x^2/2.
+    page.get_by_test_id("level-curvature").click()
+    set_range(page, "taylor-coeff-0", 1.0)
+    set_range(page, "taylor-coeff-1", 1.0)
+    set_range(page, "taylor-coeff-2", 0.5)
+    expect(page.get_by_text("Кривизна поймана").first).to_be_visible(timeout=10_000)
+    # Level 3: Taylor of sin x keeps only odd terms with a sign flip.
+    page.get_by_test_id("level-sine").click()
+    set_range(page, "taylor-coeff-1", 1.0)
+    set_range(page, "taylor-coeff-3", -0.15)
+    expect(page.get_by_text("Синус собран").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_taylor_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/calculus/taylor/lab", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-taylor-lab"]', timeout=10_000)
+    # Only the constant term set: the linear coefficient is still missing.
+    set_range(page, "taylor-coeff-0", 1.0)
+    expect(page.get_by_test_id("taylor-diagnosis")).to_contain_text("Коэффициент", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    set_range(page, "taylor-coeff-1", 1.0)
+    expect(page.get_by_text("Касательная найдена").first).to_be_visible(timeout=10_000)
+
+
+def fill_pascal_triangle(page, rows: int) -> None:
+    # Fill interior cells row by row, left to right (edges start filled).
+    for i in range(2, rows):
+        for j in range(1, i):
+            page.get_by_test_id(f"pascal-cell-{i}-{j}").click()
+
+
+def run_pascal_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/combinatorics/pascal/triangle", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-pascal-triangle"]', timeout=10_000)
+    expect(page.get_by_test_id("pascal-triangle-grid")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-triangle-5").click()
+    fill_pascal_triangle(page, 5)
+    expect(page.get_by_text("внутренние клетки — суммы соседок").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-triangle-6").click()
+    fill_pascal_triangle(page, 6)
+    expect(page.get_by_text("Шестая строка собрана").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-triangle-7").click()
+    fill_pascal_triangle(page, 7)
+    expect(page.get_by_text("до седьмой строки").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_pascal_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/combinatorics/pascal/triangle", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-pascal-triangle"]', timeout=10_000)
+    # Cell (3,1) needs interior (2,1) first — not ready yet.
+    page.get_by_test_id("pascal-cell-3-1").click()
+    expect(page.get_by_test_id("pascal-diagnosis")).to_contain_text("рано считать", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    fill_pascal_triangle(page, 5)
+    expect(page.get_by_text("внутренние клетки — суммы соседок").first).to_be_visible(timeout=10_000)
+
+
+def run_gauss_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/linear-equations/gauss", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-gauss-station"]', timeout=10_000)
+    expect(page.get_by_test_id("gauss-station-grid")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("gauss-cell-1-0").click()
+    page.get_by_test_id("gauss-cell-2-0").click()
+    page.get_by_test_id("gauss-cell-2-1").click()
+    expect(page.get_by_text("Ступенчатый вид получен").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("gauss-solution")).to_contain_text("x = 1", timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-need-swap").click()
+    page.get_by_test_id("gauss-swap-0-1").click()
+    page.get_by_test_id("gauss-cell-2-0").click()
+    page.get_by_test_id("gauss-cell-2-1").click()
+    expect(page.get_by_text("Обмен строк спас опору").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-fractions").click()
+    page.get_by_test_id("gauss-cell-1-0").click()
+    page.get_by_test_id("gauss-cell-2-0").click()
+    page.get_by_test_id("gauss-cell-2-1").click()
+    expect(page.get_by_text("Ступенчатый вид получен и с дробными").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_gauss_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/linear-equations/gauss", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-gauss-station"]', timeout=10_000)
+    # Clear the forward level first so the need-swap level unlocks.
+    page.get_by_test_id("gauss-cell-1-0").click()
+    page.get_by_test_id("gauss-cell-2-0").click()
+    page.get_by_test_id("gauss-cell-2-1").click()
+    expect(page.get_by_text("Ступенчатый вид получен").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-need-swap").click()
+    page.get_by_test_id("gauss-swap-1-2").click()
+    expect(page.get_by_test_id("gauss-diagnosis")).to_contain_text("равен нулю", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("gauss-reset").click()
+    page.get_by_test_id("gauss-swap-0-1").click()
+    page.get_by_test_id("gauss-cell-2-0").click()
+    page.get_by_test_id("gauss-cell-2-1").click()
+    expect(page.get_by_text("Обмен строк спас опору").first).to_be_visible(timeout=10_000)
+
+
+def click_dsu_edge(page, index: int) -> None:
+    # SVG <g> hit areas are transparent, so Playwright's visibility heuristic
+    # needs a forced click; the element is interactable.
+    page.get_by_test_id(f"dsu-edge-{index}").click(force=True)
+
+
+def run_dsu_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/dsu/forest", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-dsu-forest"]', timeout=10_000)
+    expect(page.get_by_test_id("dsu-forest-canvas")).to_be_visible(timeout=10_000)
+    for index in [0, 1, 3, 4, 5]:
+        click_dsu_edge(page, index)
+    expect(page.get_by_text("Все вершины связаны").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-spanning-tree").click()
+    for index in [0, 1, 2, 3, 4]:
+        click_dsu_edge(page, index)
+    expect(page.get_by_text("Остов собран").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-two-groups").click()
+    for index in [0, 1, 2, 3]:
+        click_dsu_edge(page, index)
+    expect(page.get_by_text("Осталось ровно две группы").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_dsu_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/dsu/forest", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-dsu-forest"]', timeout=10_000)
+    # Edge 2 closes a triangle: a redundant cycle before everything is connected.
+    for index in [0, 1, 2]:
+        click_dsu_edge(page, index)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_contain_text("цикл", timeout=10_000)
+    for index in [3, 4, 5]:
+        click_dsu_edge(page, index)
+    expect(page.get_by_text("Все вершины связаны").first).to_be_visible(timeout=10_000)
+
+
+def fill_dp_table(page, rows: int, cols: int) -> None:
+    for i in range(1, rows + 1):
+        for j in range(1, cols + 1):
+            page.get_by_test_id(f"dp-cell-{i}-{j}").click()
+
+
+def run_dp_happy_path(page) -> None:
+    page.goto(
+        f"{BASE_URL}/#/algorithms/dynamic-programming/edit-distance",
+        wait_until="domcontentloaded",
+    )
+    page.wait_for_selector('[data-testid="mission-dp-station"]', timeout=10_000)
+    expect(page.get_by_test_id("dp-station-grid")).to_be_visible(timeout=10_000)
+    fill_dp_table(page, 3, 3)
+    expect(page.get_by_text("Таблица заполнена").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("dp-answer")).to_contain_text("= 1", timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-cat-cart").click()
+    fill_dp_table(page, 3, 4)
+    expect(page.get_by_text("Таблица заполнена").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-food-gold").click()
+    fill_dp_table(page, 4, 4)
+    expect(page.get_by_test_id("dp-answer")).to_contain_text("= 2", timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_dp_mistake_path(page) -> None:
+    page.goto(
+        f"{BASE_URL}/#/algorithms/dynamic-programming/edit-distance",
+        wait_until="domcontentloaded",
+    )
+    page.wait_for_selector('[data-testid="mission-dp-station"]', timeout=10_000)
+    # Cell (2,2) is not ready before its neighbours are computed.
+    page.get_by_test_id("dp-cell-2-2").click()
+    expect(page.get_by_test_id("dp-diagnosis")).to_contain_text("рано считать", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    fill_dp_table(page, 3, 3)
+    expect(page.get_by_text("Таблица заполнена").first).to_be_visible(timeout=10_000)
+
+
+def run_eigen_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/eigenvalues/chase", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-eigen-chase"]', timeout=10_000)
+    expect(page.get_by_test_id("eigen-chase-canvas")).to_be_visible(timeout=10_000)
+    set_range(page, "eigen-angle", 45)
+    expect(page.get_by_text("Найдено направление с λ = 3").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-small-eigen").click()
+    set_range(page, "eigen-angle", 315)
+    expect(page.get_by_text("Найдено второе собственное направление").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-flip-eigen").click()
+    set_range(page, "eigen-angle", 315)
+    expect(page.get_by_text("Найдено направление с λ = -1").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_eigen_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algebra/eigenvalues/chase", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-eigen-chase"]', timeout=10_000)
+    set_range(page, "eigen-angle", 0)
+    expect(page.get_by_test_id("eigen-diagnosis")).to_contain_text("повёрнут", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    set_range(page, "eigen-angle", 45)
+    expect(page.get_by_text("Найдено направление с λ = 3").first).to_be_visible(timeout=10_000)
+
+
+def click_euler_path(page, vertices) -> None:
+    for vertex in vertices:
+        page.get_by_test_id(f"euler-vertex-{vertex}").click()
+
+
+def run_euler_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/combinatorics/euler/trail", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-euler-trail"]', timeout=10_000)
+    expect(page.get_by_test_id("euler-trail-canvas")).to_be_visible(timeout=10_000)
+    click_euler_path(page, [0, 1, 2, 3, 4, 2, 0])
+    expect(page.get_by_text("Эйлеров цикл построен").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-house").click()
+    click_euler_path(page, [2, 1, 0, 3, 4, 2, 3])
+    expect(page.get_by_text("Эйлеров путь построен").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-envelope").click()
+    click_euler_path(page, [0, 3, 2, 4, 3, 1, 2, 0, 1])
+    expect(page.get_by_text("Конверт нарисован").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_euler_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/combinatorics/euler/trail", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-euler-trail"]', timeout=10_000)
+    page.get_by_test_id("euler-vertex-0").click()
+    page.get_by_test_id("euler-vertex-3").click()  # 1 and 4 are not adjacent
+    expect(page.get_by_test_id("euler-diagnosis")).to_contain_text("нет свободного ребра", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    click_euler_path(page, [1, 2, 3, 4, 2, 0])
+    expect(page.get_by_text("Эйлеров цикл построен").first).to_be_visible(timeout=10_000)
+
+
+def run_bst_happy_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/bst/quest", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bst-quest"]', timeout=10_000)
+    expect(page.get_by_test_id("bst-quest-canvas")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("bst-node-2").click()
+    page.get_by_test_id("bst-node-5").click()
+    expect(page.get_by_text("Число 7 найдено").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("result-moment")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-find-deep").click()
+    page.get_by_test_id("bst-node-1").click()
+    page.get_by_test_id("bst-node-3").click()
+    expect(page.get_by_text("Число 2 найдено").first).to_be_visible(timeout=10_000)
+    page.get_by_test_id("level-not-found").click()
+    page.get_by_test_id("bst-node-2").click()
+    page.get_by_test_id("bst-node-5").click()
+    expect(page.get_by_text("числа 6 в дереве нет").first).to_be_visible(timeout=10_000)
+    expect(page.get_by_test_id("mission-reflection")).to_be_visible(timeout=10_000)
+
+
+def run_bst_mistake_path(page) -> None:
+    page.goto(f"{BASE_URL}/#/algorithms/bst/quest", wait_until="domcontentloaded")
+    page.wait_for_selector('[data-testid="mission-bst-quest"]', timeout=10_000)
+    # Target 7 is greater than root 5, so the left child (node 1) is the wrong branch.
+    page.get_by_test_id("bst-node-1").click()
+    expect(page.get_by_test_id("bst-diagnosis")).to_contain_text("Не та ветка", timeout=10_000)
+    expect(page.get_by_test_id("mascot-coach")).to_have_attribute("data-state", "warning")
+    expect(page.get_by_test_id("repair-marker")).to_be_visible(timeout=10_000)
+    page.get_by_test_id("bst-node-2").click()
+    page.get_by_test_id("bst-node-5").click()
+    expect(page.get_by_text("Число 7 найдено").first).to_be_visible(timeout=10_000)
+
+
 def run_happy_paths(browser) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 960})
     context.add_init_script("window.localStorage.clear()")
@@ -750,6 +1365,22 @@ def run_happy_paths(browser) -> None:
     run_asymptotic_mistake_path(page)
     run_ml_playground_mistake_path(page)
     run_feature_factory_mistake_path(page)
+    run_bernoulli_mistake_path(page)
+    run_gradient_mistake_path(page)
+    run_heap_mistake_path(page)
+    run_roots_mistake_path(page)
+    run_fourier_mistake_path(page)
+    run_monte_carlo_mistake_path(page)
+    run_bayes_mistake_path(page)
+    run_expectation_mistake_path(page)
+    run_taylor_mistake_path(page)
+    run_pascal_mistake_path(page)
+    run_gauss_mistake_path(page)
+    run_dsu_mistake_path(page)
+    run_dp_mistake_path(page)
+    run_eigen_mistake_path(page)
+    run_euler_mistake_path(page)
+    run_bst_mistake_path(page)
     run_kernel_happy_path(page)
     run_determinant_happy_path(page)
     run_matrix_happy_path(page)
@@ -763,6 +1394,22 @@ def run_happy_paths(browser) -> None:
     run_asymptotic_happy_path(page)
     run_ml_playground_happy_path(page)
     run_feature_factory_happy_path(page)
+    run_bernoulli_happy_path(page)
+    run_gradient_happy_path(page)
+    run_heap_happy_path(page)
+    run_roots_happy_path(page)
+    run_fourier_happy_path(page)
+    run_monte_carlo_happy_path(page)
+    run_bayes_happy_path(page)
+    run_expectation_happy_path(page)
+    run_taylor_happy_path(page)
+    run_pascal_happy_path(page)
+    run_gauss_happy_path(page)
+    run_dsu_happy_path(page)
+    run_dp_happy_path(page)
+    run_eigen_happy_path(page)
+    run_euler_happy_path(page)
+    run_bst_happy_path(page)
     context.close()
 
 

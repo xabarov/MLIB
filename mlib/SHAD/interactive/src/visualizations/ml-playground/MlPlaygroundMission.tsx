@@ -3,6 +3,8 @@ import { DataTableMini } from '../../game/components/data/DataTableMini'
 import { DecisionPlane } from '../../game/components/data/DecisionPlane'
 import { MetricBoard } from '../../game/components/data/MetricBoard'
 import { MissionShell } from '../../game/components/MissionShell'
+import { RepairMarker } from '../../game/components/RepairMarker'
+import { ResultMoment } from '../../game/components/ResultMoment'
 import { chooseMascotState, missionMessage } from '../../game/missionFeedback'
 import { mlPlaygroundMission } from '../../game/missions'
 import type { MissionBadge, MissionLevel } from '../../game/missionTypes'
@@ -86,6 +88,17 @@ function MlPlaygroundLevel({
       ? mlColumns
       : mlColumns.filter((column) => column.id !== 'leakage_score')
 
+  const repairLabelByKind: Record<string, string> = {
+    'bad-threshold': 'порог не тот',
+    'train-test-gap': 'train ≫ test',
+    'accuracy-trap': 'accuracy обманула',
+    'leakage-used': 'утечка в модели',
+    underfit: 'недообучение',
+    'wrong-feature': 'не тот признак',
+  }
+  const repairLabel = repairLabelByKind[diagnosis.kind] ?? 'почини модель'
+  const repairTone = diagnosis.kind === 'leakage-used' ? 'danger' : 'warning'
+
   useEffect(() => {
     if (!levelSuccess) return
     completeActiveLevel()
@@ -145,7 +158,11 @@ function MlPlaygroundLevel({
       sceneViewportClassName="min-h-[1120px] pt-[176px] sm:min-h-[1040px] sm:pt-[112px] lg:h-full lg:min-h-0 lg:pt-[74px]"
       scene={
         <div className="flex h-full items-start justify-center bg-[radial-gradient(circle_at_70%_14%,rgba(89,143,113,0.14),transparent_30%),linear-gradient(180deg,#fffdf7,#f7f4ed)] p-4 lg:items-center">
-          <div className="grid w-full max-w-6xl gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+          <div className="relative grid w-full max-w-6xl gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+            <ResultMoment show={levelSuccess} label="модель обобщает" />
+            {!levelSuccess && (
+              <RepairMarker tone={repairTone} label={repairLabel} xPercent={50} yPercent={1} />
+            )}
             <section className="min-w-0 space-y-4 rounded-md border border-ink/10 bg-paper/90 p-4 shadow-[0_18px_42px_rgba(20,20,19,0.08)]">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
