@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "standard-distributions-hero",
+      "filename_base": "hero_distributions",
+      "prompt": "16:9 educational editorial illustration for a probability theory lecture on standard probability distributions. Visualize a natural museum display or zoo of different abstract shapes: tall thin spike, wide bell curve, exponentially decaying curve, U-shaped curve, and a step-function histogram — each in its own floating display frame, arranged across the canvas. Each shape is minimalist and elegant, drawn in warm ink with blue and terracotta accents on a warm off-white paper background. Premium academic textbook style. No text, no formulas, no numbers."
+    }
+  ]
+}
