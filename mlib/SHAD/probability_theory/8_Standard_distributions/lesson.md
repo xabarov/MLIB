@@ -64,6 +64,11 @@ $$
 
 **Связь:** $\mathrm{Bin}(1, p) = \mathrm{Ber}(p)$.
 
+### Пример
+
+Монета нечестная: $p=0.7$. $X \sim \mathrm{Ber}(0.7)$.  
+$\mathbb{P}(X=1)=0.7$; $\mathbb{E}[X]=0.7$; $\mathrm{Var}(X)=0.7\cdot0.3=0.21$.
+
 ---
 
 ## 2. Биномиальное
@@ -80,6 +85,12 @@ $$
 | $\mathbb{E}[X]$ | $np$ |
 | $\mathrm{Var}(X)$ | $np(1-p)$ |
 | Х.ф. | $[(1-p)+pe^{it}]^n$ |
+
+### Пример
+
+$X \sim \mathrm{Bin}(5, 0.4)$. Вероятность ровно 2 успехов из 5:
+$$\mathbb{P}(X=2) = \binom{5}{2}(0.4)^2(0.6)^3 = 10\cdot0.16\cdot0.216 = 0.346.$$
+$\mathbb{E}[X]=2$; $\mathrm{Var}(X)=1.2$.
 
 **Свойства:**
 - $X \sim \mathrm{Bin}(n,p)$ и $Y \sim \mathrm{Bin}(m,p)$ независимы $\Rightarrow$ $X+Y \sim \mathrm{Bin}(n+m, p)$.
@@ -104,6 +115,11 @@ $$
 | $\mathbb{E}[X]$ | $1/p$ |
 | $\mathrm{Var}(X)$ | $(1-p)/p^2$ |
 | Х.ф. | $pe^{it}/(1-(1-p)e^{it})$ |
+
+### Пример
+
+Вероятность успеха $p=0.25$. Среднее число попыток до первого успеха: $\mathbb{E}[X]=4$.  
+$\mathbb{P}(X=1)=0.25$; $\mathbb{P}(X=3)=(0.75)^2\cdot0.25=0.141$.
 
 **Свойство без памяти:**
 
@@ -132,6 +148,12 @@ $$
 | $\mathrm{Var}(X)$ | $r(1-p)/p^2$ |
 | Х.ф. | $[pe^{it}/(1-(1-p)e^{it})]^r$ |
 
+### Пример
+
+Ждём 3-го успеха ($r=3$, $p=0.5$). $\mathbb{E}[X]=6$; $\mathrm{Var}(X)=6$.  
+Вероятность, что 3-й успех наступит на 5-м испытании ($k=5$):
+$$\mathbb{P}(X=5)=\binom{4}{2}(0.5)^3(0.5)^2=6\cdot\frac{1}{32}=0.1875.$$
+
 **Связь:** $\mathrm{NegBin}(r, p) = $ сумма $r$ независимых $\mathrm{Geom}(p)$.
 
 **Альтернативная параметризация (число неудач до $r$-го успеха):**
@@ -156,6 +178,11 @@ $$
 | $\mathbb{E}[X]$ | $\lambda$ |
 | $\mathrm{Var}(X)$ | $\lambda$ |
 | Х.ф. | $\exp(\lambda(e^{it}-1))$ |
+
+### Пример
+
+В колл-центр поступает в среднем $\lambda=3$ звонка в минуту. Вероятность нуля звонков:
+$$\mathbb{P}(X=0)=e^{-3}\approx0.050; \quad \mathbb{P}(X\ge1)=1-e^{-3}\approx0.950.$$
 
 **Свойства:**
 - $X \sim \mathrm{Poisson}(\lambda_1)$ и $Y \sim \mathrm{Poisson}(\lambda_2)$ независимы $\Rightarrow$ $X+Y \sim \mathrm{Poisson}(\lambda_1+\lambda_2)$.
@@ -182,6 +209,12 @@ $$
 
 Множитель $\frac{N-n}{N-1}$ — **поправка на конечность** генеральной совокупности (отсутствует в биномиальном).
 
+### Пример
+
+Урна: $N=10$ шаров, $K=4$ красных. Берём $n=3$ без возврата.  
+$\mathbb{E}[X]=3\cdot4/10=1.2$. Вероятность ровно 2 красных:
+$$\mathbb{P}(X=2)=\frac{\binom{4}{2}\binom{6}{1}}{\binom{10}{3}}=\frac{6\cdot6}{120}=\frac{36}{120}=0.3.$$
+
 **Предельный переход:** при $N \to \infty$, $K/N \to p$, $\mathrm{HGeom}(N,K,n) \to \mathrm{Bin}(n,p)$.
 
 ---
@@ -206,6 +239,11 @@ $$
 | $\mathbb{E}[X]$ | $(a+b)/2$ |
 | $\mathrm{Var}(X)$ | $(b-a)^2/12$ |
 | Х.ф. | $(e^{ibt}-e^{iat})/(it(b-a))$ |
+
+### Пример
+
+$X \sim \mathrm{Uniform}(2,8)$. $\mathbb{E}[X]=5$; $\mathrm{Var}(X)=36/12=3$.  
+$\mathbb{P}(3 \le X \le 6) = (6-3)/(8-2) = 0.5$.
 
 **Свойство:** если $U \sim \mathrm{Uniform}(0,1)$, то $F^{-1}(U) \sim F$ для любой CDF $F$ — **метод обратной функции** (inversion sampling).
 
@@ -238,6 +276,11 @@ $$
 | $(\mu - 2\sigma, \mu + 2\sigma)$ | $\approx 0.954$ |
 | $(\mu - 3\sigma, \mu + 3\sigma)$ | $\approx 0.997$ |
 
+### Пример
+
+$X \sim \mathcal{N}(100, 225)$ (рост в см, $\sigma=15$). Вероятность роста от 85 до 115 см:
+$$\mathbb{P}(85\le X\le115) = \mathbb{P}\!\left(\frac{85-100}{15}\le Z\le\frac{115-100}{15}\right) = \Phi(1)-\Phi(-1) \approx 0.683.$$
+
 **Устойчивость:** $X \sim \mathcal{N}(\mu_1, \sigma_1^2)$, $Y \sim \mathcal{N}(\mu_2, \sigma_2^2)$ независимы $\Rightarrow$ $aX+bY \sim \mathcal{N}(a\mu_1+b\mu_2, a^2\sigma_1^2+b^2\sigma_2^2)$.
 
 ---
@@ -254,6 +297,12 @@ $$
 | $\mathbb{E}[\mathbf{X}]$ | $\boldsymbol{\mu}$ |
 | $\mathrm{Cov}(\mathbf{X})$ | $\Sigma$ |
 | Х.ф. | $\exp(i\boldsymbol{\mu}^T\mathbf{t} - \frac{1}{2}\mathbf{t}^T\Sigma\mathbf{t})$ |
+
+### Пример
+
+$(X_1,X_2)^T\sim\mathcal{N}_2\!\left(\begin{pmatrix}0\\0\end{pmatrix},\begin{pmatrix}1&0.8\\0.8&1\end{pmatrix}\right)$.  
+$\rho=0.8$; $\mathrm{Var}(X_1)=\mathrm{Var}(X_2)=1$. Компоненты некоррелированы $\iff$ независимы.  
+Условное: $X_2\mid X_1=x\sim\mathcal{N}(0.8x,\,1-0.64)=\mathcal{N}(0.8x,\,0.36)$.
 
 **Ключевые свойства:**
 - Линейное преобразование: $A\mathbf{X} + \mathbf{b} \sim \mathcal{N}_k(A\boldsymbol{\mu}+\mathbf{b},\, A\Sigma A^T)$.
@@ -279,6 +328,11 @@ $$
 | $\mathrm{Var}(X)$ | $1/\lambda^2$ |
 | Медиана | $\ln 2/\lambda$ |
 | Х.ф. | $\lambda/(\lambda-it)$ |
+
+### Пример
+
+Время жизни лампочки $T\sim\mathrm{Exp}(1/1000)$ (в часах, $\mathbb{E}[T]=1000$).  
+Вероятность проработать более 500 часов: $\mathbb{P}(T>500)=e^{-500/1000}=e^{-0.5}\approx0.607$.
 
 **Свойство без памяти:**
 
@@ -322,6 +376,11 @@ $$
 | $n/2$, $\beta=2$ | $\chi^2(n)$ (хи-квадрат) |
 | $n \in \mathbb{N}$ | сумма $n$ н.о.р. $\mathrm{Exp}(\lambda)$ |
 
+### Пример
+
+Пуассоновский процесс с $\lambda=2$ событиями/час. Время до 5-го события: $T\sim\Gamma(5,1/2)$.  
+$\mathbb{E}[T]=5\cdot0.5=2.5$ ч; $\mathrm{Var}(T)=5\cdot0.25=1.25$ ч².
+
 ---
 
 ## 12. Бета-распределение
@@ -349,6 +408,11 @@ $$
 | $1/2$, $1/2$ | Арксинусное |
 | $\alpha = \beta$ | Симметричное, мода $= 1/2$ |
 
+### Пример
+
+$\theta\sim\mathrm{Beta}(2,5)$: $\mathbb{E}[\theta]=2/7\approx0.286$; мода $=(2-1)/(2+5-2)=0.2$.  
+Интерпретация: у монеты с неизвестным $p$ этот приор задаёт склонность к «неудаче».
+
 **Байесовский вывод:** если $\theta \sim \mathrm{Beta}(\alpha, \beta)$ (априор) и $X \mid \theta \sim \mathrm{Bin}(n, \theta)$, то $\theta \mid X = k \sim \mathrm{Beta}(\alpha+k, \beta+n-k)$ (сопряжённый априор).
 
 **Связь с порядковыми статистиками:** $X_{(k)} \sim \mathrm{Beta}(k, n-k+1)$ при $X_i \sim \mathrm{Uniform}(0,1)$.
@@ -369,6 +433,12 @@ $$
 | $\mathbb{E}[X]$ | $\lambda\,\Gamma(1 + 1/k)$ |
 | $\mathrm{Var}(X)$ | $\lambda^2[\Gamma(1+2/k) - \Gamma(1+1/k)^2]$ |
 | Медиана | $\lambda(\ln 2)^{1/k}$ |
+
+### Пример
+
+Подшипник: $T\sim\mathrm{Weibull}(k=3,\lambda=1000)$ часов.  
+$\mathbb{E}[T]=1000\,\Gamma(4/3)\approx 1000\cdot0.893=893$ ч.  
+$k=3>1$ — интенсивность отказов растёт: чем дольше работает, тем вероятнее отказ.
 
 **Функция надёжности и интенсивность отказов:**
 
