@@ -103,6 +103,26 @@ if __name__ == "__main__":
 
 ---
 
+## Генерация иллюстраций — запускаю сам
+
+После написания лекции **я сам** запускаю оба генератора, не прошу пользователя:
+
+```bash
+# 1. matplotlib-диаграммы (без API, только venv)
+cd /home/roman/Documents/ML/MLIB/mlib
+.venv/bin/python SHAD/<раздел>/<N_Тема>/generate_visuals.py
+
+# 2. LLM hero (ключ из .env — подгружается автоматически)
+.venv/bin/python generate_images.py \
+  --jobs SHAD/<раздел>/<N_Тема>/lecture_llm_images.json \
+  --out-dir SHAD/<раздел>/<N_Тема>/assets
+```
+
+Ключи: `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_VISUAL_GENERATION_MODEL` — в `.env`.  
+LLM генерирует `.png`; ссылки в `lesson.md` должны быть `.png`, не `.jpg`.
+
+---
+
 ## Что НЕ нужно делать
 
 - Не добавлять `practice.md` без явной просьбы

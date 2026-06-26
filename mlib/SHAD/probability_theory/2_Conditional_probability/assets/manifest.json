@@ -1,21 +1,17 @@
 {
   "model": "google/gemini-3.1-flash-image-preview",
   "style_suffix_file": "/home/roman/Documents/ML/MLIB/mlib/SHAD/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1782488332,
   "jobs": [
     {
       "slug": "conditional-probability-hero",
       "filename_base": "hero_conditional_probability",
       "append_style_suffix": true
-    },
-    {
-      "slug": "conditional-restriction",
-      "filename_base": "conditional_probability_restriction",
-      "append_style_suffix": true
-    },
-    {
-      "slug": "total-probability-partition",
-      "filename_base": "total_probability_partition",
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
       "append_style_suffix": true
     }
-  ]
+  }
 }
