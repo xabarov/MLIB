@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "expectation-variance-hero",
+      "filename_base": "hero_expectation",
+      "prompt": "16:9 educational editorial illustration for a university probability theory lecture on mathematical expectation and variance. Visualize a horizontal balance beam or lever perfectly balanced at its center point, with abstract colored spheres of different sizes and weights distributed on both sides — representing the center of mass (expected value) as the balance point. Below, a soft Gaussian bell curve is sketched in warm muted tones. The color palette is warm off-white paper background, deep ink contours, with blue and terracotta accents. Premium academic textbook style, generous whitespace. No readable text, no formulas, no digits."
+    }
+  ]
+}
