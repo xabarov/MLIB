@@ -133,17 +133,17 @@ def draw_sccs():
     ax.set_title("Сильно связные компоненты орграфа", color=C_INK,
                  fontsize=13, fontweight="bold", pad=10)
 
-    # Draw SCC background regions
-    region_params = {
-        "A": dict(xy=(0.4, 1.3), width=2.6, height=2.4, color=C_ORANGE, label="SCC A = {0,1,2}"),
-        "D": dict(xy=(3.5, 2.0), width=1.0, height=1.0, color=C_GRAY,  label="SCC D = {3}"),
-        "B": dict(xy=(4.9, 1.3), width=1.3, height=2.4, color=C_BLUE,  label="SCC B = {4,5}"),
-        "C": dict(xy=(6.4, 1.3), width=1.3, height=2.4, color=C_GREEN, label="SCC C = {6,7}"),
-    }
-    for _, rp in region_params.items():
+    # Draw SCC background regions: (xy, width, height, color)
+    scc_regions = [
+        ((0.4, 1.3), 2.6, 2.4, C_ORANGE),
+        ((3.5, 2.0), 1.0, 1.0, C_GRAY),
+        ((4.9, 1.3), 1.3, 2.4, C_BLUE),
+        ((6.4, 1.3), 1.3, 2.4, C_GREEN),
+    ]
+    for xy, w, h, color in scc_regions:
         rect = mpatches.FancyBboxPatch(
-            rp["xy"], rp["width"], rp["height"],
-            boxstyle="round,pad=0.05", linewidth=0, color=rp["color"], alpha=0.18, zorder=0
+            xy, w, h,
+            boxstyle="round,pad=0.05", linewidth=0, color=color, alpha=0.18, zorder=0
         )
         ax.add_patch(rect)
 
@@ -203,7 +203,7 @@ def draw_kosaraju():
         6: C_GREEN,  7: C_GREEN,                  # SCC C
     }
 
-    for idx, ax in enumerate(axes):
+    for _, ax in enumerate(axes):
         ax.set_facecolor(C_BG)
         ax.set_xlim(0, 8.5)
         ax.set_ylim(1.0, 4.2)
