@@ -227,6 +227,96 @@ def draw_lln_illustration(out_name: str = "lln_illustration.png") -> None:
     _save(fig, out_name)
 
 
+def draw_coin_flip_lln(out_name: str = "coin_flip_lln.png") -> None:
+    """Монета: 30 траекторий bar X_n → 0. Иллюстрация п.н. сходимости."""
+    _apply_style()
+    rng = np.random.default_rng(7)
+    n_max = 400
+    n_arr = np.arange(1, n_max + 1)
+
+    fig, ax = plt.subplots(figsize=(11, 5))
+    fig.patch.set_facecolor(C_BG)
+
+    # 30 серых фоновых траекторий
+    for _ in range(30):
+        xs = rng.choice([-1.0, 1.0], size=n_max)
+        ax.plot(n_arr, np.cumsum(xs) / n_arr,
+                color=C_GRAY, lw=0.7, alpha=0.35)
+
+    # 3 выделенные траектории
+    for color in [C_BLUE, C_ORANGE, C_GREEN]:
+        xs = rng.choice([-1.0, 1.0], size=n_max)
+        ax.plot(n_arr, np.cumsum(xs) / n_arr,
+                color=color, lw=2.2, alpha=0.9)
+
+    # Полоса ±1/√n
+    band = 1.0 / np.sqrt(n_arr)
+    ax.fill_between(n_arr, -band, band, alpha=0.08, color=C_INK)
+    ax.plot(n_arr,  band, color=C_INK, lw=1.2, ls="--", alpha=0.45,
+            label="$\\pm 1/\\sqrt{n}$")
+    ax.plot(n_arr, -band, color=C_INK, lw=1.2, ls="--", alpha=0.45)
+
+    ax.axhline(0, color=C_INK, lw=2.0, label="$\\mu = 0$")
+
+    ax.set_xlabel("$n$ (число бросков)", fontsize=12)
+    ax.set_ylabel("$\\bar{X}_n = S_n/n$", fontsize=12)
+    ax.set_title(
+        "ЗБЧ для монеты ($X_i = \\pm1$, $\\mu=0$): каждая кривая — одна строка таблицы\n"
+        "Почти все траектории стабилизируются у нуля — это сходимость п.н.",
+        fontsize=12, weight="bold"
+    )
+    ax.legend(fontsize=10, framealpha=0.8, loc="upper right")
+    ax.set_xlim(1, n_max)
+    ax.set_ylim(-1.3, 1.3)
+    ax.grid(True, alpha=0.25)
+    for sp in ax.spines.values():
+        sp.set_color(C_GRAY)
+
+    _save(fig, out_name)
+
+
+def draw_clt_uniforms(out_name: str = "clt_uniforms.png") -> None:
+    """ЦПТ: гистограммы нормированной суммы n равномерных при n=1,2,5,30."""
+    _apply_style()
+    rng = np.random.default_rng(42)
+    n_samples = 8000
+    ns = [1, 2, 5, 30]
+
+    fig, axes = plt.subplots(1, 4, figsize=(14, 4.5))
+    fig.patch.set_facecolor(C_BG)
+
+    x_norm = np.linspace(-4, 4, 300)
+    normal_pdf = np.exp(-x_norm ** 2 / 2) / np.sqrt(2 * np.pi)
+
+    for ax, n in zip(axes, ns):
+        raw = rng.uniform(0, 1, size=(n_samples, n)).sum(axis=1)
+        std = np.sqrt(n / 12.0)
+        standardized = (raw - n / 2.0) / std
+
+        ax.hist(standardized, bins=45, density=True,
+                color=C_BLUE, alpha=0.65, edgecolor=C_BG, linewidth=0.4)
+        ax.plot(x_norm, normal_pdf, color=C_ORANGE, lw=2.5,
+                label="$\\mathcal{N}(0,1)$")
+
+        ax.set_title(f"$n = {n}$", fontsize=14, weight="bold", color=C_INK)
+        ax.set_xlim(-4, 4)
+        ax.set_xlabel("$(S_n - n/2)\\ /\\ \\sqrt{n/12}$", fontsize=8.5)
+        if n == 1:
+            ax.set_ylabel("Плотность", fontsize=10)
+        ax.legend(fontsize=8, framealpha=0.8)
+        ax.set_facecolor(C_BG)
+        for sp in ax.spines.values():
+            sp.set_color(C_GRAY)
+
+    fig.suptitle(
+        "ЦПТ: нормированная сумма $n$ равномерных $\\mathrm{Uniform}[0,1]$"
+        " сходится по распределению к $\\mathcal{N}(0,1)$",
+        fontsize=13, weight="bold", y=1.03
+    )
+    fig.tight_layout()
+    _save(fig, out_name)
+
+
 def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_convergence_diagram()
@@ -235,6 +325,10 @@ def main() -> None:
     print("  chebyshev_illustration.png — OK")
     draw_lln_illustration()
     print("  lln_illustration.png — OK")
+    draw_coin_flip_lln()
+    print("  coin_flip_lln.png — OK")
+    draw_clt_uniforms()
+    print("  clt_uniforms.png — OK")
     print(f"Generated visuals in {ASSETS}")
 
 
