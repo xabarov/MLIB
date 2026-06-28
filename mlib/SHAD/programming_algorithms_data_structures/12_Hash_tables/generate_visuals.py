@@ -215,15 +215,6 @@ def draw_open_addressing():
             ax.text(x + (cell_w - 0.08) / 2, base_y,
                     "—", ha="center", va="center", fontsize=12, color=C_GRAY)
 
-    # Draw probe arrows for key 11: tries slot 3, goes to slot 4
-    def arrow(x1, y1, x2, y2, color, label=""):
-        ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
-                    arrowprops=dict(arrowstyle="->", color=color, lw=1.8,
-                                   connectionstyle="arc3,rad=-0.3"))
-        if label:
-            mx, my = (x1 + x2) / 2, (y1 + y2) / 2 + 0.4
-            ax.text(mx, my, label, ha="center", va="bottom", fontsize=9, color=color)
-
     # Key 3: goes directly to slot 3
     x3 = start_x + 3 * cell_w + (cell_w - 0.08) / 2
     ax.annotate("", xy=(x3, base_y + cell_h / 2),
