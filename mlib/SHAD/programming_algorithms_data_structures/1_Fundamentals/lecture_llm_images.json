@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-fundamentals",
+      "filename_base": "hero_fundamentals",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level computer science lecture on algorithms and programming fundamentals. Visual metaphor: a grid of memory cells arranged in rows fading into the distance, with one cell illuminated in terracotta as a focal point; above it, a gentle arc of ascending steps suggesting growth complexity classes. No formulas, no code, no text. Warm paper off-white background, deep ink outlines, one terracotta accent for the key cell, dusty blue for the ascending arc. Premium academic style, generous negative space, quiet and precise atmosphere."
+    }
+  ]
+}
