@@ -4,7 +4,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import numpy as np
 
 C_BG = "#faf9f5"
 C_INK = "#141413"

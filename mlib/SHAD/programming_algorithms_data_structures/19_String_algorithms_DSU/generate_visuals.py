@@ -133,8 +133,7 @@ def draw_kmp():
     text = "ABABABABC"
     pat  = "ABABC"
     # pi for ABABC = [0,0,1,2,0]
-    pi = [0, 0, 1, 2, 0]
-
+    # pi for ABABC = [0,0,1,2,0] — used conceptually; jump positions shown statically
     cell_w = 1.0
     # Draw text row (y=2.5)
     text_y = 2.5
