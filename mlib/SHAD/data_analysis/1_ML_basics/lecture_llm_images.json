@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_ml_basics",
+    "out": "assets/hero_ml_basics.png",
+    "prompt": "A conceptual educational illustration showing the four pillars of machine learning: classification, regression, ranking, and clustering. Each concept visualized as a glowing geometric symbol — a decision boundary separating two point clouds (classification), a straight regression line through scattered data (regression), a ranked ordered list with relevance scores (ranking), and color-coded clusters of dots (clustering). Clean, minimalist style, dark background with subtle grid, scientific aesthetic, blueprint-like precision, muted blues and oranges, high detail. No text labels."
+  }
+]
