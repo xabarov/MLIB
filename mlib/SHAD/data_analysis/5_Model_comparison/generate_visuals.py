@@ -165,8 +165,6 @@ def draw_roc_pr_curves():
 
     # Sort by descending score to compute ROC/PR
     order = np.argsort(-scores)
-    y_sorted = y_true[order]
-
     # ROC: FPR vs TPR at each threshold
     thresholds = np.concatenate([[2.0], scores[order], [0.0]])
     tprs = np.zeros(len(thresholds))
