@@ -45,27 +45,7 @@ def _save(fig, name):
 def draw_fib_tree():
     # Tree nodes: (label, x, y, parent_x, parent_y, is_duplicate)
     # Layout computed manually for a clean binary tree appearance
-    nodes = [
-        # (label, x,   y,    px,   py,   dup)
-        ("F(5)",  4.0, 5.0,  None, None, False),
-        ("F(4)",  2.5, 4.0,  4.0,  5.0,  False),
-        ("F(3)",  5.5, 4.0,  4.0,  5.0,  True),   # duplicate F(3)
-        ("F(3)",  1.5, 3.0,  2.5,  4.0,  True),   # duplicate F(3)
-        ("F(2)",  3.5, 3.0,  2.5,  4.0,  True),   # duplicate F(2)
-        ("F(4.1)", 4.7, 3.0, 5.5,  4.0,  False),  # not used — F(3) subtree
-        ("F(2)",  5.0, 3.0,  5.5,  4.0,  True),   # duplicate F(2)
-        ("F(1)",  6.0, 3.0,  5.5,  4.0,  False),
-        ("F(2)",  1.0, 2.0,  1.5,  3.0,  True),   # dup
-        ("F(1)",  2.0, 2.0,  1.5,  3.0,  False),
-        ("F(1)",  3.2, 2.0,  3.5,  3.0,  False),
-        ("F(0)",  3.8, 2.0,  3.5,  3.0,  False),
-        ("F(0.a)", 4.5, 2.0, 5.0,  3.0,  False),  # F(2) children
-        ("F(1.a)", 5.5, 2.0, 5.0,  3.0,  False),
-        ("F(1.b)", 0.6, 1.0, 1.0,  2.0,  False),  # F(2) children
-        ("F(0.b)", 1.4, 1.0, 1.0,  2.0,  False),
-    ]
-
-    # Clean representation: use simple tree structure
+    # Simple tree structure
     # (label, x, y, parent_idx or None, is_duplicate)
     tree = [
         # idx  label  x     y     parent  dup
@@ -92,15 +72,15 @@ def draw_fib_tree():
     ax.set_ylim(1.2, 7.0)
 
     # Draw edges first
-    positions = {idx: (x, y) for idx, _, x, y, _, _ in tree}
-    for idx, label, x, y, parent, _ in tree:
+    positions = {i: (x, y) for i, _, x, y, _, _ in tree}
+    for _, label, x, y, parent, _ in tree:
         if parent is not None:
             px, py = positions[parent]
             ax.plot([px, x], [py, y], color=C_GRAY, lw=1.2, zorder=1)
 
     # Draw nodes
     r = 0.35
-    for idx, label, x, y, _, dup in tree:
+    for _, label, x, y, _, dup in tree:
         color = C_ORANGE if dup else C_BLUE
         circ = mpatches.Circle((x, y), r, facecolor=color,
                                 edgecolor=C_INK, linewidth=1.0, zorder=3)
@@ -260,9 +240,6 @@ def draw_knapsack():
 
     cell_w = 1.0
     cell_h = 0.75
-    rows = n + 2  # header + n+1 dp rows
-    cols = W + 2  # label col + W+1 dp cols
-
     fig, ax = plt.subplots(figsize=(10, 5))
     _apply_style(fig, [ax])
 

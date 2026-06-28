@@ -87,7 +87,7 @@ def draw_interval_scheduling() -> None:
     ax.set_xlim(0, 10)
     ax.set_ylim(-0.8, 5.4)
     ax.set_xticks(range(0, 11))
-    ax.set_xticklabels(range(0, 11), fontsize=9, color=C_INK)
+    ax.set_xticklabels([str(i) for i in range(0, 11)], fontsize=9, color=C_INK)
     ax.set_yticks(y_positions)
     ax.set_yticklabels([iv[2] for iv in intervals], fontsize=9, color=C_INK)
     ax.tick_params(colors=C_INK, left=True, bottom=True)
