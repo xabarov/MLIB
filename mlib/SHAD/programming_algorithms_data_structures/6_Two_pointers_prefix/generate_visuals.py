@@ -60,7 +60,7 @@ def draw_two_pointers():
     fig.suptitle("Метод двух указателей: поиск пары с суммой 9",
                  fontsize=13, color=C_INK, fontweight="bold", y=1.01)
 
-    for row_idx, (ax, (l, r, label)) in enumerate(zip(axes, steps)):
+    for _, (ax, (l, r, label)) in enumerate(zip(axes, steps)):
         ax.set_xlim(-0.5, n * cell_w + 0.5)
         ax.set_ylim(-0.6, cell_h + 0.6)
         ax.set_aspect("equal")

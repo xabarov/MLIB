@@ -17,11 +17,11 @@ C_BLUE   = "#6a9bcc"
 C_GREEN  = "#788c5d"
 
 
-def _apply_style(fig: plt.Figure) -> None:
+def _apply_style(fig) -> None:
     fig.patch.set_facecolor(C_BG)
 
 
-def _save(fig: plt.Figure, name: str) -> None:
+def _save(fig, name: str) -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     path = ASSETS / f"{name}.png"
     fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=C_BG)
@@ -153,7 +153,6 @@ def draw_quicksort_partition() -> None:
 
     original = [3, 6, 8, 10, 1, 2, 1]
     partitioned = [1, 1, 8, 10, 3, 2, 6]  # after partition, pivot at index 1
-    pivot_val = 1
     pivot_final_idx = 1
 
     titles = [
@@ -288,7 +287,7 @@ def draw_sorting_comparison() -> None:
         "Стаб. O(n)", "Нестаб. O(log n)",
     ]
     for yi, prop in zip(y_centers, props):
-        ax.text(2.55, yi, prop, va="center", fontsize=7.5,
+        ax.text(2.55, float(yi), prop, va="center", fontsize=7.5,
                 color=C_GRAY, style="italic")
 
     ax.legend(loc="lower right", fontsize=9, framealpha=0.8, facecolor=C_BG)

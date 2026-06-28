@@ -4,7 +4,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import numpy as np
 
 C_BG = "#faf9f5"
 C_INK = "#141413"
@@ -171,9 +170,9 @@ def draw_median_of_medians():
     M_y = -0.85 + box_h / 2
 
     # Circle around M
-    circle = plt.Circle((M_x, M_y), 0.55, color=C_GREEN, fill=True, alpha=0.25, zorder=4)
+    circle = mpatches.Circle((M_x, M_y), 0.55, color=C_GREEN, fill=True, alpha=0.25, zorder=4)
     ax.add_patch(circle)
-    circle_border = plt.Circle((M_x, M_y), 0.55, color=C_GREEN, fill=False, linewidth=2.5, zorder=5)
+    circle_border = mpatches.Circle((M_x, M_y), 0.55, color=C_GREEN, fill=False, linewidth=2.5, zorder=5)
     ax.add_patch(circle_border)
     ax.text(M_x, M_y, f"M={M_val}", ha="center", va="center",
             fontsize=12, color=C_GREEN, fontweight="bold", zorder=6)
@@ -194,40 +193,6 @@ def draw_quickselect_recursion():
     """Recursion tree for Quick-Select showing O(log n) expected depth vs O(n) worst case."""
     fig, axes = plt.subplots(1, 2, figsize=(12, 6))
     _apply_style(fig, axes)
-
-    def draw_tree(ax, title, subtitle, levels_data, x_start, x_end, y_top, node_colors):
-        ax.set_xlim(-0.1, 1.1)
-        ax.set_ylim(-0.5, 1.1)
-        ax.axis("off")
-        ax.set_title(title, fontsize=12, color=C_INK, fontweight="bold", pad=6)
-        ax.text(0.5, 1.05, subtitle, ha="center", fontsize=9, color=C_GRAY,
-                transform=ax.transAxes)
-
-        node_positions = []
-        y_step = 0.18
-
-        for level, (label, x_frac) in enumerate(levels_data):
-            y = y_top - level * y_step
-            x = x_start + x_frac * (x_end - x_start)
-            color = node_colors[level] if level < len(node_colors) else C_PANEL
-
-            # Draw edge from parent
-            if level > 0:
-                px, py = node_positions[-1]
-                ax.plot([px, x], [py - 0.03, y + 0.03],
-                        color=C_GRAY, lw=1.2, zorder=1)
-
-            rect = mpatches.FancyBboxPatch(
-                (x - 0.09, y - 0.025), 0.18, 0.05,
-                boxstyle="round,pad=0.01",
-                linewidth=1.2, edgecolor=C_INK, facecolor=color, zorder=2
-            )
-            ax.add_patch(rect)
-            ax.text(x, y, label, ha="center", va="center",
-                    fontsize=9, color=C_INK, fontweight="bold", zorder=3)
-            node_positions.append((x, y))
-
-        return node_positions
 
     # Left: expected case (good pivots ~50% split)
     ax = axes[0]
