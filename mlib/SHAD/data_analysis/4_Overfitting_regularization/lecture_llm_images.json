@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_overfitting_regularization",
+    "out": "assets/hero_overfitting_regularization.png",
+    "prompt": "A minimalist data science illustration contrasting overfitting and regularization. On the left half: a wildly wiggly curve that passes through every noisy data point, visually chaotic, with a label 'overfit'. On the right half: a smooth, clean curve that captures the underlying trend, labeled 'regularized'. The two halves are separated by a vertical dashed line. Data points are small circles in dark ink. Color palette: warm off-white background (#faf9f5), dark ink (#141413), muted orange (#d97757) for the overfit curve, slate blue (#6a9bcc) for the regularized curve, green (#788c5d) for data points. Flat design, no gradients, subtle grid lines. Style: technical diagram with craft-paper warmth."
+  }
+]

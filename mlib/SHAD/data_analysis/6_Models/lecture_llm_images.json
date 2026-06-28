@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_models",
+    "out": "assets/hero_models.png",
+    "prompt": "A conceptual editorial illustration representing core machine learning models arranged as a progression. On the left, a clean straight line divides two point clouds — symbolizing linear and logistic regression. In the center, a branching tree-like structure with rectangular partitions carved into space represents decision trees. On the right, a dense organic forest of overlapping subtle branches blends into a smooth curved boundary, evoking random forests and gradient boosting. The overall composition flows left to right: from simple geometry to complex organic structure. Warm paper off-white background, deep warm black ink shapes, terracotta and dusty blue accents, generous whitespace, premium academic editorial aesthetic. No text, no labels, no fake dashboards."
+  }
+]

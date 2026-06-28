@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_model_comparison",
+    "out": "assets/hero_model_comparison.png",
+    "prompt": "A conceptual scientific illustration of machine learning model evaluation and comparison. Central composition: a glowing ROC curve and PR curve on a dark blueprint-style background, with a shaded AUC region in muted blue-orange gradient. Around the curves: a 2x2 confusion matrix grid with labeled quadrants (TP, FP, TN, FN) rendered as illuminated panels, a precision-recall tradeoff scale, and small heatmap grids representing hyperparameter search. Mathematical symbols float subtly: F-beta formula, AUC integral notation, Greek letters beta and alpha. Visual style: scientific precision, minimal palette of deep navy background with warm amber and soft blue glowing elements, fine grid lines, no photographic elements, no human figures, technical blueprint aesthetic. No text labels except mathematical symbols."
+  }
+]
