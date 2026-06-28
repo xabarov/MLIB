@@ -157,13 +157,41 @@ $$
 
 ### Пример: неравенство AM–GM
 
-При $X$ равномерном на $\{a_1, \ldots, a_n\}$ (все $a_i > 0$) и $\varphi(x) = -\ln x$:
+**AM–GM** — неравенство между средним арифметическим и средним геометрическим: для любых $a_1, \ldots, a_n > 0$
 
 $$
--\ln\!\left(\frac{a_1+\cdots+a_n}{n}\right) \le -\frac{\ln a_1 + \cdots + \ln a_n}{n},
+\underbrace{\frac{a_1 + \cdots + a_n}{n}}_{\text{AM}} \;\ge\; \underbrace{\sqrt[n]{a_1 \cdots a_n}}_{\text{GM}},
 $$
 
-что равносильно AM $\ge$ GM.
+с равенством тогда и только тогда, когда $a_1 = \cdots = a_n$.
+
+**Вывод из Йенсена.** Возьмём $X$, равномерно распределённую на $\{a_1, \ldots, a_n\}$, то есть $P(X = a_i) = \tfrac{1}{n}$.
+
+Тогда математическое ожидание — это в точности среднее арифметическое:
+
+$$
+\mathbb{E}[X] = \frac{a_1 + \cdots + a_n}{n} = \mathrm{AM}.
+$$
+
+Функция $\varphi(x) = -\ln x$ **выпукла** на $(0, +\infty)$, так как $\varphi''(x) = \tfrac{1}{x^2} > 0$. Применяем Йенсена $\varphi(\mathbb{E}[X]) \le \mathbb{E}[\varphi(X)]$:
+
+$$
+-\ln\!\left(\frac{a_1+\cdots+a_n}{n}\right) \;\le\; \mathbb{E}[-\ln X] = -\frac{\ln a_1 + \cdots + \ln a_n}{n}.
+$$
+
+Умножаем обе части на $-1$ (знак неравенства меняется):
+
+$$
+\ln\!\left(\frac{a_1+\cdots+a_n}{n}\right) \;\ge\; \frac{\ln a_1 + \cdots + \ln a_n}{n} = \ln \sqrt[n]{a_1 \cdots a_n}.
+$$
+
+Экспонента монотонна, поэтому можно применить её к обеим частям:
+
+$$
+\frac{a_1+\cdots+a_n}{n} \;\ge\; \sqrt[n]{a_1 \cdots a_n}. \quad \square
+$$
+
+**Суть:** Йенсен — обобщение AM–GM. AM–GM — это Йенсен для $\varphi = -\ln$ и равномерного распределения на $n$ точках.
 
 ---
 
