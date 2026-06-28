@@ -208,6 +208,87 @@ def draw_conditional_expectation(out_name: str = "conditional_expectation.png") 
     _save(fig, out_name)
 
 
+def draw_jensen(out_name: str = "jensen_inequality.png") -> None:
+    """Геометрический смысл неравенства Йенсена: φ(x)=x², двухточечное распределение."""
+    _apply_style()
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+
+    # Двухточечное распределение: X = {-1, 2}, p = {2/3, 1/3}
+    x1, x2 = -1.0, 2.0
+    p1, p2 = 2 / 3, 1 / 3
+    ex     = p1 * x1 + p2 * x2          # = 0
+    phi_ex = ex ** 2                      # = 0  (на кривой)
+    e_phi  = p1 * x1**2 + p2 * x2**2    # = 2   (на хорде)
+
+    # --- Кривая ---
+    xs = np.linspace(-1.8, 2.6, 500)
+    ax.plot(xs, xs ** 2, color=C_BLUE, lw=2.5, label=r"$\varphi(x)=x^2$ (выпуклая)", zorder=3)
+
+    # --- Хорда ---
+    ax.plot([x1, x2], [x1**2, x2**2], color=C_ORANGE, lw=2.0, ls="--",
+            label="хорда", zorder=4)
+
+    # --- Точки на кривой (x1, x2) ---
+    for xv, lbl, ha in [(x1, r"$(-1,\;1)$", "right"), (x2, r"$(2,\;4)$", "left")]:
+        ax.plot(xv, xv**2, "o", color=C_ORANGE, ms=9, zorder=5)
+        ax.vlines(xv, 0, xv**2, color=C_GRAY, lw=0.9, ls=":")
+        offset = -0.12 if ha == "right" else 0.12
+        ax.text(xv + offset, xv**2 + 0.15, lbl, ha=ha, fontsize=9, color=C_INK)
+
+    # --- E[X] на оси x ---
+    ax.plot(ex, 0, "^", color=C_GREEN, ms=11, zorder=6, clip_on=False)
+    ax.text(ex, -0.45, r"$\mathbb{E}[X]=0$", ha="center", fontsize=10, color=C_GREEN)
+
+    # --- Вертикальная линия от E[X] вверх до E[φ(X)] ---
+    ax.vlines(ex, phi_ex, e_phi, color=C_GREEN, lw=1.6, ls=":", zorder=3)
+
+    # --- φ(E[X]) — на кривой ---
+    ax.plot(ex, phi_ex, "o", color=C_GREEN, ms=11, zorder=6)
+    ax.text(ex - 0.18, phi_ex + 0.18,
+            r"$\varphi(\mathbb{E}[X])=0$", ha="right", fontsize=10, color=C_GREEN)
+
+    # --- E[φ(X)] — на хорде ---
+    ax.plot(ex, e_phi, "D", color=C_ORANGE, ms=10, zorder=6)
+    ax.text(ex + 0.15, e_phi + 0.15,
+            r"$\mathbb{E}[\varphi(X)]=2$", ha="left", fontsize=10, color=C_ORANGE)
+
+    # --- Стрелка «разрыв Йенсена» ---
+    ax.annotate("", xy=(ex + 0.55, e_phi), xytext=(ex + 0.55, phi_ex),
+                arrowprops=dict(arrowstyle="<->", color=C_INK, lw=1.5))
+    ax.text(ex + 0.65, (e_phi + phi_ex) / 2,
+            "разрыв\nЙенсена = 2", fontsize=9, color=C_INK, va="center")
+
+    # --- Метки p на оси x ---
+    ax.text(x1, -0.85, r"$p_1=2/3$", ha="center", fontsize=9, color=C_GRAY)
+    ax.text(x2, -0.85, r"$p_2=1/3$", ha="center", fontsize=9, color=C_GRAY)
+
+    # --- Оформление ---
+    ax.axhline(0, color=C_GRAY, lw=0.8)
+    ax.set_xlim(-2.2, 3.2)
+    ax.set_ylim(-1.1, 5.5)
+    ax.set_xlabel("$x$", fontsize=12)
+    ax.set_ylabel(r"$\varphi(x)$", fontsize=12)
+    ax.set_title(
+        r"Неравенство Йенсена: $\varphi(\mathbb{E}[X])\leq\mathbb{E}[\varphi(X)]$",
+        fontsize=13, weight="bold",
+    )
+
+    ax.text(
+        0.02, 0.97,
+        r"$X\!\in\!\{-1,\,2\},\;p\!=\!(2/3,\,1/3)$" + "\n"
+        r"Хорда лежит выше кривой $\Leftrightarrow$ $\varphi$ выпукла",
+        transform=ax.transAxes, fontsize=9, va="top",
+        bbox=dict(boxstyle="round,pad=0.4", facecolor=C_PANEL, edgecolor=C_GRAY, alpha=0.9),
+    )
+
+    ax.legend(fontsize=10, loc="upper right", framealpha=0.85)
+    ax.grid(True, alpha=0.2)
+    for sp in ax.spines.values():
+        sp.set_color(C_GRAY)
+
+    _save(fig, out_name)
+
+
 def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_variance_spread()
@@ -216,6 +297,8 @@ def main() -> None:
     print("  correlation_scatter.png — OK")
     draw_conditional_expectation()
     print("  conditional_expectation.png — OK")
+    draw_jensen()
+    print("  jensen_inequality.png — OK")
     print(f"Generated visuals in {ASSETS}")
 
 
