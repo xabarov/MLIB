@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_missing_patterns",
+    "out": "assets/hero_missing_patterns.png",
+    "prompt": "A clean, scientific data visualization showing three side-by-side heatmap grids labeled MCAR, MAR, and MNAR. Each grid is 20 rows by 6 columns. Missing cells are filled with warm amber-orange (#d97757), present cells with light parchment (#e8e6dc). The three panels are clearly labeled in dark ink. MCAR panel has uniformly scattered orange cells. MAR panel has orange cells concentrated in the right columns only. MNAR panel has orange cells concentrated where values would be highest. Warm cream background (#faf9f5), academic minimalist style, no decorative elements, axis labels in dark ink."
+  }
+]

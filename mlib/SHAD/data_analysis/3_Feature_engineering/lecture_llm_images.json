@@ -1,0 +1,7 @@
+[
+  {
+    "id": "hero_feature_engineering",
+    "out": "assets/hero_feature_engineering.png",
+    "prompt": "A clean, minimalist data science illustration showing feature engineering: a pipeline of raw data transformations. On the left, a messy table with categorical labels (city names, colors, text). Arrows flow right through labeled transformation boxes: 'One-Hot', 'Target Enc', 'Log Transform', 'Interactions'. On the right, a tidy numeric matrix glowing softly. Color palette: warm off-white background (#faf9f5), dark ink text (#141413), muted orange (#d97757) and slate blue (#6a9bcc) for the transformation boxes, green (#788c5d) for the output matrix. Flat design, no gradients, subtle grid lines. Style: technical diagram with a craft-paper warmth."
+  }
+]
