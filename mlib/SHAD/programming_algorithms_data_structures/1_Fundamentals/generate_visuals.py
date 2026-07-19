@@ -283,12 +283,128 @@ def draw_big_o_definition():
     print("Saved: assets/big_o_definition.png")
 
 
+# ---------------------------------------------------------------------------
+# Диаграмма 5: Ханойские башни — рекурсивный план (3 шага)
+# ---------------------------------------------------------------------------
+
+DISK_COLORS = [C_ORANGE, C_BLUE, C_GREEN, C_GRAY]
+
+
+def _draw_hanoi_state(ax, pegs, n_disks, highlight=None):
+    """Рисует одно состояние: pegs — список из трёх списков дисков (снизу вверх).
+
+    Диск задаётся числом 1..n (1 — самый маленький). highlight — диск,
+    который выделить свечением на этом кадре.
+    """
+    peg_x = [1.0, 3.0, 5.0]
+    disk_h = 0.42
+    max_w = 1.6
+    min_w = 0.55
+
+    ax.set_xlim(0, 6)
+    ax.set_ylim(-0.35, n_disks * disk_h + 1.15)
+    ax.axis("off")
+
+    ax.add_patch(mpatches.Rectangle((0.2, -0.3), 5.6, 0.3,
+                                    facecolor=C_PANEL, edgecolor=C_INK, lw=1.2))
+    for x, label in zip(peg_x, "ABC"):
+        ax.plot([x, x], [0, n_disks * disk_h + 0.75], color=C_INK, lw=2.2,
+                solid_capstyle="round", zorder=1)
+        ax.text(x, -0.62, label, ha="center", va="top", fontsize=13,
+                fontweight="bold")
+
+    for pi, stack in enumerate(pegs):
+        for level, disk in enumerate(stack):
+            w = min_w + (max_w - min_w) * (disk - 1) / max(n_disks - 1, 1)
+            y = level * disk_h
+            is_hl = (disk == highlight)
+            color = DISK_COLORS[(disk - 1) % len(DISK_COLORS)]
+            ax.add_patch(mpatches.FancyBboxPatch(
+                (peg_x[pi] - w / 2, y + 0.04), w, disk_h - 0.10,
+                boxstyle="round,pad=0.02,rounding_size=0.08",
+                facecolor=color, edgecolor=C_INK,
+                lw=2.6 if is_hl else 1.3, zorder=3))
+
+
+def draw_hanoi_plan():
+    """Три шага рекурсивного плана hanoi(n): n-1 наверх, большой диск, n-1 обратно."""
+    _apply_style()
+    n = 4
+    fig, axes = plt.subplots(1, 4, figsize=(13.6, 3.4))
+
+    states = [
+        ([list(range(n, 0, -1)), [], []], None,
+         "Исходно: башня из n дисков на A"),
+        ([[n], list(range(n - 1, 0, -1)), []], None,
+         "Шаг 1. hanoi(n−1, A→B):\nверхние n−1 дисков паркуются на B"),
+        ([[], list(range(n - 1, 0, -1)), [n]], n,
+         "Шаг 2. Один ход:\nсамый большой диск A→C"),
+        ([[], [], list(range(n, 0, -1))], None,
+         "Шаг 3. hanoi(n−1, B→C):\nn−1 дисков переезжают на большой"),
+    ]
+    for ax, (pegs, hl, title) in zip(axes, states):
+        _draw_hanoi_state(ax, pegs, n, highlight=hl)
+        ax.set_title(title, fontsize=10.5, pad=10)
+
+    fig.suptitle("Рекурсивный план Ханойских башен: два «доверенных» подвызова и один свой ход",
+                 fontsize=13, y=1.06)
+    fig.tight_layout()
+    _save(fig, "hanoi_plan.png")
+    print("Saved: assets/hanoi_plan.png")
+
+
+# ---------------------------------------------------------------------------
+# Диаграмма 6: Ханойские башни — полная трассировка n = 3 (7 ходов)
+# ---------------------------------------------------------------------------
+
+def draw_hanoi_trace():
+    """Все 8 состояний решения для n=3; фазы раскрашены по уровню рекурсии."""
+    _apply_style()
+    n = 3
+
+    # Симуляция hanoi(3, A, C, B): список ходов (диск, откуда, куда)
+    moves = []
+
+    def hanoi(k, frm, to, aux):
+        if k == 0:
+            return
+        hanoi(k - 1, frm, aux, to)
+        moves.append((k, frm, to))
+        hanoi(k - 1, aux, to, frm)
+
+    hanoi(n, 0, 2, 1)
+
+    pegs = [list(range(n, 0, -1)), [], []]
+    states = [([list(s) for s in pegs], None, "Старт")]
+    names = "ABC"
+    for i, (disk, frm, to) in enumerate(moves, 1):
+        pegs[to].append(pegs[frm].pop())
+        states.append(([list(s) for s in pegs], disk,
+                       f"Ход {i}: {names[frm]}→{names[to]} (диск {disk})"))
+
+    fig, axes = plt.subplots(2, 4, figsize=(13.6, 6.4))
+    for ax, (st, hl, title) in zip(axes.flat, states):
+        _draw_hanoi_state(ax, st, n, highlight=hl)
+        # Ход 4 — центральный: единственный ход самого большого диска
+        color = C_ORANGE if hl == n else C_INK
+        ax.set_title(title, fontsize=10.5, pad=8, color=color)
+
+    fig.suptitle("hanoi(3): все 2³−1 = 7 ходов; ход 4 — единственный ход большого диска, "
+                 "ходы 1–3 и 5–7 — это hanoi(2)",
+                 fontsize=12.5, y=1.02)
+    fig.tight_layout()
+    _save(fig, "hanoi_trace.png")
+    print("Saved: assets/hanoi_trace.png")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_complexity_classes()
     draw_call_stack()
     draw_ram_model()
     draw_big_o_definition()
+    draw_hanoi_plan()
+    draw_hanoi_trace()
     print("Все диаграммы сгенерированы.")
 
 
