@@ -388,6 +388,136 @@ def draw_vector_growth():
 
 
 # ---------------------------------------------------------------------------
+# 5. Monotonic deque: sliding window minimum trace
+# ---------------------------------------------------------------------------
+def draw_deque_sliding_min():
+    """Трассировка монотонного дека для sliding_min({3,1,2,5,4,6}, k=3).
+
+    Состояния получаются честной симуляцией алгоритма из лекции.
+    """
+    _apply_style()
+    from collections import deque
+
+    a = [3, 1, 2, 5, 4, 6]
+    k = 3
+    n = len(a)
+
+    # --- честная симуляция ---------------------------------------------
+    dq = deque()
+    steps = []  # (i, lo_окна, дек после шага, popped_front, popped_back, минимум|None)
+    for i in range(n):
+        popped_front, popped_back = [], []
+        while dq and dq[0] < i - k + 1:
+            popped_front.append(dq.popleft())
+        while dq and a[dq[-1]] >= a[i]:
+            popped_back.append(dq.pop())
+        dq.append(i)
+        mn = a[dq[0]] if i >= k - 1 else None
+        steps.append((i, max(0, i - k + 1), list(dq), popped_front, popped_back, mn))
+
+    # --- отрисовка -------------------------------------------------------
+    fig, ax = plt.subplots(figsize=(12.5, 7.2))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+
+    cell_w, cell_h = 0.62, 0.62
+    gap = 0.10
+    row_h = 1.28
+    x_arr = 1.1            # начало массива
+    x_dq = 6.7             # начало дека
+    x_min = 10.4           # колонка минимума
+    top_y = (n - 1) * row_h
+
+    ax.text((x_arr + x_min + 1.6) / 2, top_y + cell_h + 1.15,
+            "Монотонный дек: минимум на окне k = 3, массив {3, 1, 2, 5, 4, 6}",
+            ha="center", va="center", fontsize=13, fontweight="bold", color=C_INK)
+
+    # Заголовки колонок
+    hdr_y = top_y + cell_h + 0.45
+    ax.text(x_arr + n * (cell_w + gap) / 2, hdr_y, "Массив (окно — серым)",
+            ha="center", fontsize=10, color=C_GRAY)
+    ax.text(x_dq + 1.1, hdr_y, "Дек после шага (голова слева)",
+            ha="center", fontsize=10, color=C_GRAY)
+    ax.text(x_min + 0.5, hdr_y, "Минимум окна",
+            ha="center", fontsize=10, color=C_GRAY)
+
+    for row, (i, lo, dqs, pf, pb, mn) in enumerate(steps):
+        y = (n - 1 - row) * row_h
+
+        # Подпись шага
+        ax.text(x_arr - 0.35, y + cell_h / 2, f"i = {i}",
+                ha="right", va="center", fontsize=10.5, color=C_INK,
+                fontweight="bold")
+
+        # Массив
+        for j in range(n):
+            x = x_arr + j * (cell_w + gap)
+            in_win = lo <= j <= i
+            face = C_PANEL if in_win else C_BG
+            edge = C_ORANGE if j == i else (C_INK if in_win else C_GRAY)
+            lw = 2.2 if j == i else 1.2
+            ax.add_patch(mpatches.Rectangle((x, y), cell_w, cell_h,
+                                            facecolor=face, edgecolor=edge,
+                                            linewidth=lw, zorder=3))
+            ax.text(x + cell_w / 2, y + cell_h / 2, str(a[j]),
+                    ha="center", va="center", fontsize=11,
+                    color=C_INK if in_win else C_GRAY, zorder=4)
+
+        # Дек
+        for pos, idx in enumerate(dqs):
+            x = x_dq + pos * (cell_w + gap)
+            is_head = (pos == 0)
+            face = C_GREEN if is_head else C_BLUE
+            ax.add_patch(mpatches.Rectangle((x, y), cell_w, cell_h,
+                                            facecolor=face, edgecolor=C_INK,
+                                            linewidth=1.3, zorder=3))
+            ax.text(x + cell_w / 2, y + cell_h / 2, str(a[idx]),
+                    ha="center", va="center", fontsize=11, fontweight="bold",
+                    color="white", zorder=4)
+            ax.text(x + cell_w / 2, y - 0.14, f"[{idx}]",
+                    ha="center", va="top", fontsize=7.5, color=C_GRAY)
+
+        # Что выброшено на этом шаге
+        events = []
+        if pb:
+            events.append("pop_back: " + ", ".join(str(a[j]) for j in pb)
+                          + (" ≥ " + str(a[i])))
+        if pf:
+            events.append("pop_front: " + ", ".join(str(a[j]) for j in pf)
+                          + " (вышел из окна)")
+        if events:
+            ax.text(x_dq, y - 0.40, ";  ".join(events),
+                    ha="left", va="top", fontsize=8,
+                    color=C_ORANGE, style="italic")
+
+        # Минимум
+        if mn is not None:
+            ax.text(x_min + 0.5, y + cell_h / 2, f"min = {mn}",
+                    ha="center", va="center", fontsize=11.5,
+                    fontweight="bold", color=C_GREEN)
+        else:
+            ax.text(x_min + 0.5, y + cell_h / 2, "окно не заполнено",
+                    ha="center", va="center", fontsize=9, color=C_GRAY)
+
+    # Легенда
+    legend_items = [
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK,
+                       label="Голова дека = минимум окна"),
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK,
+                       label="Остальной дек (значения возрастают)"),
+        mpatches.Patch(facecolor=C_PANEL, edgecolor=C_INK,
+                       label="Текущее окно"),
+    ]
+    ax.legend(handles=legend_items, loc="lower center",
+              bbox_to_anchor=(0.5, -0.06), fontsize=9, framealpha=0.0, ncol=3)
+
+    ax.set_xlim(0, x_min + 2.0)
+    ax.set_ylim(-0.9, top_y + cell_h + 1.5)
+    _save(fig, "deque_sliding_min.png")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def main():
@@ -396,6 +526,7 @@ def main():
     draw_queue_circular()
     draw_linked_list()
     draw_vector_growth()
+    draw_deque_sliding_min()
     print("All visuals generated successfully.")
 
 

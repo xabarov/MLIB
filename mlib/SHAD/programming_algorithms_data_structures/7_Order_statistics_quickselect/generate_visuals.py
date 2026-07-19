@@ -405,12 +405,103 @@ def draw_mom_guarantee():
     _save(fig, "mom_guarantee")
 
 
+def draw_quickselect_invariant():
+    """Честная симуляция трассировки из раздела 2.3: A = [3,1,4,1,5,9,2,6], k = 2.
+    Пивоты выбираются как в тексте лекции: 4, затем 1, затем 2."""
+
+    def lomuto(a, l, r):
+        x = a[r]
+        i = l - 1
+        for j in range(l, r):
+            if a[j] <= x:
+                i += 1
+                a[i], a[j] = a[j], a[i]
+        a[i + 1], a[r] = a[r], a[i + 1]
+        return i + 1
+
+    A = [3, 1, 4, 1, 5, 9, 2, 6]
+    k = 2
+    pivot_values = [4, 1, 2]  # порядок пивотов из трассировки лекции
+    n = len(A)
+
+    l, r = 0, n - 1
+    rows = [(A.copy(), l, r, None,
+             "старт: кандидаты — весь массив, ищем позицию k = 2")]
+    for pv in pivot_values:
+        idx = next(i for i in range(l, r + 1) if A[i] == pv)
+        A[idx], A[r] = A[r], A[idx]
+        p = lomuto(A, l, r)
+        if p == k:
+            note = f"пивот {pv} встал на p = {p} = k — ответ: A[{p}] = {A[p]}"
+        elif p > k:
+            note = f"пивот {pv} встал на p = {p} > k — отбрасываем [{p}..{r}]"
+        else:
+            note = f"пивот {pv} встал на p = {p} < k — отбрасываем [{l}..{p}]"
+        rows.append((A.copy(), l, r, p, note))
+        if p == k:
+            break
+        if p > k:
+            r = p - 1
+        else:
+            l = p + 1
+
+    cell_w, cell_h, row_gap = 1.0, 0.7, 0.6
+    fig, ax = plt.subplots(figsize=(12.5, 5.6))
+    _apply_style(fig, [ax])
+    ax.axis("off")
+
+    for row, (arr, li, ri, p, note) in enumerate(rows):
+        y = -row * (cell_h + row_gap)
+        for idx, val in enumerate(arr):
+            if p is not None and idx == p:
+                color = C_GREEN if p == k else C_ORANGE
+            elif li <= idx <= ri:
+                color = C_BLUE
+            else:
+                color = C_GRAY
+            ax.add_patch(mpatches.Rectangle((idx * cell_w, y), cell_w * 0.92, cell_h,
+                                            facecolor=color, edgecolor=C_INK, lw=1.1))
+            ax.text(idx * cell_w + cell_w * 0.46, y + cell_h / 2, str(val),
+                    ha="center", va="center", fontsize=11.5,
+                    color="white", fontweight="bold")
+        ax.text(n * cell_w + 0.25, y + cell_h / 2, note,
+                ha="left", va="center", fontsize=10, color=C_INK)
+
+    # пунктирная вертикаль на позиции k
+    y_top = cell_h + 0.12
+    y_bot = -(len(rows) - 1) * (cell_h + row_gap) - 0.35
+    ax.plot([k * cell_w + cell_w * 0.46] * 2, [y_top, y_bot],
+            color=C_INK, lw=1.2, linestyle=":", zorder=1)
+    ax.text(k * cell_w + cell_w * 0.46, y_bot - 0.12, "k = 2",
+            ha="center", va="top", fontsize=10.5, color=C_INK, fontweight="bold")
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK,
+                       label="текущий отрезок [l..r] — будущие позиции l..r"),
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK,
+                       label="пивот на окончательном месте p"),
+        mpatches.Patch(facecolor=C_GRAY, edgecolor=C_INK, label="отброшено навсегда"),
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK, label="ответ (p = k)"),
+    ]
+    ax.legend(handles=legend_items, loc="lower left", bbox_to_anchor=(0.0, -0.28),
+              fontsize=9, ncol=2, framealpha=0.9, facecolor=C_BG, edgecolor=C_GRAY)
+
+    ax.set_xlim(-0.3, n * cell_w + 6.4)
+    ax.set_ylim(y_bot - 0.55, cell_h + 0.45)
+    ax.set_title("Инвариант Quick-Select: отрезок кандидатов всегда накрывает позицию k\n"
+                 "(A = [3, 1, 4, 1, 5, 9, 2, 6], ищем k = 2 — третий наименьший)",
+                 fontsize=12, color=C_INK, fontweight="bold", pad=10)
+    plt.tight_layout()
+    _save(fig, "quickselect_invariant")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_quickselect()
     draw_median_of_medians()
     draw_quickselect_recursion()
     draw_mom_guarantee()
+    draw_quickselect_invariant()
     print("All visuals generated successfully.")
 
 

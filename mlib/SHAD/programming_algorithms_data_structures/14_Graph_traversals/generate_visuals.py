@@ -330,12 +330,131 @@ def draw_bipartite():
     _save(fig, "bipartite_check")
 
 
+def draw_bfs_queue_invariant():
+    """Trace of BFS queue states from node 0 (honest simulation).
+
+    Each row: the extracted vertex and the queue contents after the step,
+    with dist labels — shows the invariant 'labels are non-decreasing and
+    differ by at most 1'.
+    """
+    from collections import deque
+
+    _apply_style()
+
+    # --- honest BFS simulation on the lecture graph ---
+    n = 7
+    adj = [[] for _ in range(n)]
+    for u, v in _EDGES:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    dist = [-1] * n
+    dist[0] = 0
+    q = deque([0])
+    # steps: (extracted, newly_added, queue_after as list of vertices)
+    steps = []
+    while q:
+        u = q.popleft()
+        new = []
+        for v in adj[u]:
+            if dist[v] == -1:
+                dist[v] = dist[u] + 1
+                q.append(v)
+                new.append(v)
+        steps.append((u, new, list(q)))
+
+    # --- drawing ---
+    n_rows = len(steps) + 1          # + initial state
+    row_h = 1.0
+    fig, ax = plt.subplots(figsize=(10, 0.85 * n_rows + 1.2))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+
+    x_step, x_extract, x_queue = 0.3, 1.7, 4.3
+    box_w, box_h = 0.72, 0.62
+    r_node = 0.30
+
+    def queue_box(x, y, v, fill):
+        rect = mpatches.FancyBboxPatch(
+            (x, y - box_h / 2), box_w, box_h,
+            boxstyle="round,pad=0.05",
+            facecolor=fill, edgecolor=C_INK, linewidth=1.3, zorder=3)
+        ax.add_patch(rect)
+        ax.text(x + box_w / 2, y + 0.09, str(v), ha="center", va="center",
+                fontsize=12, color="white", fontweight="bold", zorder=4)
+        ax.text(x + box_w / 2, y - 0.17, f"d={dist[v]}", ha="center",
+                va="center", fontsize=8, color="white", zorder=4)
+
+    # Header
+    y_top = n_rows * row_h
+    ax.text(x_step, y_top, "Шаг", fontsize=10, color=C_GRAY,
+            fontweight="bold", va="center")
+    ax.text(x_extract + 0.2, y_top, "Извлекаем", fontsize=10, color=C_GRAY,
+            fontweight="bold", va="center", ha="center")
+    ax.text(x_queue, y_top, "Очередь после шага (голова слева)", fontsize=10,
+            color=C_GRAY, fontweight="bold", va="center")
+
+    # Initial state row
+    y = y_top - row_h
+    ax.text(x_step, y, "0", fontsize=10, color=C_INK, va="center")
+    ax.text(x_extract + 0.2, y, "старт", fontsize=10, color=C_GRAY,
+            style="italic", va="center", ha="center")
+    queue_box(x_queue, y, 0, C_GREEN)
+
+    for i, (u, new, q_after) in enumerate(steps):
+        y = y_top - (i + 2) * row_h
+        ax.text(x_step, y, str(i + 1), fontsize=10, color=C_INK, va="center")
+        # extracted vertex as orange circle
+        circ = mpatches.Circle((x_extract + 0.2, y), r_node,
+                               facecolor=C_ORANGE, edgecolor=C_INK,
+                               linewidth=1.5, zorder=3)
+        ax.add_patch(circ)
+        ax.text(x_extract + 0.2, y, str(u), ha="center", va="center",
+                fontsize=12, color="white", fontweight="bold", zorder=4)
+        ax.text(x_extract + 0.2, y - 0.47, f"d={dist[u]}", ha="center",
+                va="center", fontsize=8, color=C_INK)
+        # arrow to queue area
+        ax.annotate("", xy=(x_queue - 0.25, y), xytext=(x_extract + 0.65, y),
+                    arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.2))
+        if not q_after:
+            ax.text(x_queue, y, "∅ (очередь пуста)", fontsize=10,
+                    color=C_GRAY, style="italic", va="center")
+        for k, v in enumerate(q_after):
+            fill = C_GREEN if v in new else C_BLUE
+            queue_box(x_queue + k * (box_w + 0.18), y, v, fill)
+
+    # Legend + invariant note
+    legend_items = [
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK,
+                       label="Извлечённая вершина"),
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK,
+                       label="Уже была в очереди"),
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK,
+                       label="Добавлена на этом шаге"),
+    ]
+    ax.legend(handles=legend_items, loc="lower right", fontsize=9,
+              facecolor=C_PANEL, edgecolor=C_GRAY)
+    ax.text(x_step, -1.05,
+            "Инвариант: метки d в очереди не убывают слева направо\n"
+            "и различаются не более чем на 1",
+            fontsize=10, color=C_ORANGE, style="italic", va="top")
+
+    ax.set_xlim(0.0, 9.0)
+    ax.set_ylim(-2.0, y_top + 0.6)
+    ax.set_title("BFS от вершины 0: состояние очереди на каждом шаге",
+                 fontsize=13, color=C_INK, pad=10)
+    plt.tight_layout()
+    _save(fig, "bfs_queue_invariant")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_bfs()
     draw_dfs_tree()
     draw_representations()
     draw_bipartite()
+    draw_bfs_queue_invariant()
     print("All visuals generated successfully.")
 
 

@@ -310,6 +310,114 @@ def draw_lazy_propagation():
     _save(fig, "lazy_propagation")
 
 
+# ── Figure 4: at most two partial nodes per level (n=16, query [3,12]) ───────
+
+def draw_two_partials():
+    """
+    Честная симуляция query(ql=3, qr=12) на дереве из 16 листьев.
+    Каждому посещённому узлу присваивается категория:
+    partial (рекурсия), inside (готовый агрегат), outside (нейтральный 0).
+    Справа — количество частичных узлов на каждом уровне (всегда <= 2).
+    """
+    n = 16
+    ql, qr = 3, 12
+    visited = {}  # (l, r) -> (depth, category)
+
+    def query(l, r, depth):
+        if r < ql or l > qr:
+            visited[(l, r)] = (depth, "outside")
+            return
+        if ql <= l and r <= qr:
+            visited[(l, r)] = (depth, "inside")
+            return
+        visited[(l, r)] = (depth, "partial")
+        mid = (l + r) // 2
+        query(l, mid, depth + 1)
+        query(mid + 1, r, depth + 1)
+
+    query(0, n - 1, 0)
+
+    colors = {"partial": C_BLUE, "inside": C_ORANGE, "outside": C_GRAY}
+
+    fig, ax = plt.subplots(figsize=(13, 6.5))
+    ax.set_xlim(-1.0, 18.5)
+    ax.set_ylim(-4.9, 0.9)
+    ax.axis("off")
+    ax.set_facecolor(C_BG)
+    fig.patch.set_facecolor(C_BG)
+    ax.set_title(
+        f"query [{ql},{qr}] при n = {n}: на каждом уровне не более 2 частичных (синих) узлов",
+        color=C_INK, fontsize=12, pad=12,
+    )
+
+    def node_pos(l, r, depth):
+        return (l + r) / 2.0 + 0.5, -depth * 1.15
+
+    # все узлы полного дерева (для контекста — светлые панели)
+    def walk_all(l, r, depth):
+        yield l, r, depth
+        if l < r:
+            mid = (l + r) // 2
+            yield from walk_all(l, mid, depth + 1)
+            yield from walk_all(mid + 1, r, depth + 1)
+
+    # рёбра
+    for l, r, depth in walk_all(0, n - 1, 0):
+        if l < r:
+            mid = (l + r) // 2
+            x, y = node_pos(l, r, depth)
+            for cl, cr in ((l, mid), (mid + 1, r)):
+                cx, cy = node_pos(cl, cr, depth + 1)
+                ax.plot([x, cx], [y, cy], color=C_GRAY, linewidth=0.9,
+                        alpha=0.7, zorder=1)
+
+    # узлы
+    max_depth = 0
+    for l, r, depth in walk_all(0, n - 1, 0):
+        max_depth = max(max_depth, depth)
+        x, y = node_pos(l, r, depth)
+        if (l, r) in visited:
+            fill = colors[visited[(l, r)][1]]
+            lw, alpha = 1.3, 1.0
+        else:
+            fill, lw, alpha = C_PANEL, 0.8, 0.55
+        label = f"{l}–{r}" if l < r else f"{l}"
+        w = max(0.9, (r - l + 1) * 0.9) if depth < 3 else 0.82
+        rect = mpatches.FancyBboxPatch(
+            (x - w / 2, y - 0.22), w, 0.44,
+            boxstyle="round,pad=0.02",
+            facecolor=fill, edgecolor=C_INK, linewidth=lw,
+            alpha=alpha, zorder=3,
+        )
+        ax.add_patch(rect)
+        ax.text(x, y, label, ha="center", va="center",
+                fontsize=7.5 if depth >= 3 else 9, color=C_INK, zorder=4)
+
+    # счётчик частичных узлов на уровень
+    per_level = {}
+    for (l, r), (depth, cat) in visited.items():
+        if cat == "partial":
+            per_level[depth] = per_level.get(depth, 0) + 1
+    for depth in range(max_depth + 1):
+        cnt = per_level.get(depth, 0)
+        _, y = node_pos(0, 0, depth)
+        ax.text(17.2, y, f"частичных: {cnt}", ha="left", va="center",
+                fontsize=9.5, color=C_BLUE if cnt else C_INK,
+                fontweight="bold" if cnt else "normal")
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_BLUE,   edgecolor=C_INK, label="частичный → рекурсия в обоих детей"),
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK, label="целиком внутри → готовый агрегат"),
+        mpatches.Patch(facecolor=C_GRAY,   edgecolor=C_INK, label="вне запроса → нейтральный 0"),
+        mpatches.Patch(facecolor=C_PANEL,  edgecolor=C_GRAY, label="не посещается"),
+    ]
+    ax.legend(handles=legend_items, loc="upper left", fontsize=8.5,
+              framealpha=0.95, facecolor=C_BG, edgecolor=C_GRAY,
+              bbox_to_anchor=(0.0, 1.02))
+
+    _save(fig, "two_partials")
+
+
 # ── main ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -317,6 +425,7 @@ def main():
     draw_segment_tree()
     draw_query_trace()
     draw_lazy_propagation()
+    draw_two_partials()
 
 
 if __name__ == "__main__":

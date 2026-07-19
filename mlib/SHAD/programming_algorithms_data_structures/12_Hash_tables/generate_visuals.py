@@ -341,12 +341,108 @@ def draw_birthday():
     _save(fig, "birthday_paradox")
 
 
+def draw_probe_cost():
+    """Честная симуляция открытой адресации: среднее число проб безуспешного
+    поиска при линейном зондировании и двойном хешировании против теории
+    1/(1-alpha); для контраста — цепочки (1 + alpha)."""
+    import random
+
+    m = 1009  # простое
+    alphas = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95]
+    n_tables = 30      # усреднение по таблицам
+    n_lookups = 200    # безуспешных поисков на таблицу
+    rng = random.Random(42)
+
+    def probe_seq(k, i, scheme):
+        h1 = k % m
+        if scheme == "linear":
+            return (h1 + i) % m
+        h2 = 1 + (k % (m - 1))
+        return (h1 + i * h2) % m
+
+    def simulate(scheme):
+        results = []
+        for alpha in alphas:
+            n_keys = int(alpha * m)
+            total_probes = 0
+            for _ in range(n_tables):
+                table = [None] * m
+                inserted = set()
+                while len(inserted) < n_keys:
+                    k = rng.randrange(10**9)
+                    if k in inserted:
+                        continue
+                    for i in range(m):
+                        slot = probe_seq(k, i, scheme)
+                        if table[slot] is None:
+                            table[slot] = k
+                            inserted.add(k)
+                            break
+                # безуспешный поиск: пробы до первого пустого слота
+                for _ in range(n_lookups):
+                    k = rng.randrange(10**9, 2 * 10**9)  # заведомо нет в таблице
+                    probes = 0
+                    for i in range(m):
+                        probes += 1
+                        if table[probe_seq(k, i, scheme)] is None:
+                            break
+                    total_probes += probes
+            results.append(total_probes / (n_tables * n_lookups))
+        return results
+
+    linear = simulate("linear")
+    double = simulate("double")
+
+    fig, ax = plt.subplots(figsize=(9, 5.4))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+
+    import numpy as np
+    a = np.linspace(0.0, 0.97, 300)
+    ax.plot(a, 1.0 / (1.0 - a), color=C_INK, linestyle="--", linewidth=1.6,
+            label="теория открытой адресации: 1/(1−α)")
+    ax.plot(a, 1.0 + a, color=C_BLUE, linestyle="-", linewidth=1.8,
+            label="цепочки: 1 + α (для сравнения)")
+    ax.plot(alphas, linear, "o", color=C_ORANGE, markersize=7,
+            markeredgecolor=C_INK, markeredgewidth=0.7,
+            label="симуляция: линейное зондирование")
+    ax.plot(alphas, double, "s", color=C_GREEN, markersize=7,
+            markeredgecolor=C_INK, markeredgewidth=0.7,
+            label="симуляция: двойное хеширование")
+
+    ax.axvline(0.7, color=C_GRAY, linestyle=":", linewidth=1.4)
+    ax.text(0.7, 21.5, "порог вставки α = 0,7\nв коде ниже", ha="center",
+            va="top", fontsize=8.5, color=C_INK)
+
+    # точки линейного зондирования, ушедшие за пределы графика
+    for alpha, val in zip(alphas, linear):
+        if val > 21:
+            ax.annotate(f"линейное при α = {alpha:.2f}".replace(".", ",")
+                        + f": ≈{val:.0f} проб ↑",
+                        xy=(alpha, 21), xytext=(alpha - 0.03, 18.2 if alpha < 0.93 else 16.2),
+                        ha="right", fontsize=8.5, color=C_ORANGE,
+                        arrowprops=dict(arrowstyle="->", color=C_ORANGE, lw=1.1))
+
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 22)
+    ax.set_xlabel("коэффициент загрузки α")
+    ax.set_ylabel("среднее число проб (безуспешный поиск)")
+    ax.set_title("Цена загрузки: m = 1009, среднее по 30 таблицам × 200 поисков",
+                 fontsize=12, color=C_INK, pad=12)
+    ax.legend(loc="upper left", fontsize=9, framealpha=0.9,
+              facecolor=C_BG, edgecolor=C_GRAY)
+    ax.grid(alpha=0.25, color=C_GRAY, linewidth=0.6)
+
+    _save(fig, "probe_cost")
+
+
 def main():
     _apply_style()
     draw_chaining()
     draw_load_factor()
     draw_open_addressing()
     draw_birthday()
+    draw_probe_cost()
 
 
 if __name__ == "__main__":

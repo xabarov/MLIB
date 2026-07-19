@@ -372,6 +372,95 @@ def draw_decision_tree() -> None:
     _save(fig, "decision_tree_3")
 
 
+# ── 5. Lomuto invariant trace ─────────────────────────────────────────────────
+
+def draw_lomuto_invariant() -> None:
+    """Честная симуляция разбиения Ломуто на [3, 6, 8, 10, 1, 2, 1] (pivot = 1):
+    состояние блоков инварианта после каждой итерации j."""
+    a = [3, 6, 8, 10, 1, 2, 1]
+    n = len(a)
+    hi = n - 1
+    pivot = a[hi]
+
+    # (копия массива, i, последний обработанный j, подпись, финальное состояние?)
+    states = []
+    i = -1
+    states.append((a.copy(), i, -1, "старт: оба блока пусты, i = −1", False))
+    for j in range(hi):
+        old = a[j]
+        if a[j] <= pivot:
+            i += 1
+            a[i], a[j] = a[j], a[i]
+            note = f"j={j}: a[j]={old} ≤ {pivot} → ++i, swap(a[{i}], a[{j}])"
+        else:
+            note = f"j={j}: a[j]={old} > {pivot} → блок «больших» растёт"
+        states.append((a.copy(), i, j, note, False))
+    a[i + 1], a[hi] = a[hi], a[i + 1]
+    states.append((a.copy(), i, hi,
+                   f"финал: swap(a[{i + 1}], a[{hi}]) — pivot на месте {i + 1}", True))
+
+    cell_w, cell_h, row_gap = 1.0, 0.7, 0.55
+    fig, ax = plt.subplots(figsize=(12.5, 9.2))
+    _apply_style(fig)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+
+    for row, (arr, ii, j, note, final) in enumerate(states):
+        y = -row * (cell_h + row_gap)
+        for idx, val in enumerate(arr):
+            if final:
+                if idx <= ii:
+                    color = C_GREEN
+                elif idx == ii + 1:
+                    color = C_ORANGE
+                else:
+                    color = C_GRAY
+            else:
+                if idx == hi:
+                    color = C_ORANGE
+                elif idx <= ii:
+                    color = C_GREEN
+                elif idx <= j:
+                    color = C_GRAY
+                else:
+                    color = C_PANEL
+            txt_color = C_INK if color == C_PANEL else "white"
+            ax.add_patch(mpatches.Rectangle((idx * cell_w, y), cell_w * 0.92, cell_h,
+                                            facecolor=color, edgecolor=C_INK, lw=1.1))
+            ax.text(idx * cell_w + cell_w * 0.46, y + cell_h / 2, str(val),
+                    ha="center", va="center", fontsize=11.5,
+                    color=txt_color, fontweight="bold")
+        # маркеры i и j под строкой
+        if not final:
+            if ii >= 0:
+                ax.text(ii * cell_w + cell_w * 0.46, y - 0.1, "i",
+                        ha="center", va="top", fontsize=9.5,
+                        color=C_GREEN, fontweight="bold")
+            if 0 <= j < hi:
+                ax.text(j * cell_w + cell_w * 0.46, y - 0.1, "j",
+                        ha="center", va="top", fontsize=9.5,
+                        color=C_INK, fontweight="bold")
+        ax.text(n * cell_w + 0.25, y + cell_h / 2, note,
+                ha="left", va="center", fontsize=10, color=C_INK)
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK, label="блок «≤ pivot»  (a[lo..i])"),
+        mpatches.Patch(facecolor=C_GRAY, edgecolor=C_INK, label="блок «> pivot»  (a[i+1..j])"),
+        mpatches.Patch(facecolor=C_PANEL, edgecolor=C_INK, label="ещё не просмотрено"),
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK, label="pivot"),
+    ]
+    ax.legend(handles=legend_items, loc="lower left", bbox_to_anchor=(0.0, -0.02),
+              fontsize=9.5, ncol=2, framealpha=0.9, facecolor=C_BG, edgecolor=C_GRAY)
+
+    total_h = len(states) * (cell_h + row_gap)
+    ax.set_xlim(-0.3, n * cell_w + 6.8)
+    ax.set_ylim(-total_h + row_gap - 1.3, cell_h + 0.5)
+    ax.set_title("Инвариант Ломуто на [3, 6, 8, 10, 1, 2, 1], pivot = 1:\n"
+                 "просмотренная часть — всегда блок «≤ pivot» + блок «> pivot»",
+                 fontsize=12.5, color=C_INK, pad=12)
+    _save(fig, "lomuto_invariant")
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -379,6 +468,7 @@ def main() -> None:
     draw_quicksort_partition()
     draw_sorting_comparison()
     draw_decision_tree()
+    draw_lomuto_invariant()
     print("All visuals generated.")
 
 

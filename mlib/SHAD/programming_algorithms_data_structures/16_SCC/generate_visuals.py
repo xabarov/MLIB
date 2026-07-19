@@ -354,10 +354,131 @@ def draw_condensation():
     _save(fig, "condensation")
 
 
+def draw_kosaraju_lemma():
+    """Condensation DAG labeled with f(C) = max finish time per SCC.
+
+    All data (finish order, components, condensation edges) is computed by an
+    honest simulation of Kosaraju's algorithm on the lecture graph — the
+    figure demonstrates the lemma: every condensation edge goes from a
+    component with larger f to one with smaller f.
+    """
+    _apply_style()
+
+    n = 8
+    edges = EDGES_INTRA + EDGES_CROSS
+    adj = [[] for _ in range(n)]
+    radj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v)
+        radj[v].append(u)
+
+    # --- Pass 1: DFS on G, record finish order ---
+    visited = [False] * n
+    order = []
+
+    def dfs1(v):
+        visited[v] = True
+        for u in adj[v]:
+            if not visited[u]:
+                dfs1(u)
+        order.append(v)
+
+    for v in range(n):
+        if not visited[v]:
+            dfs1(v)
+
+    finish_pos = {v: i + 1 for i, v in enumerate(order)}  # 1-based
+
+    # --- Pass 2: DFS on G^T in reverse finish order -> components ---
+    comp = [-1] * n
+
+    def dfs2(v, c):
+        comp[v] = c
+        for u in radj[v]:
+            if comp[u] == -1:
+                dfs2(u, c)
+
+    num_scc = 0
+    for v in reversed(order):
+        if comp[v] == -1:
+            dfs2(v, num_scc)
+            num_scc += 1
+
+    # Map component ids to the lecture's letter names via member sets
+    comp_members = {}
+    for v in range(n):
+        comp_members.setdefault(comp[v], []).append(v)
+    comp_letter = {}
+    for cid, members in comp_members.items():
+        for letter, ref in SCC_MEMBERS.items():
+            if sorted(members) == sorted(ref):
+                comp_letter[cid] = letter
+
+    # f(C) = max finish position per component
+    f_val = {comp_letter[cid]: max(finish_pos[v] for v in members)
+             for cid, members in comp_members.items()}
+
+    # Condensation edges (deduplicated), in letter names
+    cond_edges = sorted({(comp_letter[comp[u]], comp_letter[comp[v]])
+                         for u, v in edges if comp[u] != comp[v]})
+
+    # --- Drawing ---
+    fig, ax = plt.subplots(figsize=(9, 4.6))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.set_xlim(0, 7.2)
+    ax.set_ylim(-0.25, 4.0)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ax.set_title("Лемма Косарайю: ребро конденсации $C \\to C'$ ⇒ $f(C) > f(C')$",
+                 color=C_INK, fontsize=12, fontweight="bold", pad=10)
+
+    # Layout: sources on the left, D above the B->C edge, C bottom-right
+    POS = {"B": (1.1, 1.0), "A": (1.1, 3.1), "D": (3.4, 2.7), "C": (5.9, 1.4)}
+    LABELS = {c: "{" + ",".join(map(str, sorted(vs))) + "}"
+              for c, vs in SCC_MEMBERS.items()}
+
+    for u_c, v_c in cond_edges:
+        pu, pv = POS[u_c], POS[v_c]
+        _draw_arrow(ax, pu, pv, C_INK, lw=1.8, r=0.75)
+        # edge label: f(u) > f(v)
+        mx, my = (pu[0] + pv[0]) / 2, (pu[1] + pv[1]) / 2
+        dx, dy = pv[0] - pu[0], pv[1] - pu[1]
+        norm = (dx**2 + dy**2) ** 0.5
+        ox, oy = -dy / norm * 0.30, dx / norm * 0.30
+        ax.text(mx + ox, my + oy, f"{f_val[u_c]} > {f_val[v_c]}",
+                ha="center", va="center", fontsize=9, color=C_ORANGE,
+                fontweight="bold")
+
+    for c, pos in POS.items():
+        box_w, box_h = 1.35, 0.72
+        rect = mpatches.FancyBboxPatch(
+            (pos[0] - box_w / 2, pos[1] - box_h / 2), box_w, box_h,
+            boxstyle="round,pad=0.06",
+            facecolor=SCC_COLORS[c], edgecolor=C_INK,
+            linewidth=1.5, zorder=3, alpha=0.9)
+        ax.add_patch(rect)
+        ax.text(pos[0], pos[1] + 0.13, f"SCC {c} {LABELS[c]}",
+                ha="center", va="center", fontsize=9.5, color="white",
+                fontweight="bold", zorder=4)
+        ax.text(pos[0], pos[1] - 0.17, f"$f = {f_val[c]}$",
+                ha="center", va="center", fontsize=10, color="white", zorder=4)
+
+    topo = " > ".join(f"{c}({f_val[c]})"
+                      for c in sorted(f_val, key=f_val.get, reverse=True))
+    ax.text(3.6, 0.12,
+            f"Убывание f: {topo} — топологический порядок конденсации.\n"
+            "f(C) = максимальный номер завершения вершины компоненты в первом проходе DFS",
+            ha="center", va="center", fontsize=9, color=C_GRAY)
+
+    _save(fig, "kosaraju_lemma")
+
+
 def main():
     draw_sccs()
     draw_kosaraju()
     draw_condensation()
+    draw_kosaraju_lemma()
 
 
 if __name__ == "__main__":

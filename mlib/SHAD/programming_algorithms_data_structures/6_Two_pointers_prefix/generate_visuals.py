@@ -374,6 +374,101 @@ def draw_monotonic_deque():
 
 
 # ---------------------------------------------------------------------------
+# Visual 5: Two pointers — pair search space, rows/columns eliminated per step
+# ---------------------------------------------------------------------------
+def draw_two_pointers_matrix():
+    """Честная симуляция сходящихся указателей на A=[1..8] для двух целей S.
+    Таблица пар (l, r): каждый шаг вычёркивает целую строку или столбец."""
+    A = list(range(1, 9))
+    n = len(A)
+    runs = [(11, "S = 11: суммы малы → вычёркиваются строки (l++)"),
+            (6, "S = 6: суммы велики → вычёркиваются столбцы (r--)")]
+
+    fig, axes = plt.subplots(1, 2, figsize=(13.6, 6.6))
+    _apply_style(fig, axes)
+
+    for ax, (S, subtitle) in zip(axes, runs):
+        # --- симуляция ---
+        l, r = 0, n - 1
+        checked = {}      # (l, r) -> номер шага
+        eliminated = {}   # (l, r) -> номер шага, отбросившего пару
+        answer = None
+        step = 0
+        while l < r:
+            step += 1
+            s = A[l] + A[r]
+            checked[(l, r)] = step
+            if s == S:
+                answer = (l, r)
+                break
+            if s < S:
+                for rr in range(l + 1, r + 1):
+                    eliminated.setdefault((l, rr), step)
+                l += 1
+            else:
+                for ll in range(l, r):
+                    eliminated.setdefault((ll, r), step)
+                r -= 1
+
+        # --- отрисовка ---
+        cell = 1.0
+        for l_i in range(n):
+            for r_i in range(l_i + 1, n):
+                x, y = r_i * cell, -l_i * cell
+                key = (l_i, r_i)
+                if key == answer:
+                    fc, tc = C_GREEN, "white"
+                elif key in checked:
+                    fc, tc = C_BLUE, "white"
+                elif key in eliminated:
+                    fc, tc = C_GRAY, "white"
+                else:
+                    fc, tc = C_PANEL, C_INK
+                ax.add_patch(mpatches.Rectangle((x, y), cell * 0.94, cell * 0.94,
+                                                facecolor=fc, edgecolor=C_INK, lw=0.8))
+                ax.text(x + 0.47, y + 0.42, str(A[l_i] + A[r_i]),
+                        ha="center", va="center", fontsize=10, color=tc,
+                        fontweight="bold" if key in checked else "normal")
+                if key in checked:
+                    ax.text(x + 0.47, y + 0.8, f"шаг {checked[key]}",
+                            ha="center", va="center", fontsize=6.5, color="white")
+
+        # значения A[r] сверху, A[l] на диагонали
+        for idx in range(1, n):
+            ax.text(idx * cell + 0.47, 1.32, str(A[idx]), ha="center", va="center",
+                    fontsize=10, color=C_INK, fontweight="bold")
+            ax.text(idx * cell + 0.47, 1.06, f"r={idx}", ha="center", va="center",
+                    fontsize=7, color=C_GRAY)
+        for idx in range(n - 1):
+            ax.text(idx * cell + 0.47, -idx * cell + 0.55, str(A[idx]),
+                    ha="center", va="center", fontsize=10, color=C_INK,
+                    fontweight="bold")
+            ax.text(idx * cell + 0.47, -idx * cell + 0.28, f"l={idx}",
+                    ha="center", va="center", fontsize=7, color=C_GRAY)
+        ax.text(0.47, 1.2, "A[l] ↓", ha="center", va="center",
+                fontsize=8.5, color=C_GRAY, style="italic")
+
+        ax.set_xlim(-0.2, n * cell + 0.2)
+        ax.set_ylim(-(n - 1) * cell - 0.3, 2.0)
+        ax.set_aspect("equal")
+        ax.set_title(subtitle, fontsize=10.5, color=C_INK, pad=6)
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK, label="пара проверена явно"),
+        mpatches.Patch(facecolor=C_GRAY, edgecolor=C_INK, label="отброшена без проверки"),
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK, label="найденный ответ"),
+        mpatches.Patch(facecolor=C_PANEL, edgecolor=C_INK, label="не понадобилась"),
+    ]
+    fig.legend(handles=legend_items, loc="lower center", ncol=4, fontsize=9,
+               framealpha=0.9, facecolor=C_BG, edgecolor=C_GRAY,
+               bbox_to_anchor=(0.5, -0.01))
+    fig.suptitle("Таблица всех пар (l, r) для A = [1..8]: из 28 кандидатов явно проверяется лишь горстка",
+                 fontsize=12.5, color=C_INK, y=0.98)
+    plt.tight_layout(rect=(0, 0.04, 1, 0.95))
+    _save(fig, "two_pointers_matrix")
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 def main():
@@ -381,6 +476,7 @@ def main():
     draw_prefix_sums()
     draw_2d_prefix()
     draw_monotonic_deque()
+    draw_two_pointers_matrix()
 
 
 if __name__ == "__main__":

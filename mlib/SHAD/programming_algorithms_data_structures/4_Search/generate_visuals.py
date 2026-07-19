@@ -314,11 +314,95 @@ def draw_monotone_predicate():
     _save(fig, "monotone_predicate.png")
 
 
+def draw_painters_greedy():
+    """Жадная раскладка картин между художниками при T = 14 и T = 13.
+
+    Отрезки вычисляются честной симуляцией жадной проверки can_split.
+    """
+    _apply_style()
+
+    t = [3, 1, 4, 1, 5, 9, 2, 6]
+    k = 3
+
+    def greedy_segments(T):
+        """Симуляция can_split: возвращает список отрезков (списков времён)."""
+        segments = [[]]
+        current = 0
+        for x in t:
+            if current + x > T and segments[-1]:
+                segments.append([x])
+                current = x
+            else:
+                segments[-1].append(x)
+                current += x
+        return segments
+
+    painter_colors = [C_BLUE, C_GREEN, C_GRAY]
+
+    fig, axes = plt.subplots(2, 1, figsize=(11.5, 4.4),
+                             gridspec_kw={"hspace": 0.1})
+    fig.patch.set_facecolor(C_BG)
+
+    total = sum(t)
+    cell_h = 0.8
+
+    for ax, T in zip(axes, (14, 13)):
+        segs = greedy_segments(T)
+        ok = len(segs) <= k
+
+        ax.set_facecolor(C_BG)
+        ax.axis("off")
+        ax.set_xlim(-0.6, total + 0.6)
+        ax.set_ylim(-1.25, 2.05)
+
+        verdict = ("can_split = True: художников "
+                   f"{len(segs)} ≤ k = {k}") if ok else (
+                   f"can_split = False: нужен {len(segs)}-й художник")
+        ax.text(total / 2, 1.65,
+                f"T = {T}.  {verdict}",
+                ha="center", va="center", fontsize=12, fontweight="bold",
+                color=C_GREEN if ok else C_ORANGE)
+
+        x = 0.0
+        for si, seg in enumerate(segs):
+            over_limit = si >= k
+            color = C_ORANGE if over_limit else painter_colors[si % len(painter_colors)]
+            seg_x0 = x
+            for val in seg:
+                ax.add_patch(mpatches.Rectangle((x, 0), val, cell_h,
+                                                facecolor=color,
+                                                edgecolor=C_INK, lw=1.3,
+                                                zorder=3))
+                ax.text(x + val / 2, cell_h / 2, str(val),
+                        ha="center", va="center", fontsize=10.5,
+                        fontweight="bold", color="white", zorder=4)
+                x += val
+            # Фигурная скобка-подпись под отрезком художника
+            ax.annotate("", xy=(seg_x0 + 0.08, -0.28), xytext=(x - 0.08, -0.28),
+                        arrowprops=dict(arrowstyle="-", color=color, lw=2.2))
+            label = (f"художник {si + 1}: {sum(seg)}"
+                     if not over_limit else
+                     f"художник {si + 1} (> k!): {sum(seg)}")
+            ax.text((seg_x0 + x) / 2, -0.62, label,
+                    ha="center", va="top", fontsize=9.5,
+                    color=C_INK if not over_limit else C_ORANGE,
+                    fontweight="bold" if over_limit else "normal")
+            # Разделитель между художниками
+            if si < len(segs) - 1:
+                ax.plot([x, x], [-0.15, cell_h + 0.15], color=C_INK,
+                        lw=1.4, linestyle="--", zorder=5)
+
+    fig.suptitle("Жадная проверка can_split: t = [3, 1, 4, 1, 5, 9, 2, 6], k = 3 художника",
+                 fontsize=13, color=C_INK, y=1.0)
+    _save(fig, "painters_greedy.png")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_binary_search()
     draw_linear_vs_binary()
     draw_monotone_predicate()
+    draw_painters_greedy()
     print("All visuals generated successfully.")
 
 

@@ -439,6 +439,96 @@ def draw_interval_cover() -> None:
     _save(fig, "interval_cover")
 
 
+# ── 5. Инвариант «жадный впереди» (Interval Cover) ───────────────────────────
+
+def draw_greedy_stays_ahead() -> None:
+    """Честная симуляция двух стратегий покрытия [0,10]: жадной (макс. правый
+    конец) и «осторожной» (мин. правый конец, дающий прогресс). Показывает
+    инвариант: жадная граница после k отрезков не левее любой другой."""
+    segs = [(0, 4), (1, 7), (3, 9), (6, 10), (8, 12)]
+    L, R = 0, 10
+
+    def run(pick):
+        cur, frontiers, chosen = L, [], []
+        while cur < R:
+            cands = [s for s in segs
+                     if s[0] <= cur and s[1] > cur and s not in chosen]
+            if not cands:
+                return frontiers, chosen  # покрытие невозможно
+            seg = pick(cands)
+            chosen.append(seg)
+            cur = seg[1]
+            frontiers.append(cur)
+        return frontiers, chosen
+
+    greedy_f, greedy_c = run(lambda cs: max(cs, key=lambda s: s[1]))
+    caut_f,   caut_c   = run(lambda cs: min(cs, key=lambda s: s[1]))
+
+    n_rows = max(len(greedy_f), len(caut_f))
+    fig, ax = plt.subplots(figsize=(10.5, 5.2))
+    _apply_style(fig)
+    ax.set_facecolor(C_BG)
+
+    bar_h = 0.28
+    for k in range(n_rows):
+        y = -(k + 1)
+        # жадная стратегия
+        if k < len(greedy_f):
+            ax.barh(y + 0.18, greedy_f[k] - L, left=L, height=bar_h,
+                    color=C_ORANGE, edgecolor=C_INK, linewidth=0.8, zorder=3)
+            a, b = greedy_c[k]
+            ax.text(greedy_f[k] + 0.15, y + 0.18,
+                    f"{greedy_f[k]}  (+[{a},{b}])",
+                    va="center", ha="left", fontsize=9, color=C_ORANGE,
+                    fontweight="bold")
+        else:
+            ax.text(L + 0.15, y + 0.18, "уже покрыто за 3 отрезка",
+                    va="center", ha="left", fontsize=9, color=C_ORANGE,
+                    style="italic")
+        # осторожная стратегия
+        if k < len(caut_f):
+            ax.barh(y - 0.18, caut_f[k] - L, left=L, height=bar_h,
+                    color=C_BLUE, edgecolor=C_INK, linewidth=0.8, zorder=3)
+            a, b = caut_c[k]
+            ax.text(caut_f[k] + 0.15, y - 0.18,
+                    f"{caut_f[k]}  (+[{a},{b}])",
+                    va="center", ha="left", fontsize=9, color=C_BLUE)
+        # сравнение границ
+        if k < len(greedy_f) and k < len(caut_f):
+            ax.text(-0.55, y, f"{greedy_f[k]} ≥ {caut_f[k]}",
+                    va="center", ha="right", fontsize=9, color=C_INK)
+
+    ax.axvline(R, color=C_GREEN, linestyle="--", linewidth=1.6, zorder=2)
+    ax.text(R, 0.15, f"R = {R}", ha="center", va="bottom",
+            fontsize=10, color=C_GREEN, fontweight="bold")
+
+    ax.set_yticks([-(k + 1) for k in range(n_rows)])
+    ax.set_yticklabels([f"после k = {k + 1}" for k in range(n_rows)])
+    ax.set_xlim(-2.2, 14.5)
+    ax.set_ylim(-(n_rows + 0.7), 0.7)
+    ax.set_xticks(range(0, 13))
+    ax.set_xlabel("граница покрытия cur")
+    for spine in ("top", "right", "left"):
+        ax.spines[spine].set_visible(False)
+    ax.spines["bottom"].set_color(C_GRAY)
+    ax.tick_params(colors=C_INK, length=3)
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK,
+                       label="жадная: максимальный правый конец"),
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK,
+                       label="«осторожная»: минимальный полезный правый конец"),
+    ]
+    ax.legend(handles=legend_items, loc="upper left", fontsize=9,
+              framealpha=0.9, facecolor=C_BG, edgecolor=C_GRAY)
+
+    ax.set_title("Инвариант «жадный впереди»: покрытие [0, 10] — граница после k выбранных отрезков\n"
+                 "жадной стратегии хватает 3 отрезков, осторожной нужно 4",
+                 color=C_INK, fontsize=11, pad=10)
+
+    _save(fig, "greedy_stays_ahead")
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -446,6 +536,7 @@ def main() -> None:
     draw_huffman_tree()
     draw_greedy_vs_dp()
     draw_interval_cover()
+    draw_greedy_stays_ahead()
     print("All visuals generated.")
 
 

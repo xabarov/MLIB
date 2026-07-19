@@ -396,12 +396,149 @@ def draw_dijkstra_negative():
     _save(fig, "dijkstra_negative")
 
 
+def draw_bellman_ford_induction():
+    """Индукция по длине кратчайшего пути: «плохой» порядок рёбер, при котором
+    Форду-Беллману нужны все V−1 итераций.
+
+    Все данные (таблица dist по итерациям, номера итераций финализации,
+    сам кратчайший путь) вычисляются честной симуляцией алгоритма.
+    """
+    _apply_style()
+
+    n = 5
+    src = 0
+    # Граф лекции; рёбра нарочно упорядочены «против» пути 0→2→3→1→4:
+    # ребро (u,v) пути идёт в списке раньше рёбер, обновляющих dist[u],
+    # поэтому каскад внутри одной итерации не срабатывает.
+    edges = [
+        (1, 4, -4), (3, 1, -2), (2, 3, -3),
+        (0, 1, 6), (0, 2, 7), (1, 2, 8), (1, 3, 5),
+        (2, 4, 9), (4, 0, 2), (4, 3, 7),
+    ]
+
+    INF = float("inf")
+    dist = [INF] * n
+    dist[src] = 0
+    pred = [-1] * n
+    snapshots = [list(dist)]
+    changed_sets = [set()]
+    for _ in range(n - 1):
+        changed = set()
+        for u, v, w in edges:
+            if dist[u] < INF and dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                pred[v] = u
+                changed.add(v)
+        snapshots.append(list(dist))
+        changed_sets.append(changed)
+        if not changed:
+            break
+
+    # Итерация, после которой значение вершины стало финальным
+    final_iter = {v: 0 for v in range(n)}
+    for it, ch in enumerate(changed_sets):
+        for v in ch:
+            final_iter[v] = it
+
+    # Кратчайший путь до вершины 4 — восстановление по pred[]
+    path = [4]
+    while path[-1] != src:
+        path.append(pred[path[-1]])
+    path = path[::-1]
+    w_of = {(u, v): w for u, v, w in edges}
+
+    fig, (ax_top, ax_tab) = plt.subplots(
+        2, 1, figsize=(11, 7.2), height_ratios=[1.0, 1.5])
+    fig.patch.set_facecolor(C_BG)
+
+    # ---------- Верх: цепочка кратчайшего пути ----------
+    ax_top.set_facecolor(C_BG)
+    ax_top.axis("off")
+    ax_top.set_xlim(-0.8, 2.4 * (len(path) - 1) + 0.8)
+    ax_top.set_ylim(-1.35, 1.15)
+    ax_top.set_title(
+        "Кратчайший путь до вершины 4: ровно одно ребро за итерацию",
+        fontsize=12.5, color=C_INK, fontweight="bold", pad=6)
+
+    for i, v in enumerate(path):
+        x = 2.4 * i
+        if i + 1 < len(path):
+            u2 = path[i + 1]
+            _draw_arrow(ax_top, x + 0.36, 0, x + 2.4 - 0.36, 0,
+                        color=C_BLUE, lw=2.4)
+            ax_top.text(x + 1.2, 0.20, str(w_of[(v, u2)]), ha="center",
+                        va="bottom", fontsize=11, color=C_BLUE,
+                        fontweight="bold")
+        _draw_node(ax_top, x, 0, v, C_INK if v == src else C_BLUE)
+        it = final_iter[v]
+        lbl = "старт" if v == src else f"финал:\nитер. {it}"
+        ax_top.text(x, -0.62, lbl, ha="center", va="top", fontsize=9.5,
+                    color=C_ORANGE if v != src else C_INK,
+                    fontweight="bold")
+
+    # ---------- Низ: таблица dist по итерациям ----------
+    ax_tab.set_facecolor(C_BG)
+    ax_tab.axis("off")
+
+    n_rows = len(snapshots)
+    cell_w, cell_h = 1.2, 0.6
+    x0, y0 = 1.6, 0.2
+    total_h = n_rows * cell_h
+    total_w = n * cell_w
+
+    row_labels = ["Начало"] + [f"Итер. {i}" for i in range(1, n_rows)]
+
+    for j in range(n):
+        cx = x0 + j * cell_w + cell_w / 2
+        ax_tab.text(cx, y0 + total_h + 0.12, f"v={j}", ha="center",
+                    va="bottom", fontsize=11, color=C_INK, fontweight="bold")
+
+    fmt = lambda d: "∞" if d == INF else str(int(d))
+    for i in range(n_rows):
+        row_i = n_rows - 1 - i
+        cy = y0 + row_i * cell_h + cell_h / 2
+        ax_tab.text(x0 - 0.12, cy, row_labels[i], ha="right", va="center",
+                    fontsize=10, color=C_INK)
+        for j in range(n):
+            is_changed = j in changed_sets[i]
+            fc = C_ORANGE if is_changed else C_PANEL
+            rect = mpatches.Rectangle(
+                (x0 + j * cell_w, y0 + row_i * cell_h), cell_w, cell_h,
+                facecolor=fc, edgecolor=C_GRAY, linewidth=0.8, zorder=2)
+            ax_tab.add_patch(rect)
+            ax_tab.text(x0 + j * cell_w + cell_w / 2, cy,
+                        fmt(snapshots[i][j]), ha="center", va="center",
+                        fontsize=11,
+                        color="white" if is_changed else C_INK,
+                        fontweight="bold" if is_changed else "normal",
+                        zorder=3)
+
+    ax_tab.set_title(
+        "«Плохой» порядок рёбер: нужны все V − 1 = 4 итерации",
+        fontsize=12.5, color=C_INK, fontweight="bold", pad=8)
+
+    changed_patch = mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK,
+                                   label="Значение обновлено")
+    unchanged_patch = mpatches.Patch(facecolor=C_PANEL, edgecolor=C_GRAY,
+                                     label="Без изменений")
+    ax_tab.legend(handles=[changed_patch, unchanged_patch],
+                  loc="center right", fontsize=9,
+                  facecolor=C_BG, edgecolor=C_GRAY)
+
+    ax_tab.set_xlim(0.0, x0 + total_w + 2.6)
+    ax_tab.set_ylim(y0 - 0.3, y0 + total_h + 0.55)
+
+    plt.tight_layout()
+    _save(fig, "bellman_ford_induction")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_dijkstra()
     draw_bellman_ford()
     draw_algorithm_comparison()
     draw_dijkstra_negative()
+    draw_bellman_ford_induction()
     print("All visuals generated successfully.")
 
 

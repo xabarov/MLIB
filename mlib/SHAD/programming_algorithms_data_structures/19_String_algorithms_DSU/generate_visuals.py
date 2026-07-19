@@ -399,12 +399,147 @@ def draw_prefix_function():
     _save(fig, "prefix_function")
 
 
+def draw_kmp_no_skip():
+    """Почему прыжок j = pi[j-1] не пропускает вхождений.
+
+    Совпавшее окно и вердикты по всем кандидатам-сдвигам вычисляются честно:
+    prefix_function образца, симуляция поиска до первого несовпадения,
+    затем сравнение префиксов образца с суффиксами окна.
+    """
+    _apply_style()
+
+    pat, text = "ABABC", "ABABABABC"
+
+    # --- честная префикс-функция ---
+    n = len(pat)
+    pi = [0] * n
+    for i in range(1, n):
+        k = pi[i - 1]
+        while k > 0 and pat[i] != pat[k]:
+            k = pi[k - 1]
+        if pat[i] == pat[k]:
+            k += 1
+        pi[i] = k
+
+    # --- симуляция поиска до первого несовпадения: находим окно и j ---
+    j = 0
+    mismatch_i = None
+    for i, c in enumerate(text):
+        if j < n and c != pat[j]:
+            mismatch_i = i
+            break
+        j += 1
+        if j == n:
+            break
+    assert mismatch_i is not None
+    window = pat[:j]                    # совпавший кусок P[0..j-1]
+
+    # --- кандидаты: перекрытия k = j-1 .. 1, вердикт сравнением строк ---
+    candidates = []
+    for k in range(j - 1, 0, -1):
+        ok = pat[:k] == window[-k:]
+        # первый расходящийся символ (для креста)
+        first_bad = next((t for t in range(k) if pat[t] != window[j - k + t]),
+                         None)
+        candidates.append((k, ok, first_bad))
+    # цепочка pi: множество выживающих длин
+    chain = set()
+    k = pi[j - 1]
+    while k > 0:
+        chain.add(k)
+        k = pi[k - 1]
+
+    cell = 0.72
+    row_h = 1.05
+    fig, ax = plt.subplots(figsize=(11.5, 4.6))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+    ax.set_aspect("equal")
+
+    x0 = 3.4
+    top_y = row_h * (len(candidates) + 0.6)
+
+    # Вертикальные направляющие: границы столбцов окна вниз до последней строки
+    y_bottom = top_y - len(candidates) * row_h
+    for t in range(j + 1):
+        gx = x0 + t * cell
+        ax.plot([gx, gx], [y_bottom, top_y], color=C_GRAY, lw=0.7,
+                linestyle=":", alpha=0.7, zorder=1)
+
+    def draw_cells(y, s, x_start, colors, bold=None):
+        for t, ch in enumerate(s):
+            x = x_start + t * cell
+            rect = mpatches.Rectangle((x, y), cell, cell,
+                                      facecolor=colors[t], edgecolor=C_GRAY,
+                                      linewidth=1.0, zorder=2)
+            ax.add_patch(rect)
+            ax.text(x + cell / 2, y + cell / 2, ch, ha="center", va="center",
+                    fontsize=13, fontweight="bold", zorder=3,
+                    color="white" if colors[t] in (C_BLUE, C_GREEN, C_ORANGE)
+                    else C_INK)
+
+    # --- верхняя строка: совпавшее окно ---
+    ax.text(x0 - 0.25, top_y + cell / 2,
+            f"окно (j = {j}):", ha="right", va="center", fontsize=11,
+            fontweight="bold")
+    draw_cells(top_y, window, x0, [C_BLUE] * j)
+    for t in range(j):
+        ax.text(x0 + t * cell + cell / 2, top_y + cell + 0.10, str(t),
+                ha="center", va="bottom", fontsize=8, color=C_GRAY)
+
+    # --- строки-кандидаты ---
+    for r, (k, ok, first_bad) in enumerate(candidates):
+        y = top_y - (r + 1) * row_h
+        shift = j - k                    # сдвиг образца вправо
+        label = f"k = {k}"
+        if k in chain:
+            label += f" = π[{j - 1}]" if k == pi[j - 1] else ""
+        ax.text(x0 - 0.25, y + cell / 2, label, ha="right", va="center",
+                fontsize=11,
+                color=C_GREEN if ok else C_ORANGE, fontweight="bold")
+
+        colors = []
+        for t in range(len(pat)):
+            if t >= k:
+                colors.append(C_PANEL)          # ещё не прочитано текстом
+            elif ok:
+                colors.append(C_GREEN)
+            elif first_bad is not None and t == first_bad:
+                colors.append(C_ORANGE)
+            else:
+                colors.append(C_PANEL if t > (first_bad or 0) else C_GREEN)
+        draw_cells(y, pat, x0 + shift * cell, colors)
+
+        if ok:
+            verdict = "префикс = суффикс, прыжок сюда"
+        else:
+            verdict = "расходится в прочитанной части"
+        ax.text(x0 + (len(pat) + shift) * cell + 0.25, y + cell / 2, verdict,
+                ha="left", va="center", fontsize=10,
+                color=C_GREEN if ok else C_ORANGE)
+        if not ok and first_bad is not None:
+            bx = x0 + (shift + first_bad) * cell + cell / 2
+            ax.text(bx, y + cell / 2, "×", ha="center", va="center",
+                    fontsize=20, color=C_INK, fontweight="bold", zorder=6)
+
+    ax.set_xlim(0.2, x0 + (len(pat) + j) * cell + 3.4)
+    ax.set_ylim(top_y - len(candidates) * row_h - 0.5, top_y + cell + 0.55)
+    ax.set_title(
+        f"Несовпадение при j = {j}: кандидаты на вхождение внутри окна "
+        f"«{window}»\nвыживает только перекрытие k = π[{j - 1}] = {pi[j - 1]}",
+        fontsize=12.5, fontweight="bold", pad=12)
+
+    _save(fig, "kmp_no_skip")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_dsu()
     draw_kmp()
     draw_trie()
     draw_prefix_function()
+    draw_kmp_no_skip()
 
 
 if __name__ == "__main__":
