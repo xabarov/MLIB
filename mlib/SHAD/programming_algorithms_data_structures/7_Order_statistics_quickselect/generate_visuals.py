@@ -31,7 +31,7 @@ def _apply_style(fig, ax_list=None):
 def _save(fig, name):
     ASSETS.mkdir(parents=True, exist_ok=True)
     path = ASSETS / f"{name}.png"
-    fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=C_BG)
+    fig.savefig(path, dpi=180, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -42,9 +42,10 @@ def draw_quickselect():
     _apply_style(fig, axes)
 
     original = [3, 1, 4, 1, 5, 9, 2, 6]
-    after = [1, 1, 3, 2, 4, 9, 5, 6]
-    # After Lomuto with pivot=4: elements <=4 on left, pivot at index 4, elements >4 on right
-    # left part indices 0-3: [1,1,3,2], pivot at 4: [4], right part 5-7: [9,5,6]
+    after = [3, 1, 1, 2, 4, 9, 6, 5]
+    # After Lomuto with pivot=4 (moved to the end first): elements <=4 on left,
+    # pivot at index 4, elements >4 on right
+    # left part indices 0-3: [3,1,1,2], pivot at 4: [4], right part 5-7: [9,6,5]
 
     box_w = 0.8
     box_h = 0.6
@@ -67,8 +68,8 @@ def draw_quickselect():
                     fontsize=8, color=C_GRAY)
         if arrow_idx is not None:
             ax.annotate(
-                "k=3\n(рекурсия)", xy=(arrow_idx, 0.3),
-                xytext=(arrow_idx, -0.1),
+                "ищем k=2 (0-инд.)\n→ рекурсия влево", xy=(arrow_idx, 0.3),
+                xytext=(arrow_idx, -0.15),
                 fontsize=9, color=C_ORANGE, ha="center",
                 arrowprops=dict(arrowstyle="->", color=C_ORANGE, lw=1.5)
             )
@@ -311,11 +312,105 @@ def draw_quickselect_recursion():
     _save(fig, "quickselect_recursion")
 
 
+def draw_mom_guarantee():
+    """Why the median of medians guarantees a 30/70 split: 7 groups of 5 as a grid."""
+    m = 7          # number of groups (columns)
+    rows = 5       # group size
+    cell = 0.8
+    mid_col = m // 2
+    mid_row = rows // 2
+
+    fig, ax = plt.subplots(figsize=(11, 6))
+    _apply_style(fig, [ax])
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+    ax.set_xlim(-2.6, m * cell + 3.6)
+    ax.set_ylim(-1.7, rows * cell + 1.3)
+    ax.set_aspect("equal")
+
+    # Shaded regions (draw first, under the cells)
+    # >= M: top 3 rows of columns mid_col..m-1
+    ge_rect = mpatches.Rectangle(
+        (mid_col * cell - 0.06, mid_row * cell - 0.06),
+        (m - mid_col) * cell + 0.06, (rows - mid_row) * cell + 0.06,
+        facecolor=C_GREEN, alpha=0.28, edgecolor=C_GREEN,
+        linewidth=2.0, zorder=1)
+    ax.add_patch(ge_rect)
+    # <= M: bottom 3 rows of columns 0..mid_col
+    le_rect = mpatches.Rectangle(
+        (-0.06, -0.06),
+        (mid_col + 1) * cell + 0.06, (mid_row + 1) * cell + 0.06,
+        facecolor=C_BLUE, alpha=0.28, edgecolor=C_BLUE,
+        linewidth=2.0, zorder=1)
+    ax.add_patch(le_rect)
+
+    # Cells
+    for col in range(m):
+        for row in range(rows):
+            x = col * cell
+            y = row * cell
+            is_median = (row == mid_row)
+            is_M = is_median and (col == mid_col)
+            if is_M:
+                fc = C_ORANGE
+            elif is_median:
+                fc = C_PANEL
+            else:
+                fc = C_BG
+            rect = mpatches.Rectangle(
+                (x + 0.05, y + 0.05), cell - 0.1, cell - 0.1,
+                facecolor=fc, edgecolor=C_INK,
+                linewidth=1.6 if is_median else 0.9, zorder=2)
+            ax.add_patch(rect)
+            if is_M:
+                ax.text(x + cell / 2, y + cell / 2, "M", ha="center",
+                        va="center", fontsize=13, color=C_BG,
+                        fontweight="bold", zorder=3)
+            elif is_median:
+                ax.text(x + cell / 2, y + cell / 2, "мед.", ha="center",
+                        va="center", fontsize=7.5, color=C_INK, zorder=3)
+            else:
+                ax.text(x + cell / 2, y + cell / 2, "•", ha="center",
+                        va="center", fontsize=9, color=C_GRAY, zorder=3)
+
+    # Axis-of-order annotations
+    ax.annotate("", xy=(m * cell + 0.25, rows * cell - 0.1),
+                xytext=(m * cell + 0.25, 0.1),
+                arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.3))
+    ax.text(m * cell + 0.45, rows * cell / 2,
+            "внутри группы:\nснизу меньшие,\nсверху большие",
+            ha="left", va="center", fontsize=8.5, color=C_INK)
+
+    ax.annotate("", xy=(m * cell - 0.1, -0.35), xytext=(0.1, -0.35),
+                arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.3))
+    ax.text(m * cell / 2, -0.75,
+            "группы упорядочены по возрастанию медиан",
+            ha="center", va="top", fontsize=9, color=C_INK)
+
+    # Region labels (outside the grid)
+    ax.text((mid_col + m) / 2 * cell, rows * cell + 0.25,
+            "все эти элементы ≥ M:  3 · ⌈m/2⌉ ≥ 3n/10",
+            ha="center", va="bottom", fontsize=9.5, color=C_GREEN,
+            fontweight="bold")
+    ax.text(-0.3, (mid_row + 1) / 2 * cell,
+            "все эти элементы ≤ M:\n3 · ⌈m/2⌉ ≥ 3n/10",
+            ha="right", va="center", fontsize=9.5, color=C_BLUE,
+            fontweight="bold")
+
+    ax.set_title("Гарантия медианы медиан: не менее 3n/10 элементов "
+                 "с каждой стороны от M\n(пример: n = 35, m = 7 групп по 5)",
+                 fontsize=12, color=C_INK, fontweight="bold", pad=10)
+
+    plt.tight_layout()
+    _save(fig, "mom_guarantee")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_quickselect()
     draw_median_of_medians()
     draw_quickselect_recursion()
+    draw_mom_guarantee()
     print("All visuals generated successfully.")
 
 

@@ -235,11 +235,60 @@ def draw_ram_model():
     print("Saved: assets/ram_model.png")
 
 
+# ---------------------------------------------------------------------------
+# Диаграмма 4: Формальное определение O-нотации (f(n) <= C·g(n) при n >= n0)
+# ---------------------------------------------------------------------------
+
+def draw_big_o_definition():
+    _apply_style()
+
+    n = np.linspace(0.5, 14, 400)
+    f = 3 * n**2 + 5 * n + 7          # f(n)
+    cg = 4 * n**2                      # C·g(n) при C = 4
+    n0 = 7                             # 4n^2 >= 3n^2+5n+7 при n >= 6.15, берём n0 = 7
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+
+    ax.plot(n, f, color=C_ORANGE, lw=2.4, label=r"$f(n) = 3n^2 + 5n + 7$")
+    ax.plot(n, cg, color=C_BLUE, lw=2.4, label=r"$C \cdot g(n) = 4n^2$")
+    ax.plot(n, n**2, color=C_GRAY, lw=1.4, linestyle="--", label=r"$g(n) = n^2$")
+
+    # Вертикальная линия n0 и заливка «рабочей зоны»
+    ax.axvline(x=n0, color=C_INK, lw=1.3, linestyle=":")
+    ax.text(n0 + 0.15, 30, r"$n_0 = 7$", fontsize=11, color=C_INK)
+    mask = n >= n0
+    ax.fill_between(n[mask], f[mask], cg[mask], color=C_GREEN, alpha=0.25,
+                    label=r"здесь $f(n) \leq C\,g(n)$")
+
+    # Пометка зоны, где неравенство ещё может нарушаться
+    ax.annotate("при малых n\nнеравенство не обязано\nвыполняться",
+                xy=(2.6, 3 * 2.6**2 + 5 * 2.6 + 7), xytext=(0.8, 320),
+                fontsize=9, color=C_GRAY,
+                arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.2))
+
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 800)
+    ax.set_xlabel("n", fontsize=11)
+    ax.set_ylabel("значение функции", fontsize=11)
+    ax.set_title(r"Определение $f(n) = O(g(n))$: начиная с $n_0$ график $C \cdot g(n)$ идёт выше $f(n)$",
+                 fontsize=12, color=C_INK, pad=12)
+    ax.legend(loc="upper left", fontsize=10, framealpha=0)
+    ax.spines["left"].set_color(C_GRAY)
+    ax.spines["bottom"].set_color(C_GRAY)
+
+    fig.tight_layout()
+    _save(fig, "big_o_definition.png")
+    print("Saved: assets/big_o_definition.png")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_complexity_classes()
     draw_call_stack()
     draw_ram_model()
+    draw_big_o_definition()
     print("Все диаграммы сгенерированы.")
 
 

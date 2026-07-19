@@ -1,1 +1,12 @@
-[{"name":"hero_two_pointers","prompt":"atmospheric editorial illustration of two pointers algorithm and prefix sums, abstract representation of two arrows converging over a horizontal array of numbers, layered grid patterns suggesting matrix prefix computation, warm cream parchment background, deep ink blue and burnt orange accent tones, moody directional light, no text in image","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-two-pointers",
+      "filename_base": "hero_two_pointers",
+      "prompt": "atmospheric editorial illustration of two pointers algorithm and prefix sums, abstract representation of two arrows converging over a horizontal array of numbers, layered grid patterns suggesting matrix prefix computation, warm cream parchment background, deep ink blue and burnt orange accent tones, moody directional light, no text in image"
+    }
+  ]
+}

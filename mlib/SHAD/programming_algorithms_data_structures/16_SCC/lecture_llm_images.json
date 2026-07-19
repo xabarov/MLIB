@@ -1,1 +1,12 @@
-[{"name":"hero_scc","prompt":"atmospheric editorial illustration of strongly connected components graph algorithm, interconnected directed graph nodes with colored cluster regions, glowing circular vertices connected by curved arrows forming cycles, warm cream parchment background, abstract mathematical beauty, no text, no labels","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-scc",
+      "filename_base": "hero_scc",
+      "prompt": "atmospheric editorial illustration of strongly connected components graph algorithm, interconnected directed graph nodes with colored cluster regions, glowing circular vertices connected by curved arrows forming cycles, warm cream parchment background, abstract mathematical beauty, no text, no labels"
+    }
+  ]
+}

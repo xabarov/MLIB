@@ -1,1 +1,12 @@
-[{"name":"hero_heaps","prompt":"atmospheric editorial illustration of Кучи и сортировка кучей, algorithm diagrams on warm cream background, no text in image","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-heaps",
+      "filename_base": "hero_heaps",
+      "prompt": "atmospheric editorial illustration of Кучи и сортировка кучей, algorithm diagrams on warm cream background, no text in image"
+    }
+  ]
+}

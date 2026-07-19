@@ -1,1 +1,12 @@
-[{"name":"hero_shortest_paths","prompt":"atmospheric editorial illustration of shortest paths in graphs, network of nodes connected by glowing weighted edges forming optimal routes highlighted in warm amber, abstract graph topology with distances annotated, warm cream background, mathematical diagram aesthetic, no text","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-shortest-paths",
+      "filename_base": "hero_shortest_paths",
+      "prompt": "atmospheric editorial illustration of shortest paths in graphs, network of nodes connected by glowing weighted edges forming optimal routes highlighted in warm amber, abstract graph topology with distances annotated, warm cream background, mathematical diagram aesthetic, no text"
+    }
+  ]
+}

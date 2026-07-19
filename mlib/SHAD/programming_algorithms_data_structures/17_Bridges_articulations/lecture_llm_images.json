@@ -1,1 +1,12 @@
-[{"name":"hero_bridges","prompt":"atmospheric editorial illustration of bridges and articulation points in graph theory, network of interconnected nodes with highlighted critical edges and vertices, glowing red bridges spanning between clusters of nodes, warm cream background, abstract data structure visualization, no text","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-bridges",
+      "filename_base": "hero_bridges",
+      "prompt": "atmospheric editorial illustration of bridges and articulation points in graph theory, network of interconnected nodes with highlighted critical edges and vertices, glowing red bridges spanning between clusters of nodes, warm cream background, abstract data structure visualization, no text"
+    }
+  ]
+}

@@ -365,12 +365,87 @@ def draw_greedy_vs_dp() -> None:
     _save(fig, "greedy_vs_dp")
 
 
+# ── 4. Minimum Interval Cover ─────────────────────────────────────────────────
+
+def draw_interval_cover() -> None:
+    """Greedy cover of [0,10]: segments as bars, chosen orange, cur markers."""
+    # (start, end, chosen)
+    segments = [
+        (0, 4, True),
+        (1, 7, False),
+        (3, 9, True),
+        (6, 10, False),
+        (8, 12, True),
+    ]
+    L, R = 0, 10
+    cur_points = [0, 4, 9, 12]
+
+    fig, ax = plt.subplots(figsize=(12, 5.5))
+    _apply_style(fig)
+    ax.set_facecolor(C_BG)
+
+    bar_height = 0.5
+
+    # Target strip [L, R] at the bottom
+    target = mpatches.Rectangle(
+        (L, -1.25), R - L, 0.45,
+        linewidth=1.5, edgecolor=C_INK, facecolor=C_BLUE, alpha=0.55, zorder=3)
+    ax.add_patch(target)
+    ax.text((L + R) / 2, -1.02, "цель: покрыть [0, 10]",
+            ha="center", va="center", fontsize=9, color=C_INK,
+            fontweight="bold", zorder=4)
+
+    for idx, (start, end, chosen) in enumerate(segments):
+        color = C_ORANGE if chosen else C_GRAY
+        rect = mpatches.Rectangle(
+            (start, idx - bar_height / 2), end - start, bar_height,
+            linewidth=1.5, edgecolor=C_INK, facecolor=color,
+            alpha=0.85, zorder=3)
+        ax.add_patch(rect)
+        ax.text((start + end) / 2, idx, f"[{start},{end}]",
+                ha="center", va="center", fontsize=9, color=C_INK,
+                fontweight="bold", zorder=4)
+
+    # cur markers
+    for k, cp in enumerate(cur_points):
+        ax.axvline(x=cp, color=C_GREEN, linewidth=1.2, linestyle="--",
+                   alpha=0.7, zorder=2)
+        ax.text(cp, 4.85, f"cur={cp}", ha="center", va="bottom",
+                fontsize=8.5, color=C_GREEN, fontweight="bold")
+
+    ax.set_xlim(-0.6, 12.6)
+    ax.set_ylim(-1.6, 5.6)
+    ax.set_xticks(range(0, 13))
+    ax.set_xticklabels([str(i) for i in range(0, 13)], fontsize=9, color=C_INK)
+    ax.set_yticks([])
+    ax.tick_params(colors=C_INK, bottom=True, left=False)
+    ax.set_xlabel("Координата", fontsize=10, color=C_INK)
+    ax.set_title(
+        "Minimum Interval Cover: покрытие [0,10] минимумом отрезков (жадно: cur = 0 → 4 → 9 → 12)",
+        fontsize=11, color=C_INK, pad=10)
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+    ax.spines["bottom"].set_color(C_GRAY)
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK, label="Выбранные отрезки"),
+        mpatches.Patch(facecolor=C_GRAY, edgecolor=C_INK, label="Отвергнутые"),
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK, alpha=0.55, label="Целевой отрезок [0,10]"),
+    ]
+    ax.legend(handles=legend_items, loc="lower right", fontsize=9,
+              framealpha=0.85, facecolor=C_BG)
+
+    fig.tight_layout()
+    _save(fig, "interval_cover")
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     draw_interval_scheduling()
     draw_huffman_tree()
     draw_greedy_vs_dp()
+    draw_interval_cover()
     print("All visuals generated.")
 
 

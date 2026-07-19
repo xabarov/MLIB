@@ -118,10 +118,10 @@ def draw_dfs_tree():
 
     # DFS from 0, visiting neighbors in order: tree edges = all edges here
     # tin/tout for undirected tree (no back edges in this particular tree graph)
-    # tin[v] = entry time, tout[v] = exit time
+    # tin[v] = entry time, tout[v] = exit time; one timer, ++ on entry and exit
     # DFS order: 0->1->3->back->4->back->back->2->5->back->6->back->back
-    tin = {0: 0, 1: 1, 3: 2, 4: 4, 2: 6, 5: 7, 6: 9}
-    tout = {0: 11, 1: 5, 3: 3, 4: 5, 2: 10, 5: 8, 6: 10}
+    tin = {0: 0, 1: 1, 3: 2, 4: 4, 2: 7, 5: 8, 6: 10}
+    tout = {0: 13, 1: 6, 3: 3, 4: 5, 2: 12, 5: 9, 6: 11}
 
     # All edges are tree edges in this graph (it's a tree itself)
     tree_edges = set(_EDGES)
@@ -278,11 +278,64 @@ def draw_representations():
     _save(fig, "graph_representations")
 
 
+def draw_bipartite():
+    """Two panels: C4 successfully 2-colored vs triangle with a conflict."""
+    _apply_style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    fig.patch.set_facecolor(C_BG)
+
+    for ax in (ax1, ax2):
+        ax.set_facecolor(C_BG)
+        ax.set_aspect("equal")
+        ax.axis("off")
+
+    # --- Left panel: even cycle 0-1-2-3-0, bipartite ---
+    pos4 = {0: (1.0, 3.0), 1: (3.0, 3.0), 2: (3.0, 1.0), 3: (1.0, 1.0)}
+    edges4 = [(0, 1), (1, 2), (2, 3), (3, 0)]
+    color4 = {0: C_BLUE, 1: C_GREEN, 2: C_BLUE, 3: C_GREEN}
+    for u, v in edges4:
+        _draw_edge(ax1, pos4[u], pos4[v])
+    for node, (x, y) in pos4.items():
+        _draw_node(ax1, x, y, node, color4[node])
+        lbl = "цвет 0" if color4[node] == C_BLUE else "цвет 1"
+        dy = 0.55 if y > 2 else -0.55
+        ax1.text(x, y + dy, lbl, ha="center", va="center",
+                 fontsize=9, color=C_INK)
+    ax1.set_xlim(-0.2, 4.2)
+    ax1.set_ylim(-0.1, 4.1)
+    ax1.set_title("Чётный цикл C₄ — двудольный:\nсоседи всегда разного цвета",
+                  fontsize=11, color=C_INK, pad=8)
+
+    # --- Right panel: triangle 0-1-2, odd cycle, conflict ---
+    pos3 = {0: (2.0, 3.2), 1: (0.9, 1.2), 2: (3.1, 1.2)}
+    edges3 = [(0, 1), (1, 2), (2, 0)]
+    color3 = {0: C_BLUE, 1: C_GREEN, 2: C_BLUE}
+    for u, v in edges3:
+        if (u, v) == (2, 0):
+            _draw_edge(ax2, pos3[u], pos3[v], color=C_ORANGE, lw=3.0)
+        else:
+            _draw_edge(ax2, pos3[u], pos3[v])
+    for node, (x, y) in pos3.items():
+        _draw_node(ax2, x, y, node, color3[node])
+    ax2.text(3.05, 2.4, "конфликт:\nоба «цвет 0»", ha="center", va="center",
+             fontsize=9, color=C_ORANGE, fontweight="bold")
+    ax2.set_xlim(-0.4, 4.4)
+    ax2.set_ylim(-0.1, 4.3)
+    ax2.set_title("Нечётный цикл C₃ — не двудольный:\nребро 2–0 соединяет один цвет",
+                  fontsize=11, color=C_INK, pad=8)
+
+    fig.suptitle("BFS-2-раскраска: критерий двудольности — нет нечётных циклов",
+                 fontsize=12, color=C_INK, y=1.0, fontweight="bold")
+    plt.tight_layout()
+    _save(fig, "bipartite_check")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_bfs()
     draw_dfs_tree()
     draw_representations()
+    draw_bipartite()
     print("All visuals generated successfully.")
 
 

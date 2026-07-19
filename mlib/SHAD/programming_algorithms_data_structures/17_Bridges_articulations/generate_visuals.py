@@ -192,8 +192,10 @@ def draw_articulations():
         6: (6.5, 1.5),
     }
 
-    # Articulation points: 2, 5
-    articulations = {2, 5}
+    # Articulation points: 2, 3, 5
+    # (removing 2 detaches {0,1}; removing 3 detaches {0,1,2};
+    #  removing 5 detaches {6})
+    articulations = {2, 3, 5}
 
     non_bridge_edges = [
         (0, 1), (1, 2), (0, 2),
@@ -219,20 +221,20 @@ def draw_articulations():
         else:
             _draw_node(ax, x, y, str(node), C_BLUE, radius=0.26)
 
-    # Labels for components that disconnect
-    ax.text(1.0, 3.3, "компонента A\n{0, 1}", color=C_BLUE, fontsize=9,
+    # Labels: what disconnects when each AP is removed
+    ax.text(1.0, 3.3, "убрать 2 →\nотделится {0, 1}", color=C_BLUE, fontsize=9,
             ha="center", style="italic")
-    ax.text(4.25, 3.3, "компонента B\n{3, 4}", color=C_BLUE, fontsize=9,
+    ax.text(3.5, 3.3, "убрать 3 →\nотделится {0, 1, 2}", color=C_BLUE, fontsize=9,
             ha="center", style="italic")
-    ax.text(6.5, 3.3, "компонента C\n{6}", color=C_BLUE, fontsize=9,
+    ax.text(6.3, 3.3, "убрать 5 →\nотделится {6}", color=C_BLUE, fontsize=9,
             ha="center", style="italic")
 
-    # Arrows from labels
-    ax.annotate("", xy=(0.9, 2.7), xytext=(1.0, 3.1),
+    # Arrows from labels to the APs
+    ax.annotate("", xy=(2.0, 1.95), xytext=(1.4, 3.05),
                 arrowprops={"arrowstyle": "->", "color": C_GRAY, "lw": 1.0})
-    ax.annotate("", xy=(4.3, 2.7), xytext=(4.25, 3.1),
+    ax.annotate("", xy=(3.5, 1.95), xytext=(3.5, 3.05),
                 arrowprops={"arrowstyle": "->", "color": C_GRAY, "lw": 1.0})
-    ax.annotate("", xy=(6.5, 1.8), xytext=(6.5, 3.1),
+    ax.annotate("", xy=(5.15, 0.95), xytext=(6.1, 3.05),
                 arrowprops={"arrowstyle": "->", "color": C_GRAY, "lw": 1.0})
 
     # Legend
@@ -246,11 +248,103 @@ def draw_articulations():
     _save(fig, "articulations.png")
 
 
+def draw_block_cut_tree():
+    """Left: graph colored by BCC. Right: its block-cut tree."""
+    _apply_style()
+    fig, (ax_l, ax_r) = plt.subplots(1, 2, figsize=(12, 5))
+    fig.patch.set_facecolor(C_BG)
+    for ax in (ax_l, ax_r):
+        ax.set_aspect("equal")
+        ax.axis("off")
+        ax.set_facecolor(C_BG)
+
+    # ---- Left: graph {0-1,1-2,2-0, 2-3, 3-4,4-5,5-3} colored by BCC ----
+    ax_l.set_xlim(-0.6, 6.2)
+    ax_l.set_ylim(-0.6, 3.6)
+    pos = {
+        0: (0.5, 2.5),
+        1: (0.5, 0.5),
+        2: (2.0, 1.5),
+        3: (3.8, 1.5),
+        4: (5.3, 2.5),
+        5: (5.3, 0.5),
+    }
+    bcc1 = [(0, 1), (1, 2), (0, 2)]          # triangle B1
+    bcc2 = [(2, 3)]                           # bridge B2
+    bcc3 = [(3, 4), (4, 5), (3, 5)]           # triangle B3
+
+    for u, v in bcc1:
+        _draw_edge(ax_l, pos[u], pos[v], C_BLUE, lw=3.0)
+    for u, v in bcc2:
+        _draw_edge(ax_l, pos[u], pos[v], C_ORANGE, lw=3.5)
+    for u, v in bcc3:
+        _draw_edge(ax_l, pos[u], pos[v], C_GREEN, lw=3.0)
+
+    articulations = {2, 3}
+    for node, (x, y) in pos.items():
+        if node in articulations:
+            ring = mpatches.Circle((x, y), 0.36, color=C_ORANGE, zorder=3)
+            ax_l.add_patch(ring)
+            inner = mpatches.Circle((x, y), 0.26, color=C_INK, zorder=4)
+            ax_l.add_patch(inner)
+            ax_l.text(x, y, str(node), ha="center", va="center", fontsize=12,
+                      color="white", fontweight="bold", zorder=5)
+        else:
+            _draw_node(ax_l, x, y, str(node), C_INK, radius=0.26, fontsize=12)
+
+    ax_l.text(0.9, 3.15, "B1", color=C_BLUE, fontsize=13, fontweight="bold")
+    ax_l.text(2.75, 2.0, "B2", color=C_ORANGE, fontsize=13, fontweight="bold")
+    ax_l.text(4.9, 3.15, "B3", color=C_GREEN, fontsize=13, fontweight="bold")
+    ax_l.set_title("Двусвязные компоненты (BCC)", color=C_INK,
+                   fontsize=13, fontweight="bold", pad=8)
+
+    # ---- Right: block-cut tree  B1 - 2 - B2 - 3 - B3 ----
+    ax_r.set_xlim(-0.7, 8.7)
+    ax_r.set_ylim(0.2, 2.8)
+    chain = [
+        ("B1", C_BLUE, "block"),
+        ("2", C_ORANGE, "cut"),
+        ("B2", C_ORANGE, "block"),
+        ("3", C_ORANGE, "cut"),
+        ("B3", C_GREEN, "block"),
+    ]
+    xs = [0.0, 2.0, 4.0, 6.0, 8.0]
+    y = 1.5
+    for i in range(len(chain) - 1):
+        _draw_edge(ax_r, (xs[i], y), (xs[i + 1], y), C_GRAY, lw=2.2)
+    for (label, color, kind), x in zip(chain, xs):
+        if kind == "block":
+            sq = mpatches.FancyBboxPatch(
+                (x - 0.42, y - 0.42), 0.84, 0.84,
+                boxstyle="round,pad=0.04",
+                facecolor=color, edgecolor=C_INK, linewidth=1.5, zorder=4)
+            ax_r.add_patch(sq)
+            ax_r.text(x, y, label, ha="center", va="center", fontsize=12,
+                      color="white", fontweight="bold", zorder=5)
+        else:
+            ring = mpatches.Circle((x, y), 0.40, color=C_ORANGE, zorder=3)
+            ax_r.add_patch(ring)
+            inner = mpatches.Circle((x, y), 0.30, color=C_INK, zorder=4)
+            ax_r.add_patch(inner)
+            ax_r.text(x, y, label, ha="center", va="center", fontsize=12,
+                      color="white", fontweight="bold", zorder=5)
+
+    sq_patch = mpatches.Patch(color=C_BLUE, label="Узел-компонента (BCC)")
+    ap_patch = mpatches.Patch(color=C_ORANGE, label="Точка сочленения")
+    ax_r.legend(handles=[sq_patch, ap_patch], loc="lower center",
+                facecolor=C_PANEL, edgecolor=C_GRAY, fontsize=9, ncol=2)
+    ax_r.set_title("Block-cut дерево", color=C_INK,
+                   fontsize=13, fontweight="bold", pad=8)
+
+    _save(fig, "block_cut_tree.png")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_bridges()
     draw_disc_low()
     draw_articulations()
+    draw_block_cut_tree()
 
 
 if __name__ == "__main__":

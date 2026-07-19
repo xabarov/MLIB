@@ -103,9 +103,10 @@ def draw_chaining():
                     ha="left", va="center", fontsize=13, color=C_GRAY)
 
     alpha = len(keys) / m
-    ax.text(0.02, 0.02,
+    ax.set_ylim(-1.6, m + 0.5)
+    ax.text(0.3, -1.0,
             f"m = {m} слотов   |   n = {len(keys)} ключей   |   α = n/m = {alpha:.2f}",
-            transform=ax.transAxes,
+            ha="left", va="center",
             fontsize=11, color=C_INK,
             bbox=dict(boxstyle="round,pad=0.3", facecolor=C_PANEL, edgecolor=C_GRAY))
 
@@ -289,11 +290,63 @@ def draw_open_addressing():
     _save(fig, "open_addressing")
 
 
+def draw_birthday():
+    """Birthday paradox: P(collision) vs number of keys for m=365 slots."""
+    m = 365
+    ns = list(range(0, 101))
+    probs = []
+    p_no = 1.0
+    for n in ns:
+        if n == 0:
+            probs.append(0.0)
+            continue
+        p_no *= (m - (n - 1)) / m
+        probs.append(1.0 - p_no)
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.set_facecolor(C_BG)
+    fig.patch.set_facecolor(C_BG)
+
+    ax.plot(ns, probs, color=C_ORANGE, linewidth=2.5,
+            label="P(коллизия) при m = 365")
+
+    # Mark n = 23 (probability > 50%)
+    p23 = probs[23]
+    ax.axvline(x=23, color=C_BLUE, linestyle="--", linewidth=1.8)
+    ax.axhline(y=0.5, color=C_GRAY, linestyle=":", linewidth=1.4)
+    ax.plot(23, p23, "o", color=C_BLUE, markersize=8, zorder=5)
+    ax.annotate(f"n = 23:  P ≈ {p23:.2f}",
+                xy=(23, p23), xytext=(35, 0.42),
+                fontsize=11, color=C_BLUE, fontweight="bold",
+                arrowprops=dict(arrowstyle="->", color=C_BLUE, lw=1.5))
+
+    # sqrt(m) reference
+    sqrt_m = m ** 0.5
+    ax.axvline(x=sqrt_m, color=C_GREEN, linestyle="--", linewidth=1.5)
+    ax.text(sqrt_m + 1, 0.06, f"√m ≈ {sqrt_m:.0f}", color=C_GREEN,
+            fontsize=10, fontweight="bold")
+
+    ax.set_xlabel("Число ключей n", fontsize=12, color=C_INK)
+    ax.set_ylabel("Вероятность хотя бы одной коллизии", fontsize=12, color=C_INK)
+    ax.set_title("Парадокс дней рождения: m = 365 слотов", fontsize=13, color=C_INK)
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 1.02)
+    ax.grid(True, color=C_GRAY, alpha=0.4, linestyle=":")
+    ax.tick_params(colors=C_INK)
+    for spine in ax.spines.values():
+        spine.set_edgecolor(C_INK)
+    ax.legend(fontsize=10, loc="lower right", framealpha=0.9,
+              facecolor=C_BG, edgecolor=C_GRAY)
+
+    _save(fig, "birthday_paradox")
+
+
 def main():
     _apply_style()
     draw_chaining()
     draw_load_factor()
     draw_open_addressing()
+    draw_birthday()
 
 
 if __name__ == "__main__":

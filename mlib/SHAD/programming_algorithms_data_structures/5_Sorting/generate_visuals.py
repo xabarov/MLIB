@@ -24,7 +24,7 @@ def _apply_style(fig) -> None:
 def _save(fig, name: str) -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
     path = ASSETS / f"{name}.png"
-    fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=C_BG)
+    fig.savefig(path, dpi=180, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -297,12 +297,88 @@ def draw_sorting_comparison() -> None:
     _save(fig, "sorting_comparison")
 
 
+# ── 4. Decision tree for sorting three elements ──────────────────────────────
+
+def draw_decision_tree() -> None:
+    """Decision tree for sorting three elements a, b, c: 6 leaves, height 3."""
+    fig, ax = plt.subplots(figsize=(12, 6.5))
+    _apply_style(fig)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+    ax.set_xlim(0, 12.8)
+    ax.set_ylim(0.6, 7.2)
+
+    # name: (x, y, label, is_leaf)
+    nodes = {
+        "root": (6.0, 6.6, "a ≤ b ?", False),
+        "L":    (3.0, 5.0, "b ≤ c ?", False),
+        "R":    (9.0, 5.0, "a ≤ c ?", False),
+        "LL":   (1.4, 3.4, "a ≤ b ≤ c", True),
+        "LR":   (4.6, 3.4, "a ≤ c ?", False),
+        "RL":   (7.4, 3.4, "b ≤ a ≤ c", True),
+        "RR":   (10.6, 3.4, "b ≤ c ?", False),
+        "LRL":  (3.5, 1.8, "a ≤ c ≤ b", True),
+        "LRR":  (5.7, 1.8, "c ≤ a ≤ b", True),
+        "RRL":  (9.5, 1.8, "b ≤ c ≤ a", True),
+        "RRR":  (11.6, 1.8, "c ≤ b ≤ a", True),
+    }
+    edges = [
+        ("root", "L", "да"), ("root", "R", "нет"),
+        ("L", "LL", "да"), ("L", "LR", "нет"),
+        ("R", "RL", "да"), ("R", "RR", "нет"),
+        ("LR", "LRL", "да"), ("LR", "LRR", "нет"),
+        ("RR", "RRL", "да"), ("RR", "RRR", "нет"),
+    ]
+
+    BOX_W, BOX_H = 1.9, 0.6
+
+    for parent, child, lab in edges:
+        x0, y0 = nodes[parent][0], nodes[parent][1] - BOX_H / 2
+        x1, y1 = nodes[child][0], nodes[child][1] + BOX_H / 2
+        ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                    arrowprops=dict(arrowstyle="-", color=C_GRAY, lw=1.2))
+        mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+        ax.text(mx, my, lab, ha="center", va="center", fontsize=8,
+                color=C_GREEN if lab == "да" else C_ORANGE,
+                fontstyle="italic",
+                bbox=dict(boxstyle="round,pad=0.12", facecolor=C_BG,
+                          edgecolor="none"))
+
+    for _, (xc, yc, label, is_leaf) in nodes.items():
+        rect = mpatches.FancyBboxPatch(
+            (xc - BOX_W / 2, yc - BOX_H / 2), BOX_W, BOX_H,
+            boxstyle="round,pad=0.03",
+            linewidth=1.2, edgecolor=C_INK,
+            facecolor=C_GREEN if is_leaf else C_PANEL,
+        )
+        ax.add_patch(rect)
+        ax.text(xc, yc, label, ha="center", va="center",
+                fontsize=9, color=C_BG if is_leaf else C_INK,
+                fontweight="bold" if is_leaf else "normal",
+                fontfamily="monospace")
+
+    legend_items = [
+        mpatches.Patch(facecolor=C_PANEL, edgecolor=C_INK,
+                       label="Сравнение (внутренний узел)"),
+        mpatches.Patch(facecolor=C_GREEN, edgecolor=C_INK,
+                       label="Итоговый порядок (лист)"),
+    ]
+    ax.legend(handles=legend_items, loc="lower left", fontsize=8,
+              framealpha=0.8, facecolor=C_BG)
+
+    ax.set_title("Дерево решений для сортировки трёх элементов: "
+                 "3! = 6 листьев,  высота 3 ≥ log₂6 ≈ 2.58",
+                 fontsize=11, color=C_INK, pad=10)
+    _save(fig, "decision_tree_3")
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     draw_merge_sort_tree()
     draw_quicksort_partition()
     draw_sorting_comparison()
+    draw_decision_tree()
     print("All visuals generated.")
 
 

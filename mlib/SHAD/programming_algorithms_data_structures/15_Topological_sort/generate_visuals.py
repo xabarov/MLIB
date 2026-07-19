@@ -92,8 +92,11 @@ def draw_dag_topo():
         (5, 6),
     ]
 
-    # Topological order labels (position in sorted list, 1-indexed)
-    topo_label = {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7}
+    # DFS from A, neighbors in alphabetical order; timer ++ on entry and exit:
+    # A(in1) B(in2) D(in3) F(in4) G(in5,out6) F(out7) D(out8) B(out9)
+    # C(in10) E(in11) [F visited] E(out12) C(out13) A(out14)
+    # Topo order = sort by tout desc: A(14) C(13) E(12) B(9) D(8) F(7) G(6)
+    topo_label = {0: 1, 1: 4, 2: 2, 3: 5, 4: 3, 5: 6, 6: 7}
     node_names = ["A", "B", "C", "D", "E", "F", "G"]
 
     for u, v in edges:
@@ -109,13 +112,13 @@ def draw_dag_topo():
                 ha="center", va="center")
 
     # Legend
-    ax.text(0.5, 3.2, "Рёбра направлены слева направо (в топологическом порядке)",
+    ax.text(0.5, 3.2, "Рёбра направлены слева направо: для каждого ребра u→v позиция u меньше",
             fontsize=10, color=C_GRAY, ha="left")
-    ax.text(0.5, 2.95, "Оранжевые цифры — позиция в топологическом порядке (1..7)",
+    ax.text(0.5, 2.95, "Оранжевые цифры — позиция в топологическом порядке (по убыванию tout)",
             fontsize=10, color=C_GRAY, ha="left")
 
-    # Show tout values below nodes
-    tout_values = {0: 14, 1: 11, 2: 7, 3: 10, 4: 6, 5: 13, 6: 12}
+    # Show tout values below nodes (DFS from A, neighbors alphabetically)
+    tout_values = {0: 14, 1: 9, 2: 13, 3: 8, 4: 12, 5: 7, 6: 6}
     for node_id, (x, y) in pos.items():
         ax.text(x, y - 0.42, f"tout={tout_values[node_id]}",
                 fontsize=7.5, color=C_BLUE, ha="center", va="center", zorder=5)

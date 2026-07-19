@@ -317,12 +317,81 @@ def draw_knapsack():
 
 
 # ---------------------------------------------------------------------------
+# Visual 4: dependency scheme of a DP cell (Edit Distance)
+# dp[i][j] depends on three neighbours: top, left, diagonal
+# ---------------------------------------------------------------------------
+def draw_dp_dependencies():
+    fig, ax = plt.subplots(figsize=(9, 6))
+    _apply_style(fig, [ax])
+
+    cell = 1.6  # cell size
+    # Grid 3x3: rows (top->bottom) = i-1, i; cols = j-1, j
+    # Draw a 2x2 fragment of the table, centered
+    ox, oy = 2.0, 1.0  # origin (bottom-left of fragment)
+
+    labels = {
+        (0, 0): r"dp[i-1][j-1]",
+        (0, 1): r"dp[i-1][j]",
+        (1, 0): r"dp[i][j-1]",
+        (1, 1): r"dp[i][j]",
+    }
+    # (row, col): row 0 = i-1 (top), row 1 = i (bottom)
+    for (row, col), lbl in labels.items():
+        x = ox + col * cell
+        y = oy + (1 - row) * cell
+        is_target = (row, col) == (1, 1)
+        fc = C_ORANGE if is_target else C_PANEL
+        tc = C_BG if is_target else C_INK
+        rect = mpatches.FancyBboxPatch(
+            (x, y), cell * 0.92, cell * 0.92,
+            boxstyle="round,pad=0.03",
+            facecolor=fc, edgecolor=C_INK, linewidth=1.2, zorder=2)
+        ax.add_patch(rect)
+        ax.text(x + cell * 0.46, y + cell * 0.46, lbl,
+                ha="center", va="center", fontsize=11,
+                color=tc, fontweight="bold", zorder=3)
+
+    # Centers of the four cells
+    def center(row, col):
+        return (ox + col * cell + cell * 0.46, oy + (1 - row) * cell + cell * 0.46)
+
+    cx, cy = center(1, 1)          # target dp[i][j]
+    top_x, top_y = center(0, 1)    # dp[i-1][j]
+    left_x, left_y = center(1, 0)  # dp[i][j-1]
+    diag_x, diag_y = center(0, 0)  # dp[i-1][j-1]
+
+    # Arrows into dp[i][j] (start at source center edge, end near target center)
+    arrows = [
+        (top_x, top_y - 0.35, cx, cy + 0.45,
+         C_BLUE, "удаление\ns[i-1]  +1", cx + 0.85, (top_y + cy) / 2, "left"),
+        (left_x + 0.55, left_y, cx - 0.55, cy,
+         C_GREEN, "вставка\nt[j-1]  +1", left_x, cy - 1.15, "center"),
+        (diag_x + 0.42, diag_y - 0.32, cx - 0.42, cy + 0.38,
+         C_ORANGE, "совпадение +0\nзамена +1", ox - 0.15, diag_y - 0.95, "right"),
+    ]
+    for fx, fy, txx, tyy, col, txt, tx, ty, ha in arrows:
+        ax.annotate("", xy=(txx, tyy), xytext=(fx, fy),
+                    arrowprops=dict(arrowstyle="->", color=col, lw=2.4), zorder=4)
+        ax.text(tx, ty, txt, ha=ha, va="center", fontsize=10,
+                color=col, fontweight="bold", zorder=5)
+
+    ax.set_xlim(-0.3, 6.6)
+    ax.set_ylim(0.2, 4.8)
+    ax.set_title("Из каких ячеек вычисляется dp[i][j] в Edit Distance:\n"
+                 "сверху — удаление, слева — вставка, по диагонали — совпадение/замена",
+                 fontsize=11, color=C_INK, fontweight="bold", pad=10)
+    plt.tight_layout()
+    _save(fig, "dp_dependencies")
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 def main():
     draw_fib_tree()
     draw_edit_distance()
     draw_knapsack()
+    draw_dp_dependencies()
 
 
 if __name__ == "__main__":

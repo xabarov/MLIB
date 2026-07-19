@@ -1,1 +1,12 @@
-[{"name":"hero_greedy","prompt":"atmospheric editorial illustration of greedy algorithms, a figure at a crossroads choosing the brightest path among branching routes, abstract decision tree diagram, warm cream background, geometric nodes and edges in muted earth tones, no text in image","size":"1792x1024"}]
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "hero-greedy",
+      "filename_base": "hero_greedy",
+      "prompt": "atmospheric editorial illustration of greedy algorithms, a figure at a crossroads choosing the brightest path among branching routes, abstract decision tree diagram, warm cream background, geometric nodes and edges in muted earth tones, no text in image"
+    }
+  ]
+}

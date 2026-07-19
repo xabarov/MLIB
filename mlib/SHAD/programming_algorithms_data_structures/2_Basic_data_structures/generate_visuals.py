@@ -309,6 +309,85 @@ def draw_linked_list():
 
 
 # ---------------------------------------------------------------------------
+# 4. Vector capacity doubling (amortized push_back)
+# ---------------------------------------------------------------------------
+def draw_vector_growth():
+    """Удвоение capacity вектора: 9 операций push_back, копирования при удвоении."""
+    _apply_style()
+
+    # (size после push, capacity после push, скопировано элементов при realloc)
+    pushes = [
+        (1, 1, 0),
+        (2, 2, 1),
+        (3, 4, 2),
+        (4, 4, 0),
+        (5, 8, 4),
+        (6, 8, 0),
+        (7, 8, 0),
+        (8, 8, 0),
+        (9, 16, 8),
+    ]
+    max_cap = 16
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+
+    cell_w, cell_h = 0.5, 0.55
+    gap_x, gap_y = 0.06, 0.35
+    x0 = 2.1
+
+    ax.text(x0 + (max_cap * (cell_w + gap_x)) / 2, len(pushes) * (cell_h + gap_y) + 0.5,
+            "Рост std::vector: push_back и удвоение capacity",
+            ha="center", va="center", fontsize=13, fontweight="bold", color=C_INK)
+
+    total_copies = 0
+    for row, (size, cap, copied) in enumerate(pushes):
+        y = (len(pushes) - 1 - row) * (cell_h + gap_y)
+        # Подпись слева: номер операции
+        ax.text(x0 - 0.25, y + cell_h / 2, f"push #{size}",
+                ha="right", va="center", fontsize=9.5, color=C_INK,
+                fontfamily="monospace")
+        for k in range(cap):
+            x = x0 + k * (cell_w + gap_x)
+            is_new = (k == size - 1)
+            filled = k < size
+            face = C_ORANGE if is_new else (C_BLUE if filled else C_BG)
+            edge = C_INK if filled else C_GRAY
+            rect = mpatches.Rectangle((x, y), cell_w, cell_h,
+                                       linewidth=1.3, edgecolor=edge,
+                                       facecolor=face, zorder=3)
+            ax.add_patch(rect)
+        # Аннотация копирования справа
+        note_x = x0 + max_cap * (cell_w + gap_x) + 0.25
+        if copied:
+            total_copies += copied
+            ax.text(note_x, y + cell_h / 2,
+                    f"capacity {cap // 2} → {cap}, скопировано {copied}",
+                    ha="left", va="center", fontsize=9, color=C_ORANGE)
+        else:
+            ax.text(note_x, y + cell_h / 2, "без копирования — O(1)",
+                    ha="left", va="center", fontsize=9, color=C_GREEN)
+
+    # Легенда и итоговая формула
+    legend_items = [
+        mpatches.Patch(facecolor=C_ORANGE, edgecolor=C_INK, label="Новый элемент"),
+        mpatches.Patch(facecolor=C_BLUE, edgecolor=C_INK, label="Уже лежит в векторе"),
+        mpatches.Patch(facecolor=C_BG, edgecolor=C_GRAY, label="Свободная capacity"),
+    ]
+    ax.legend(handles=legend_items, loc="lower left",
+              bbox_to_anchor=(0.0, -0.09), fontsize=9, framealpha=0.0, ncol=3)
+    ax.text(x0, -0.75,
+            f"Всего копирований за 9 push_back: 1 + 2 + 4 + 8 = {total_copies} ≤ 2n  →  амортизированно O(1)",
+            ha="left", va="center", fontsize=10, color=C_INK, style="italic")
+
+    ax.set_xlim(0, x0 + max_cap * (cell_w + gap_x) + 3.6)
+    ax.set_ylim(-1.1, len(pushes) * (cell_h + gap_y) + 0.9)
+    _save(fig, "vector_growth.png")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def main():
@@ -316,6 +395,7 @@ def main():
     draw_stack_ops()
     draw_queue_circular()
     draw_linked_list()
+    draw_vector_growth()
     print("All visuals generated successfully.")
 
 

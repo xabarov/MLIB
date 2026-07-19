@@ -208,10 +208,77 @@ def draw_augmented_bst():
     ax.axis("off")
     ax.set_title(
         "Расширенное BST с полем size"
-        " — select(3): 3-й наименьший елемент (path выделен)",
+        " — select(3): 3-й наименьший элемент (путь выделен)",
         fontsize=12, color=C_INK, pad=10)
     plt.tight_layout()
     _save(fig, "bst_augmented")
+
+
+def _subtree(ax, x, y, label, color=C_PANEL, w=0.55, h=0.85):
+    """Draw a subtree as a triangle with a label inside."""
+    tri = mpatches.Polygon(
+        [(x, y), (x - w, y - h), (x + w, y - h)],
+        closed=True, facecolor=color, edgecolor=C_GRAY, linewidth=1.5, zorder=2)
+    ax.add_patch(tri)
+    ax.text(x, y - h * 0.62, label, ha="center", va="center",
+            fontsize=11, color=C_INK, fontweight="bold", zorder=3)
+
+
+def draw_avl_rotation():
+    """Right rotation around y: before (bf(y)=+2) and after (balance restored)."""
+    _apply_style()
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.5, 5.5))
+    fig.patch.set_facecolor(C_BG)
+
+    for ax in (ax1, ax2):
+        ax.set_facecolor(C_BG)
+        ax.set_xlim(0.0, 6.5)
+        ax.set_ylim(0.4, 5.6)
+        ax.set_aspect("equal")
+        ax.axis("off")
+
+    # --- Left panel: before rotation (left-heavy) ---
+    y1, x1 = (3.9, 4.9), (2.5, 3.7)
+    ax1.plot([y1[0], x1[0]], [y1[1], x1[1]], color=C_GRAY, lw=2, zorder=1)
+    ax1.plot([x1[0], 1.4], [x1[1], 2.6], color=C_GRAY, lw=2, zorder=1)
+    ax1.plot([x1[0], 3.5], [x1[1], 2.6], color=C_GRAY, lw=2, zorder=1)
+    ax1.plot([y1[0], 5.1], [y1[1], 3.8], color=C_GRAY, lw=2, zorder=1)
+    _subtree(ax1, 1.4, 2.6, "A")
+    _subtree(ax1, 3.5, 2.6, "B")
+    _subtree(ax1, 5.1, 3.8, "C")
+    _circle_node(ax1, *y1, "y", C_ORANGE)
+    _circle_node(ax1, *x1, "x", C_BLUE)
+    ax1.text(y1[0] + 0.55, y1[1] + 0.05, "bf(y) = +2", fontsize=9,
+             color=C_ORANGE, fontweight="bold")
+    ax1.text(3.25, 0.85, "Левое поддерево слишком высокое",
+             ha="center", fontsize=9, color=C_GRAY, style="italic")
+    ax1.set_title("До: дисбаланс в y (перевес слева)",
+                  fontsize=11, color=C_INK, pad=8)
+
+    # --- Right panel: after right rotation ---
+    x2, y2 = (3.2, 4.9), (4.6, 3.7)
+    ax2.plot([x2[0], 1.8], [x2[1], 3.8], color=C_GRAY, lw=2, zorder=1)
+    ax2.plot([x2[0], y2[0]], [x2[1], y2[1]], color=C_GRAY, lw=2, zorder=1)
+    ax2.plot([y2[0], 3.7], [y2[1], 2.6], color=C_GRAY, lw=2, zorder=1)
+    ax2.plot([y2[0], 5.5], [y2[1], 2.6], color=C_GRAY, lw=2, zorder=1)
+    _subtree(ax2, 1.8, 3.8, "A")
+    _subtree(ax2, 3.7, 2.6, "B")
+    _subtree(ax2, 5.5, 2.6, "C")
+    _circle_node(ax2, *x2, "x", C_BLUE)
+    _circle_node(ax2, *y2, "y", C_ORANGE)
+    ax2.text(x2[0] + 0.55, x2[1] + 0.05, "bf(x) = 0", fontsize=9,
+             color=C_GREEN, fontweight="bold")
+    ax2.text(3.25, 0.85, "Inorder-порядок сохранён: A < x < B < y < C",
+             ha="center", fontsize=9, color=C_GREEN, style="italic")
+    ax2.set_title("После rotateRight(y): x — новый корень",
+                  fontsize=11, color=C_INK, pad=8)
+
+    fig.text(0.5, 0.5, "→", ha="center", va="center",
+             fontsize=30, color=C_ORANGE)
+    fig.suptitle("Правое вращение: поддерево B «переезжает» от x к y",
+                 fontsize=12, color=C_INK, y=1.0, fontweight="bold")
+    plt.tight_layout()
+    _save(fig, "avl_rotation")
 
 
 def main():
@@ -219,6 +286,7 @@ def main():
     draw_bst()
     draw_bst_delete()
     draw_augmented_bst()
+    draw_avl_rotation()
     print("All visuals generated successfully.")
 
 

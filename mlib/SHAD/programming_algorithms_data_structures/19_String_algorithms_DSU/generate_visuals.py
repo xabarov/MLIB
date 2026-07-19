@@ -74,7 +74,7 @@ def draw_dsu():
         ax.set_ylim(-0.8, 4.5)
         ax.axis("off")
 
-    # --- LEFT: chain 0->1->2->3 (before path compression) ---
+    # --- LEFT: chain 0->1->2->3 plus 4,5 under root (before compression) ---
     chain_nodes = [(2.5, 3.5), (2.5, 2.5), (2.5, 1.5), (2.5, 0.5)]
     chain_labels = ["3\n(root)", "2", "1", "0"]
     chain_colors = [C_ORANGE, C_BLUE, C_BLUE, C_BLUE]
@@ -86,9 +86,15 @@ def draw_dsu():
             _arrow(ax_left, x, y + 0.35, chain_nodes[i - 1][0], chain_nodes[i - 1][1] - 0.35,
                    color=C_GRAY)
 
+    # nodes 4 and 5 already hang directly under root 3
+    for (x, y), lbl in [((1.0, 2.3), "4"), ((4.0, 2.3), "5")]:
+        _draw_node(ax_left, x, y, lbl, C_BLUE, fontsize=10)
+        _arrow(ax_left, x, y + 0.35, 2.5 - (2.5 - x) * 0.15, 3.5 - 0.4,
+               color=C_GRAY)
+
     ax_left.text(2.5, 4.1, "До Find(0)", ha="center", va="bottom",
                  fontsize=13, color=C_INK, fontweight="bold")
-    ax_left.text(2.5, -0.55, "parent = [1, 2, 3, 3]", ha="center", va="top",
+    ax_left.text(2.5, -0.55, "parent = [1, 2, 3, 3, 3, 3]", ha="center", va="top",
                  fontsize=10, color=C_GRAY, family="monospace")
 
     # annotation: find path
@@ -179,8 +185,8 @@ def draw_kmp():
     ax.text(mismatch_i * cell_w, pat_y - 0.5, "≠", ha="center", va="center",
             fontsize=14, color=C_ORANGE)
 
-    # State value above each text position (j values during scan)
-    j_states = [0, 1, 2, 3, 4, 2, 3, 4, 5]
+    # State value above each text position (j AFTER processing T[i])
+    j_states = [1, 2, 3, 4, 3, 4, 3, 4, 5]
     for i, st in enumerate(j_states):
         ax.text(i * cell_w, text_y + 1.0, f"j={st}", ha="center", va="center",
                 fontsize=9, color=C_BLUE)
@@ -318,11 +324,87 @@ def draw_trie():
     _save(fig, "trie_example")
 
 
+def draw_prefix_function():
+    """Prefix function table for ABABCABAB with prefix=suffix match shown."""
+    _apply_style()
+    s = "ABABCABAB"
+    pi = [0, 0, 1, 2, 0, 1, 2, 3, 4]
+    n = len(s)
+    cell_w = 1.0
+    box_h = 0.62
+
+    fig, ax = plt.subplots(figsize=(11, 4.6))
+    ax.set_facecolor(C_BG)
+    ax.set_xlim(-1.6, n * cell_w + 0.6)
+    ax.set_ylim(-2.6, 2.2)
+    ax.axis("off")
+
+    y_s = 1.0    # string row
+    y_pi = 0.1   # pi row
+    y_match = -1.6  # prefix=suffix illustration row
+
+    ax.text(-0.7, y_s, "s[i]:", ha="right", va="center", fontsize=12,
+            color=C_INK, fontweight="bold")
+    ax.text(-0.7, y_pi, "π[i]:", ha="right", va="center", fontsize=12,
+            color=C_INK, fontweight="bold")
+
+    for i, ch in enumerate(s):
+        x = i * cell_w
+        # index above
+        ax.text(x, y_s + 0.55, str(i), ha="center", va="center",
+                fontsize=8, color=C_GRAY)
+        # string cell
+        rect = mpatches.FancyBboxPatch(
+            (x - 0.45, y_s - box_h / 2), 0.9, box_h,
+            boxstyle="round,pad=0.05", linewidth=1,
+            edgecolor=C_GRAY, facecolor=C_PANEL, zorder=2)
+        ax.add_patch(rect)
+        ax.text(x, y_s, ch, ha="center", va="center",
+                fontsize=13, color=C_INK, fontweight="bold", zorder=3)
+        # pi cell (highlight the reset at i=4 and the max at i=8)
+        col = C_ORANGE if i in (4, 8) else C_BLUE
+        ax.text(x, y_pi, str(pi[i]), ha="center", va="center",
+                fontsize=12, color=col, fontweight="bold")
+
+    ax.annotate("π[4]=0: символ C\nне продолжает префикс",
+                xy=(4 * cell_w, y_pi - 0.25), xytext=(4 * cell_w, y_pi - 1.0),
+                ha="center", fontsize=8.5, color=C_ORANGE,
+                arrowprops=dict(arrowstyle="->", color=C_ORANGE, lw=1.2))
+
+    # Bottom: prefix ABAB (blue) vs suffix ABAB (orange) for i=8
+    ax.text(-0.7, y_match, "π[8]=4:", ha="right", va="center", fontsize=11,
+            color=C_INK, fontweight="bold")
+    for i, ch in enumerate(s):
+        x = i * cell_w
+        if i < 4:
+            edge, fill, tcol = C_BLUE, C_BG, C_BLUE       # prefix ABAB
+        elif i >= 5:
+            edge, fill, tcol = C_ORANGE, C_BG, C_ORANGE   # suffix ABAB
+        else:
+            edge, fill, tcol = C_GRAY, C_BG, C_GRAY
+        rect = mpatches.FancyBboxPatch(
+            (x - 0.45, y_match - box_h / 2), 0.9, box_h,
+            boxstyle="round,pad=0.05", linewidth=1.6,
+            edgecolor=edge, facecolor=fill, zorder=2)
+        ax.add_patch(rect)
+        ax.text(x, y_match, ch, ha="center", va="center",
+                fontsize=12, color=tcol, fontweight="bold", zorder=3)
+    ax.text(1.5 * cell_w, y_match - 0.65, "префикс ABAB", ha="center",
+            va="top", fontsize=9, color=C_BLUE)
+    ax.text(7.0 * cell_w, y_match - 0.65, "суффикс ABAB", ha="center",
+            va="top", fontsize=9, color=C_ORANGE)
+
+    ax.set_title("Префикс-функция строки ABABCABAB",
+                 fontsize=14, color=C_INK, fontweight="bold", pad=12)
+    _save(fig, "prefix_function")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_dsu()
     draw_kmp()
     draw_trie()
+    draw_prefix_function()
 
 
 if __name__ == "__main__":

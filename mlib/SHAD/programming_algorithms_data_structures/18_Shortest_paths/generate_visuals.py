@@ -87,13 +87,13 @@ def draw_dijkstra():
         {
             "title": "Шаг 2: закрепляем вершину 1 (d=2)",
             "settled": {0, 1},
-            "frontier": {2},
+            "frontier": {2, 3},
             "dist": {0: 0, 1: 2, 2: 3, 3: 9, 4: "∞", 5: "∞"},
         },
         {
             "title": "Шаг 3: закрепляем вершину 2 (d=3)",
             "settled": {0, 1, 2},
-            "frontier": {4},
+            "frontier": {3, 4},
             "dist": {0: 0, 1: 2, 2: 3, 3: 9, 4: 6, 5: "∞"},
         },
     ]
@@ -107,6 +107,7 @@ def draw_dijkstra():
         ax.set_facecolor(C_BG)
         ax.set_xlim(0.8, 8.2)
         ax.set_ylim(1.8, 5.3)
+        ax.set_aspect("equal")
         ax.axis("off")
         ax.set_title(snap["title"], fontsize=10, color=C_INK, pad=6)
 
@@ -161,11 +162,12 @@ def draw_bellman_ford():
 
     INF = "∞"
     # dist values per iteration for the 5-node example
-    # rows: iteration 0 (init), 1, 2, 3, 4
+    # (in-place relaxation, edges in order (0,1),(0,2),(1,2),(1,3),
+    #  (1,4),(2,3),(2,4),(3,1),(4,0),(4,3) — updates cascade in pass 1)
+    # rows: init, iteration 1, 2, 3 (no change -> early stop)
     table_data = [
         [0, INF, INF, INF, INF],
-        [0, 6,   7,   11,  2  ],
-        [0, 2,   7,   4,   -2 ],
+        [0, 2,   7,   4,   2  ],
         [0, 2,   7,   4,   -2 ],
         [0, 2,   7,   4,   -2 ],
     ]
@@ -173,8 +175,7 @@ def draw_bellman_ford():
     changed = [
         set(),
         {1, 2, 3, 4},
-        {1, 3, 4},
-        set(),
+        {4},
         set(),
     ]
 
@@ -191,7 +192,7 @@ def draw_bellman_ford():
     )
 
     col_labels = ["v=0", "v=1", "v=2", "v=3", "v=4"]
-    row_labels = ["Начало", "Итер. 1", "Итер. 2", "Итер. 3", "Итер. 4"]
+    row_labels = ["Начало", "Итер. 1", "Итер. 2", "Итер. 3 (стоп)"]
 
     cell_w = 1.2
     cell_h = 0.6
@@ -232,11 +233,11 @@ def draw_bellman_ford():
                     fontweight="bold" if is_changed else "normal",
                     zorder=3)
 
-    # Highlight annotation for iteration 2
+    # Highlight annotation for iteration 1 (cascade of relaxations)
     note_x = x0 + total_w + 0.15
-    note_y = y0 + (n_rows - 1 - 2) * cell_h + cell_h / 2
+    note_y = y0 + (n_rows - 1 - 1) * cell_h + cell_h / 2
     ax.annotate(
-        "Ребро (3,1,−2) улучшает d[1]:\n4+(−2)=2; d[4]=2+(−4)=−2",
+        "Каскад в итерации 1:\n(2,3,−3): d[3]=7−3=4,\nзатем (3,1,−2): d[1]=4−2=2",
         xy=(x0 + 1.5 * cell_w, note_y),
         xytext=(note_x, note_y),
         fontsize=8.5, color=C_INK, va="center",
@@ -338,11 +339,69 @@ def draw_algorithm_comparison():
     _save(fig, "algorithm_comparison")
 
 
+def draw_dijkstra_negative():
+    """Counterexample: Dijkstra fails with a negative edge (3 nodes)."""
+    _apply_style()
+    fig, (ax_l, ax_r) = plt.subplots(1, 2, figsize=(12, 4.6))
+    fig.patch.set_facecolor(C_BG)
+
+    pos = {0: (1.0, 1.5), 1: (5.0, 2.6), 2: (5.0, 0.4)}
+    edges = [(0, 1, "2"), (0, 2, "3"), (2, 1, "−2")]
+
+    def draw_graph(ax, edge_colors, node_colors, dist_lbl):
+        ax.set_facecolor(C_BG)
+        ax.set_xlim(0.0, 6.6)
+        ax.set_ylim(-0.5, 3.4)
+        ax.axis("off")
+        for (u, v, w), col in zip(edges, edge_colors):
+            x1, y1 = pos[u]
+            x2, y2 = pos[v]
+            dx, dy = x2 - x1, y2 - y1
+            length = (dx**2 + dy**2) ** 0.5
+            s = 0.36 / length
+            _draw_arrow(ax, x1 + dx * s, y1 + dy * s,
+                        x2 - dx * s, y2 - dy * s, color=col, lw=2.2)
+            ax.text((x1 + x2) / 2 + 0.15, (y1 + y2) / 2 + 0.18, w,
+                    ha="center", va="bottom", fontsize=11,
+                    color=col, fontweight="bold",
+                    bbox=dict(facecolor=C_BG, edgecolor="none", pad=1))
+        for node, (x, y) in pos.items():
+            _draw_node(ax, x, y, node, node_colors[node])
+            ax.text(x, y - 0.55, dist_lbl[node], ha="center", va="center",
+                    fontsize=9, color=C_INK)
+
+    # Left: what Dijkstra does (settles 1 with d=2 too early)
+    draw_graph(
+        ax_l,
+        edge_colors=[C_GRAY, C_GRAY, C_ORANGE],
+        node_colors={0: C_GREEN, 1: C_GREEN, 2: C_GREEN},
+        dist_lbl={0: "d=0 (1-й)", 1: "d=2 (2-й!) — ошибка", 2: "d=3 (3-й)"},
+    )
+    ax_l.set_title("Дийкстра: вершина 1 закреплена с d=2\nдо обработки ребра 2→1",
+                   fontsize=10.5, color=C_INK, pad=6)
+
+    # Right: true shortest path 0 -> 2 -> 1 of length 1
+    draw_graph(
+        ax_r,
+        edge_colors=[C_GRAY, C_BLUE, C_BLUE],
+        node_colors={0: C_BLUE, 1: C_BLUE, 2: C_BLUE},
+        dist_lbl={0: "δ=0", 1: "δ=1 (путь 0→2→1)", 2: "δ=3"},
+    )
+    ax_r.set_title("Истинные расстояния:\nкратчайший путь до 1 идёт через 2",
+                   fontsize=10.5, color=C_INK, pad=6)
+
+    fig.suptitle("Почему Дийкстре нужны неотрицательные веса",
+                 fontsize=13, color=C_INK, fontweight="bold", y=1.02)
+    plt.tight_layout()
+    _save(fig, "dijkstra_negative")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_dijkstra()
     draw_bellman_ford()
     draw_algorithm_comparison()
+    draw_dijkstra_negative()
     print("All visuals generated successfully.")
 
 

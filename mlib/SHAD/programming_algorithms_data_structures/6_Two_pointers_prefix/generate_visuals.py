@@ -32,7 +32,7 @@ def _apply_style(fig, ax_list):
 
 def _save(fig, name: str):
     path = ASSETS / f"{name}.png"
-    fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=C_BG)
+    fig.savefig(path, dpi=180, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -43,13 +43,13 @@ def _save(fig, name: str):
 def draw_two_pointers():
     arr = [1, 2, 3, 4, 5, 6, 7, 8]
     n = len(arr)
-    target = 9
+    target = 11
 
     # Steps: (l, r, label)
     steps = [
         (0, 7, f"A[0]+A[7] = {arr[0]}+{arr[7]} = {arr[0]+arr[7]} < {target}  →  l++"),
-        (1, 7, f"A[1]+A[7] = {arr[1]}+{arr[7]} = {arr[1]+arr[7]} > {target}  →  r--"),
-        (1, 6, f"A[1]+A[6] = {arr[1]}+{arr[6]} = {arr[1]+arr[6]} = {target}  →  найдено!"),
+        (1, 7, f"A[1]+A[7] = {arr[1]}+{arr[7]} = {arr[1]+arr[7]} < {target}  →  l++"),
+        (2, 7, f"A[2]+A[7] = {arr[2]}+{arr[7]} = {arr[2]+arr[7]} = {target}  →  найдено!"),
     ]
 
     cell_w = 0.9
@@ -57,7 +57,7 @@ def draw_two_pointers():
     fig, axes = plt.subplots(len(steps), 1, figsize=(10, 5))
     _apply_style(fig, axes)
 
-    fig.suptitle("Метод двух указателей: поиск пары с суммой 9",
+    fig.suptitle(f"Метод двух указателей: поиск пары с суммой {target}",
                  fontsize=13, color=C_INK, fontweight="bold", y=1.01)
 
     for _, (ax, (l, r, label)) in enumerate(zip(axes, steps)):
@@ -273,12 +273,114 @@ def draw_2d_prefix():
 
 
 # ---------------------------------------------------------------------------
+# Visual 4: Monotonic deque — sliding window minimum trace
+# ---------------------------------------------------------------------------
+def draw_monotonic_deque():
+    A = [3, 1, 2, 5, 4]
+    n = len(A)
+    k = 3
+
+    # Simulate and record state after each r
+    steps = []  # (r, deque_indices, min_or_None, note)
+    from collections import deque
+    dq = deque()
+    for r in range(n):
+        note_parts = []
+        while dq and dq[0] <= r - k:
+            note_parts.append(f"индекс {dq[0]} вне окна → pop_front")
+            dq.popleft()
+        while dq and A[dq[-1]] >= A[r]:
+            note_parts.append(f"A[{dq[-1]}]={A[dq[-1]]} ≥ A[{r}]={A[r]} → pop_back")
+            dq.pop()
+        dq.append(r)
+        cur_min = A[dq[0]] if r >= k - 1 else None
+        steps.append((r, list(dq), cur_min,
+                      ";  ".join(note_parts) if note_parts else "просто push_back"))
+
+    cell_w = 0.9
+    cell_h = 0.62
+    fig, axes = plt.subplots(n, 1, figsize=(11, 8.2))
+    _apply_style(fig, axes)
+    fig.suptitle(f"Монотонная дека: минимум в окне k = {k} для A = {A}",
+                 fontsize=13, color=C_INK, fontweight="bold", y=1.0)
+
+    for ax, (r, dq_state, cur_min, note) in zip(axes, steps):
+        ax.set_xlim(-0.5, 13.5)
+        ax.set_ylim(-0.75, cell_h + 0.75)
+        ax.set_aspect("equal")
+
+        win_l = max(0, r - k + 1)
+        # --- array cells ---
+        for i, val in enumerate(A):
+            x = i * cell_w
+            in_window = win_l <= i <= r
+            if i == r:
+                fc = C_ORANGE
+            elif in_window:
+                fc = C_PANEL
+            else:
+                fc = C_BG
+            rect = mpatches.Rectangle((x, 0), cell_w * 0.92, cell_h,
+                                      facecolor=fc,
+                                      edgecolor=C_INK if in_window else C_GRAY,
+                                      linewidth=1.2 if in_window else 0.8,
+                                      zorder=2)
+            ax.add_patch(rect)
+            ax.text(x + cell_w * 0.46, cell_h / 2, str(val),
+                    ha="center", va="center", fontsize=11,
+                    color=C_BG if i == r else C_INK,
+                    fontweight="bold" if in_window else "normal")
+            ax.text(x + cell_w * 0.46, -0.25, f"[{i}]",
+                    ha="center", va="center", fontsize=7, color=C_GRAY)
+
+        ax.text(-0.4, cell_h / 2, f"r={r}", ha="right", va="center",
+                fontsize=10, color=C_ORANGE, fontweight="bold")
+
+        # --- deque contents ---
+        dq_x0 = 5.6
+        ax.text(dq_x0 - 0.15, cell_h / 2, "дека:", ha="right", va="center",
+                fontsize=9, color=C_INK)
+        for j, idx in enumerate(dq_state):
+            x = dq_x0 + j * cell_w * 0.8
+            is_front = (j == 0)
+            rect = mpatches.Rectangle((x, 0.06), cell_w * 0.7, cell_h * 0.82,
+                                      facecolor=C_GREEN if is_front and r >= k - 1 else C_BLUE,
+                                      edgecolor=C_INK, linewidth=1.0, zorder=2)
+            ax.add_patch(rect)
+            ax.text(x + cell_w * 0.35, cell_h / 2, f"{A[idx]}",
+                    ha="center", va="center", fontsize=10,
+                    color=C_BG, fontweight="bold")
+            ax.text(x + cell_w * 0.35, -0.25, f"[{idx}]",
+                    ha="center", va="center", fontsize=7, color=C_GRAY)
+
+        # --- min output ---
+        min_x = 8.6
+        if cur_min is not None:
+            ax.text(min_x, cell_h / 2,
+                    f"min окна [{win_l}..{r}] = {cur_min}",
+                    ha="left", va="center", fontsize=9.5,
+                    color=C_GREEN, fontweight="bold")
+        else:
+            ax.text(min_x, cell_h / 2, "окно ещё не заполнено",
+                    ha="left", va="center", fontsize=9, color=C_GRAY,
+                    style="italic")
+
+        # --- note ---
+        ax.text(min_x, -0.42, note, ha="left", va="center",
+                fontsize=8, color=C_INK, style="italic")
+
+    plt.tight_layout()
+    _save(fig, "monotonic_deque")
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 def main():
     draw_two_pointers()
     draw_prefix_sums()
     draw_2d_prefix()
+    draw_monotonic_deque()
 
 
 if __name__ == "__main__":

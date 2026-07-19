@@ -33,7 +33,7 @@ def _apply_style():
 def _save(fig, name):
     ASSETS.mkdir(parents=True, exist_ok=True)
     path = ASSETS / f"{name}.png"
-    fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=C_BG)
+    fig.savefig(path, dpi=180, bbox_inches="tight", facecolor=C_BG)
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -439,10 +439,90 @@ def draw_build_heap():
     _save(fig, "build_heap")
 
 
+def draw_heap_sort():
+    """Phase 2 of Heap-Sort on max-heap [7,3,4,1,2]: extract max to the end."""
+    _apply_style()
+
+    # (array, heap_size, swapped_pair, note)
+    states = [
+        ([7, 3, 4, 1, 2], 5, None,
+         "Max-heap построена (фаза 1)"),
+        ([4, 3, 2, 1, 7], 4, (0, 4),
+         "swap(h[0], h[4]): 7 уходит в конец;  SiftDown: 2↔4"),
+        ([3, 1, 2, 4, 7], 3, (0, 3),
+         "swap(h[0], h[3]): 4 на место;  SiftDown: 1↔3"),
+        ([2, 1, 3, 4, 7], 2, (0, 2),
+         "swap(h[0], h[2]): 3 на место;  2 > 1 — SiftDown не нужен"),
+        ([1, 2, 3, 4, 7], 1, (0, 1),
+         "swap(h[0], h[1]): готово — массив отсортирован"),
+    ]
+
+    n = 5
+    box_w = 0.78
+    box_h = 0.55
+    row_gap = 1.25
+
+    fig, ax = plt.subplots(figsize=(11, 7))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.set_xlim(-4.9, 8.6)
+    ax.set_ylim(-0.8, len(states) * row_gap + 0.4)
+    ax.axis("off")
+    ax.set_title("Heap-Sort, фаза 2: максимум каждый раз уходит в конец массива",
+                 fontsize=13, fontweight="bold", color=C_INK, pad=12)
+
+    for row_idx, (arr, heap_size, swapped, note) in enumerate(states):
+        y = (len(states) - 1 - row_idx) * row_gap
+
+        # left label
+        label = "старт" if row_idx == 0 else f"size={heap_size}"
+        ax.text(-4.7, y, label, ha="left", va="center",
+                fontsize=10, color=C_INK, fontweight="bold")
+
+        for i, val in enumerate(arr):
+            x = i * (box_w + 0.12)
+            in_heap = i < heap_size
+            if swapped and i in swapped:
+                bcolor = C_ORANGE
+                tcolor = C_INK
+            elif in_heap:
+                bcolor = C_BLUE
+                tcolor = "white"
+            else:
+                bcolor = C_GREEN
+                tcolor = "white"
+            _draw_array_box(ax, x, y, val, width=box_w, height=box_h,
+                            box_color=bcolor, text_color=tcolor,
+                            idx=i if row_idx == 0 else None)
+
+        # separator between heap part and sorted part
+        if heap_size < n:
+            sep_x = (heap_size - 1) * (box_w + 0.12) + box_w / 2 + 0.06
+            ax.plot([sep_x, sep_x], [y - box_h / 2 - 0.08, y + box_h / 2 + 0.08],
+                    color=C_INK, lw=1.8, linestyle="--", zorder=4)
+
+        # note
+        ax.text(4.6, y, note, ha="left", va="center",
+                fontsize=9, color=C_INK, style="italic")
+
+    patches = [
+        mpatches.Patch(color=C_BLUE, label="Куча (неотсортированная часть)"),
+        mpatches.Patch(color=C_ORANGE, label="Обменянные элементы"),
+        mpatches.Patch(color=C_GREEN, label="Отсортированный суффикс"),
+    ]
+    ax.legend(handles=patches, loc="lower left", bbox_to_anchor=(0.0, -0.08),
+              fontsize=9, ncol=3, framealpha=0.9,
+              facecolor=C_BG, edgecolor=C_GRAY)
+
+    plt.tight_layout(pad=0.8)
+    _save(fig, "heap_sort_phases")
+
+
 def main():
     draw_heap_structure()
     draw_sift_down()
     draw_build_heap()
+    draw_heap_sort()
 
 
 if __name__ == "__main__":

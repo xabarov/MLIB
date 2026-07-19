@@ -37,10 +37,11 @@ C_ORANGE = "#d97757"
 C_BLUE = "#6a9bcc"
 C_GREEN = "#788c5d"
 
-# Graph definition (8 nodes, 3 + 1 SCCs)
+# Graph definition (8 nodes, 4 SCCs)
 # SCC A = {0,1,2}, SCC D = {3}, SCC B = {4,5}, SCC C = {6,7}
 # Edges within SCCs: 0->1, 1->2, 2->0 ; 4->5, 5->4 ; 6->7, 7->6
-# Cross-SCC edges: 2->3, 3->1, 3->2(within A? no — 3 is alone), 4->3, 3->6, 5->6
+# Cross-SCC edges: 2->3 (A->D), 4->3 (B->D), 3->6 (D->C), 5->6 (B->C)
+# NB: no edge out of 3 back into {0,1,2} — otherwise 3 would join SCC A
 
 NODE_POS = {
     0: (1.0, 2.5),
@@ -62,7 +63,6 @@ EDGES_INTRA = [
 EDGES_CROSS = [
     (2, 3),   # A -> D
     (4, 3),   # B -> D
-    (3, 1),   # D -> A
     (3, 6),   # D -> C
     (5, 6),   # B -> C
 ]
@@ -87,11 +87,10 @@ for scc_name, members in SCC_MEMBERS.items():
         NODE_SCC[node] = scc_name
 
 
-def _draw_arrow(ax, p1, p2, color, lw=1.5, style="solid", radius=0.0):
+def _draw_arrow(ax, p1, p2, color, lw=1.5, style="solid", radius=0.0, r=0.22):
     dx = p2[0] - p1[0]
     dy = p2[1] - p1[1]
     dist = (dx**2 + dy**2) ** 0.5
-    r = 0.22
     sx = p1[0] + dx / dist * r
     sy = p1[1] + dy / dist * r
     ex = p2[0] - dx / dist * r
@@ -188,12 +187,11 @@ def draw_kosaraju():
     fig.suptitle("Алгоритм Косарайю: два прохода DFS", fontsize=13,
                  fontweight="bold", color=C_INK)
 
-    # Finish order from pass 1 (manual trace)
-    # DFS from 0: finishes: 3(t=4), then 2(t=5 after 3), then 1(t=6), then 0(t=7)
-    # DFS from 4: finishes: 6(t=?), 7(t=?), 5(t=?), 4(t=?)
-    # Simplified order array index (position in order vector):
-    # order = [3, 2, 1, 0, 7, 6, 5, 4] (approx)
-    FINISH_ORDER = {0: 4, 1: 3, 2: 2, 3: 1, 4: 8, 5: 7, 6: 6, 7: 5}
+    # Finish order from pass 1 (manual trace, DFS from 0 then from 4):
+    # DFS(0): 0->1->2->(0 visited)->3->6->7; finishes 7, 6, 3, 2, 1, 0
+    # DFS(4): 4->(3 visited)->5; finishes 5, 4
+    # order (по времени завершения) = [7, 6, 3, 2, 1, 0, 5, 4]
+    FINISH_ORDER = {7: 1, 6: 2, 3: 3, 2: 4, 1: 5, 0: 6, 5: 7, 4: 8}
 
     # Pass 2 SCC colors (DFS on G^T from 4 first -> SCC B, then 0 -> SCC A, etc.)
     PASS2_COLOR = {
@@ -319,15 +317,13 @@ def draw_condensation():
         "B": "{4,5}",
         "C": "{6,7}",
     }
-    # Edges in condensation: A->D, D->A(? no, 3->1 means D->A), B->D(4->3), D->C, B->C
+    # Edges in condensation (a DAG):
     # A(={0,1,2}) -> D(={3}) via edge 2->3
-    # D(={3}) -> A(={0,1,2}) via edge 3->1
     # B(={4,5}) -> D(={3}) via edge 4->3
     # D(={3}) -> C(={6,7}) via edge 3->6
     # B(={4,5}) -> C(={6,7}) via edge 5->6
     COND_EDGES = [
         ("A", "D"),
-        ("D", "A"),
         ("B", "D"),
         ("D", "C"),
         ("B", "C"),
@@ -336,8 +332,7 @@ def draw_condensation():
     for u_scc, v_scc in COND_EDGES:
         pu = COND_POS[u_scc]
         pv = COND_POS[v_scc]
-        rad = 0.2 if (u_scc, v_scc) in [("A", "D"), ("D", "A")] else 0.0
-        _draw_arrow(ax1, pu, pv, C_INK, lw=1.8, radius=rad)
+        _draw_arrow(ax1, pu, pv, C_INK, lw=1.8, radius=0.0, r=0.55)
 
     for scc_name, pos in COND_POS.items():
         box_w, box_h = 1.1, 0.55

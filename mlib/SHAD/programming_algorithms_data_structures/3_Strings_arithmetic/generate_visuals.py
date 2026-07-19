@@ -318,11 +318,113 @@ def draw_bigint_multiplication():
     _save(fig, "bigint_multiplication.png")
 
 
+# ---------------------------------------------------------------------------
+# Диаграмма 4: Деление длинного на короткое (1000 ÷ 7) — поток остатка
+# ---------------------------------------------------------------------------
+
+def draw_bigint_division():
+    _apply_style()
+
+    # 1000 / 7: идём от старшего разряда к младшему
+    # r=0: cur=0*10+1=1  -> q=0, r=1
+    #      cur=1*10+0=10 -> q=1, r=3
+    #      cur=3*10+0=30 -> q=4, r=2
+    #      cur=2*10+0=20 -> q=2, r=6
+    digits = [1, 0, 0, 0]
+    steps = [
+        (0, 1,  0, 1),   # (r_in, cur, q, r_out)
+        (1, 10, 1, 3),
+        (3, 30, 4, 2),
+        (2, 20, 2, 6),
+    ]
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    fig.patch.set_facecolor(C_BG)
+    ax.set_facecolor(C_BG)
+    ax.axis("off")
+
+    col_w   = 2.1
+    x0      = 0.9
+    y_digit = 3.6
+    y_cur   = 2.55
+    y_q     = 1.5
+    cell_w, cell_h = 0.75, 0.6
+
+    ax.text(x0 + 2 * col_w, 4.6, "Деление столбиком: 1000 ÷ 7 (от старшего разряда к младшему)",
+            ha="center", va="center", fontsize=12.5, fontweight="bold", color=C_INK)
+
+    # Метки строк слева
+    ax.text(x0 - 0.55, y_digit + cell_h / 2, "разряд a[i]", ha="right", va="center",
+            fontsize=9.5, color=C_GRAY)
+    ax.text(x0 - 0.55, y_cur + cell_h / 2, "cur = r·10 + a[i]", ha="right", va="center",
+            fontsize=9.5, color=C_GRAY)
+    ax.text(x0 - 0.55, y_q + cell_h / 2, "цифра частного\ncur / 7", ha="right", va="center",
+            fontsize=9.5, color=C_GRAY)
+
+    for i, (d, (r_in, cur, q, r_out)) in enumerate(zip(digits, steps)):
+        cx = x0 + i * col_w
+
+        # Разряд делимого
+        rect = mpatches.Rectangle((cx, y_digit), cell_w, cell_h,
+                                   facecolor=C_PANEL, edgecolor=C_BLUE, linewidth=1.8)
+        ax.add_patch(rect)
+        ax.text(cx + cell_w / 2, y_digit + cell_h / 2, str(d),
+                ha="center", va="center", fontsize=14, color=C_INK,
+                fontweight="bold", fontfamily="monospace")
+
+        # cur
+        rect = mpatches.Rectangle((cx, y_cur), cell_w, cell_h,
+                                   facecolor=C_BG, edgecolor=C_INK, linewidth=1.3,
+                                   linestyle="--")
+        ax.add_patch(rect)
+        ax.text(cx + cell_w / 2, y_cur + cell_h / 2, str(cur),
+                ha="center", va="center", fontsize=12, color=C_INK,
+                fontfamily="monospace")
+        ax.annotate("", xy=(cx + cell_w / 2, y_cur + cell_h),
+                    xytext=(cx + cell_w / 2, y_digit),
+                    arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.2))
+
+        # Цифра частного
+        rect = mpatches.Rectangle((cx, y_q), cell_w, cell_h,
+                                   facecolor=C_GREEN, edgecolor=C_INK, linewidth=1.5)
+        ax.add_patch(rect)
+        ax.text(cx + cell_w / 2, y_q + cell_h / 2, str(q),
+                ha="center", va="center", fontsize=14, color="white",
+                fontweight="bold", fontfamily="monospace")
+        ax.annotate("", xy=(cx + cell_w / 2, y_q + cell_h),
+                    xytext=(cx + cell_w / 2, y_cur),
+                    arrowprops=dict(arrowstyle="->", color=C_GRAY, lw=1.2))
+
+        # Остаток, уходящий в следующий столбец
+        if i < len(digits) - 1:
+            ax.annotate(f"r = {r_out}",
+                        xy=(cx + col_w + cell_w / 2, y_cur + cell_h + 0.12),
+                        xytext=(cx + cell_w + 0.08, y_cur + cell_h / 2 + 0.35),
+                        fontsize=10, color=C_ORANGE, fontweight="bold",
+                        arrowprops=dict(arrowstyle="->", color=C_ORANGE, lw=1.6,
+                                        connectionstyle="arc3,rad=-0.35"))
+
+    # Итог: остаток последнего шага + частное
+    last_x = x0 + (len(digits) - 1) * col_w
+    ax.text(last_x + cell_w + 0.35, y_cur + cell_h / 2,
+            "r = 6\n(итоговый\nостаток)", ha="left", va="center",
+            fontsize=10, color=C_ORANGE, fontweight="bold")
+    ax.text(x0 + 2 * col_w, 0.55,
+            "Частное: 0142 → trim() → 142,  остаток 6.   Проверка: 142·7 + 6 = 1000",
+            ha="center", va="center", fontsize=11, color=C_INK, style="italic")
+
+    ax.set_xlim(-1.6, x0 + 4 * col_w + 1.0)
+    ax.set_ylim(0.1, 5.0)
+    fig.tight_layout()
+    _save(fig, "bigint_division.png")
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
     draw_string_layout()
     draw_bigint_addition()
     draw_bigint_multiplication()
+    draw_bigint_division()
     print("Все диаграммы сгенерированы.")
 
 
