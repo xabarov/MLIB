@@ -54,7 +54,8 @@ essays/          не учебное: эссе о спирали, шаблон P
 не подтвердил заголовок картинки — меняется заголовок, а не данные.
 
 Готово: `ml/basics/classification-vs-regression`,
-`ml-algorithms/deep-learning/computer-vision/object-detection-architectures`.
+`ml-algorithms/deep-learning/computer-vision/object-detection-architectures`,
+`ml-algorithms/deep-learning/computer-vision/detection-metrics`.
 
 `deep-learning/` разбит на блоки `architectures/` (строительные блоки) и
 `computer-vision/`, `nlp/`, `reinforcement-learning/` (применения) — по образцу

@@ -31,6 +31,7 @@
 
 - [`ml/basics/classification-vs-regression/`](ml/basics/classification-vs-regression/)
 - [`ml-algorithms/deep-learning/computer-vision/object-detection-architectures/`](ml-algorithms/deep-learning/computer-vision/object-detection-architectures/)
+- [`ml-algorithms/deep-learning/computer-vision/detection-metrics/`](ml-algorithms/deep-learning/computer-vision/detection-metrics/)
 
 ## Соответствие главам книги
 

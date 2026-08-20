@@ -162,4 +162,4 @@ $$\mathrm{IoU}(A, B) = \frac{|A \cap B|}{|A \cup B|}$$
 
 - [`generate_visuals.py`](generate_visuals.py) — код всех диаграмм; IoU, шаги NMS и венгерское сопоставление считаются на реальных координатах
 - Смежные темы: [Self-Attention and Transformers](../../architectures/Self-Attention%20and%20Transformers.md), [CNN Filter Pooling](../../architectures/CNN%20Filter%20Pooling.md), [Transfer Learning and GANs](../../architectures/Transfer%20Learning%20and%20GANs.md)
-- Метрики детекции (IoU, NMS, mAP) вынесены в отдельную тему — она ещё не написана
+- [Метрики детекции: IoU, PR-кривая, AP и mAP](../detection-metrics/lesson.md) — как измеряют то, что здесь строится

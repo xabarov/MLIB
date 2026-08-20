@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "detection-metrics-hero-overlap-measure",
+      "filename_base": "hero_detection_metrics",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on evaluating object detectors. Visual metaphor only: two large overlapping rectangular outlines of slightly different size and position, their shared overlap region filled with a solid warm terracotta tone while the union area around it is filled with a much paler tint, so the picture reads as a ratio of one area to another. Nearby, a small stack of similar rectangle pairs with progressively smaller overlaps recedes into the background, suggesting a scale of agreement from near-perfect to none. Warm paper background, deep warm ink for the rectangle outlines, muted warm gray for the receding pairs, terracotta reserved for the single highlighted overlap. Soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no axes, no percentage marks, no rulers with tick marks, no charts."
+    }
+  ]
+}
