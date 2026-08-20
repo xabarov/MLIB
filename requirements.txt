@@ -1,0 +1,19 @@
+# Зависимости для генерации контента: диаграммы, иллюстрации, ноутбуки.
+# Установка:  .venv/bin/python -m pip install -r requirements.txt
+# Инструменты разработки (ruff, playwright) — в requirements-dev.txt
+
+# генераторы из tools/
+requests>=2.32
+pillow>=11.0
+
+# диаграммы и эксперименты в темах
+numpy>=2.0
+matplotlib>=3.9
+pandas>=2.2
+seaborn>=0.13
+scikit-learn>=1.5
+
+# исполняемые ноутбуки (notebook.ipynb в темах трека ml-interviews)
+ipykernel>=6.29
+nbformat>=5.10
+nbclient>=0.10

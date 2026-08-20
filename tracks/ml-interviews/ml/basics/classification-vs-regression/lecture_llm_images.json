@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "classification-vs-regression-hero-ramp-terraces",
+      "filename_base": "hero_classification_vs_regression",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level machine learning lecture. Visual metaphor only: a single long surface that begins on the left as a perfectly smooth continuous ramp and gradually transforms on the right into a staircase of a few wide flat terraces. Small round spheres rest on the smooth left side at freely varying heights, while on the terraced right side identical spheres snap onto a small number of separate flat levels. The transition between smooth slope and discrete steps happens gently across the middle of the frame. Warm paper background, deep warm ink for the main surface, one terracotta accent on the spheres of the terraced side and one dusty blue accent on the spheres of the smooth side. Soft diffuse light, gentle cast shadows, generous negative space, premium academic magazine style, single clear focal area. Absolutely no text, no letters, no digits, no labels, no axes, no grid lines."
+    }
+  ]
+}

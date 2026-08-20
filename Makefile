@@ -8,7 +8,7 @@ PYTHON_LINT_PATHS := tools apps/interactive/scripts
 .PHONY: help
 help:
 	@printf "Available targets:\n"
-	@printf "  setup-python      Install Python dev tools into .venv\n"
+	@printf "  setup-python      Install content + dev dependencies into .venv\n"
 	@printf "  lint-python       Run ruff checks for maintained Python tooling\n"
 	@printf "  lint-python-all   Run ruff checks for the whole repository\n"
 	@printf "  format-python     Run ruff formatter\n"
@@ -29,7 +29,7 @@ help:
 
 .PHONY: setup-python
 setup-python:
-	$(PYTHON) -m pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install -r requirements.txt -r requirements-dev.txt
 
 .PHONY: lint-python
 lint-python:

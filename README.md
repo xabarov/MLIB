@@ -25,12 +25,15 @@ cd /home/roman/Documents/ML/MLIB
 .venv/bin/python --version
 ```
 
-The local `.venv/` is intentionally ignored by git. Python Playwright is
-installed there for browser checks:
+The local `.venv/` is intentionally ignored by git. Recreate it with:
 
 ```bash
-.venv/bin/python -m pip install playwright
+python3 -m venv .venv
+make setup-python     # requirements.txt + requirements-dev.txt
 ```
+
+`requirements.txt` holds what the content needs (numpy, matplotlib, scikit-learn,
+notebook execution); `requirements-dev.txt` holds tooling (ruff, playwright).
 
 On this machine, Playwright can use the system Chromium at `/snap/bin/chromium`;
 there is no need to commit browser binaries.
