@@ -1,0 +1,35 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "cover-ascending-spiral",
+      "filename_base": "01_cover_spiral",
+      "prompt": "16:9 editorial cover illustration for an essay on the dialectics of programming. A single elegant ascending spiral (a helix seen slightly from the side) rising upward, each loop a little wider and higher than the one below, suggesting return-at-a-higher-level rather than a flat circle. Along the rising spiral, three subtle nodes glow softly to mark three turns. Calm, premium academic feel, lots of empty warm paper space around the spiral. Deep warm ink for the spiral line, one terracotta accent node, one dusty blue accent node. No readable text, no digits, no formulas, no UI."
+    },
+    {
+      "slug": "three-beats-triad",
+      "filename_base": "02_three_beats",
+      "prompt": "16:9 editorial diagram illustrating a three-step movement (thesis, antithesis, synthesis) as three abstract panels left to right connected by two arrows. Left panel: an organic, soft, flowing human form suggesting natural spoken intent. Middle panel: a rigid precise lattice or grid of clean geometric lines suggesting formal machine precision. Right panel: the same organic flowing form returning, but now resting on top of a faint geometric lattice visible underneath it — natural form supported by hidden structure. Generous whitespace, warm paper background, deep ink shapes, dusty blue for the lattice, terracotta for the organic form. No readable text, no labels, no digits."
+    },
+    {
+      "slug": "tower-underneath",
+      "filename_base": "03_tower_underneath",
+      "prompt": "16:9 editorial conceptual illustration of layered abstraction. At the top, a soft handwritten-feeling flowing line representing natural-language intent. Directly beneath it, several clean horizontal strata stacked like sedimentary layers or like floors of a quiet building, each thinner and more precise toward the bottom, representing the preserved formal layers (schemas, types, machine code) that run underneath and silently support the top. The top layer is warm and light; lower layers are cooler and more structured but not deleted, gently glowing to show they are still alive. Warm paper background, deep ink, dusty blue lower strata, one terracotta top line. No readable text, no digits, no fake UI."
+    },
+    {
+      "slug": "memory-scope-rings",
+      "filename_base": "04_memory_layers",
+      "prompt": "16:9 editorial diagram of nested scopes as concentric rounded layers, like a calm cross-section of an onion or tree rings. From the small warm center outward: a glowing core (the immediate, ephemeral), then progressively larger calm rings (project memory, cross-project memory, living working documents, external config at the outer edge). Each ring slightly different neutral tone, one ring softly accented. Minimal, balanced, lots of air. Warm paper background, deep ink outlines, one sage and one dusty blue accent ring, terracotta core. No readable text, no labels, no digits."
+    },
+    {
+      "slug": "frontier-scaffolding",
+      "filename_base": "05_frontier_gaps",
+      "prompt": "16:9 editorial conceptual illustration of an unfinished structure: a partly-built elegant framework or scaffolding rising under a flowing natural form at the top, with a few support beams clearly still missing — visible gaps where future pieces will go. The mood is hopeful construction, not ruin: the missing pieces are implied by faint dotted outlines of beams not yet placed. Suggests the formal layer still being rebuilt under natural-language intent. Warm paper background, deep ink beams, dusty blue solid structure, terracotta dotted missing pieces. No readable text, no digits, no UI, no cranes-as-clich."
+    },
+    {
+      "slug": "horizon-spiral-closing",
+      "filename_base": "06_horizon",
+      "prompt": "16:9 quiet editorial closing illustration. A wide calm horizon with a single spiral path receding toward a soft point of light on the horizon, suggesting a spiral that keeps turning forward into the future, one turn higher each time. Contemplative, spacious, optimistic but restrained. Mostly empty warm paper, a thin deep-ink spiral path, a soft dusty blue light at the vanishing point, one small terracotta marker on the path. No readable text, no digits, no UI."
+    }
+  ]
+}

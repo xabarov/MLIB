@@ -1,0 +1,42 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/shared/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1782776331,
+  "jobs": [
+    {
+      "slug": "cover-ascending-spiral",
+      "filename_base": "01_cover_spiral",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "three-beats-triad",
+      "filename_base": "02_three_beats",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "tower-underneath",
+      "filename_base": "03_tower_underneath",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "memory-scope-rings",
+      "filename_base": "04_memory_layers",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "frontier-scaffolding",
+      "filename_base": "05_frontier_gaps",
+      "append_style_suffix": true
+    },
+    {
+      "slug": "horizon-spiral-closing",
+      "filename_base": "06_horizon",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}
