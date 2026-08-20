@@ -91,5 +91,8 @@ _rsync_backups/
 _cleanup_backups/
 
 # Frontend build artifacts
-mlib/SHAD/interactive/node_modules/
-mlib/SHAD/interactive/dist/
+apps/interactive/node_modules/
+apps/interactive/dist/
+
+# Generated scratch output
+_generated/
