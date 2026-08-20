@@ -53,7 +53,12 @@ essays/          не учебное: эссе о спирали, шаблон P
 Кривые на диаграммах **считаются на данных**, а не рисуются по памяти: если прогон
 не подтвердил заголовок картинки — меняется заголовок, а не данные.
 
-Готово: `ml/basics/classification-vs-regression`.
+Готово: `ml/basics/classification-vs-regression`,
+`ml-algorithms/deep-learning/computer-vision/object-detection-architectures`.
+
+`deep-learning/` разбит на блоки `architectures/` (строительные блоки) и
+`computer-vision/`, `nlp/`, `reinforcement-learning/` (применения) — по образцу
+самой главы 8.2. Темы вне списка вопросов книги допустимы.
 Нумерация глав книги — в `tracks/ml-interviews/README.md`.
 
 ### tracks/networks — компьютерные сети

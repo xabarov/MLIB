@@ -27,7 +27,10 @@
 Ноутбук — по уместности, не обязателен. DoD лекций трека `shad` (ровно 10 задач
 в `qa.md` и т.д.) здесь **не применяется**.
 
-Готовые темы: `ml/basics/classification-vs-regression`.
+Готовые темы:
+
+- [`ml/basics/classification-vs-regression/`](ml/basics/classification-vs-regression/)
+- [`ml-algorithms/deep-learning/computer-vision/object-detection-architectures/`](ml-algorithms/deep-learning/computer-vision/object-detection-architectures/)
 
 ## Соответствие главам книги
 
@@ -43,10 +46,22 @@
 | [`ml/sampling-training-data/`](ml/sampling-training-data/) | 7.2 Sampling and creating training data |
 | [`ml/objectives-metrics-evaluation/`](ml/objectives-metrics-evaluation/) | 7.3 Objective functions, metrics, evaluation |
 | [`ml-algorithms/classical-ml/`](ml-algorithms/classical-ml/) | 8.1 Classical machine learning |
-| [`ml-algorithms/deep-learning/`](ml-algorithms/deep-learning/) | 8.2 Deep learning architectures |
+| [`ml-algorithms/deep-learning/`](ml-algorithms/deep-learning/) | 8.2 Deep learning architectures **and applications** |
 | [`ml-algorithms/training-neural-networks/`](ml-algorithms/training-neural-networks/) | 8.3 Training neural networks |
 
 Номера глав вынесены сюда, чтобы каталоги оставались слагами без пробелов и точек.
+
+Раздел `deep-learning/` разбит внутри на блоки — так же, как сама глава 8.2,
+которая делится на NLP, computer vision и reinforcement learning:
+
+| Блок | Что внутри |
+|---|---|
+| [`deep-learning/architectures/`](ml-algorithms/deep-learning/architectures/) | строительные блоки: CNN, RNN/LSTM, трансформеры, GAN, transfer learning |
+| [`deep-learning/computer-vision/`](ml-algorithms/deep-learning/computer-vision/) | применения в зрении: детекция, сегментация |
+| [`deep-learning/nlp/`](ml-algorithms/deep-learning/nlp/) | применения в тексте: эмбеддинги, TF-IDF |
+| [`deep-learning/reinforcement-learning/`](ml-algorithms/deep-learning/reinforcement-learning/) | обучение с подкреплением |
+
+Темы вне списка вопросов книги допустимы: структура книги — ориентир, а не рамка.
 
 ## Покрытие
 

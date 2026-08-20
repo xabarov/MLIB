@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "object-detection-hero-frames-condensing",
+      "filename_base": "hero_object_detection",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on object detection architectures. Visual metaphor only: a dense cloud of many thin translucent rectangular outlines floating in space on the left side, overlapping and redundant, gradually condensing toward the right into just three crisp solid rectangular outlines that settle cleanly around three simple abstract sculptural forms. The many faint frames fade out as they move right; the few surviving frames become sharp and confident. Warm paper background, deep warm ink for the surviving frames and the sculptural forms, muted warm gray for the fading crowd of frames, one terracotta accent on a single frame that lands perfectly. Soft diffuse light, generous negative space, premium academic magazine style, single clear focal flow from left to right. Absolutely no text, no letters, no digits, no labels, no axes, no user interface elements, no photographic people or animals."
+    }
+  ]
+}
