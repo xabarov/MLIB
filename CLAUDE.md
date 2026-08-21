@@ -55,7 +55,8 @@ essays/          не учебное: эссе о спирали, шаблон P
 
 Готово: `ml/basics/classification-vs-regression`,
 `ml-algorithms/deep-learning/computer-vision/object-detection-architectures`,
-`ml-algorithms/deep-learning/computer-vision/detection-metrics`.
+`ml-algorithms/deep-learning/computer-vision/detection-metrics`,
+`…/segmentation-architectures`, `…/segmentation-metrics`.
 
 `deep-learning/` разбит на блоки `architectures/` (строительные блоки) и
 `computer-vision/`, `nlp/`, `reinforcement-learning/` (применения) — по образцу

@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "segmentation-hero-mosaic-resolution",
+      "filename_base": "hero_segmentation",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on image segmentation. Visual metaphor only: a single simple abstract sculptural silhouette rendered as a mosaic of square tiles, where the tiles are very large and blocky on the left half so the shape is barely recognizable, and become progressively finer and smaller toward the right until the silhouette's contour is crisp and smooth. The tiles belonging to the shape are deep warm ink, the tiles of the surrounding field are pale warm gray, and a narrow band of tiles right along the contour is terracotta to mark where the boundary is decided. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no axes, no grid coordinates, no user interface elements."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "segmentation-metrics-hero-contour-agreement",
+      "filename_base": "hero_segmentation_metrics",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on evaluating image segmentation. Visual metaphor only: two smooth closed organic blob shapes of similar size laid on top of each other and slightly offset, so that a large lens-shaped region where they agree sits in the middle, filled solid terracotta, while the two crescent slivers where they disagree are filled pale warm gray. The outline of one blob is a solid deep ink contour, the outline of the other is a dashed deep ink contour, making clear these are two versions of the same region. To one side, a much smaller pair of the same overlapping blobs repeats the motif at tiny scale, where the disagreement slivers take up a visibly larger share of the shape. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no axes, no percentage marks, no charts, no arrows."
+    }
+  ]
+}
