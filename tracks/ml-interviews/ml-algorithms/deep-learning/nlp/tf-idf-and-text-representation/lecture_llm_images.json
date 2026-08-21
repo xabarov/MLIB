@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "tfidf-hero-text-to-vector",
+      "filename_base": "hero_tfidf",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on turning text into numeric vectors. Visual metaphor only: on the left, a loose horizontal drift of many small abstract ink marks arranged in irregular rows, suggesting lines of writing without being readable; toward the middle these marks detach from their rows and fall, and on the right they settle into a single tall neat column of evenly spaced square cells, like a vertical stack of slots. Most cells in the column are empty pale warm gray, and only a few scattered cells are filled solid terracotta, so the column reads as mostly empty with rare highlights. Warm paper background, deep warm ink for the drifting marks, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no words, no digits, no readable characters of any alphabet, no labels, no axes, no charts."
+    }
+  ]
+}
