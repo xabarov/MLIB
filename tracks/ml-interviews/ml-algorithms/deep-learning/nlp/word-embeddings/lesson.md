@@ -215,7 +215,7 @@ $$\vec{\text{король}} - \vec{\text{мужчина}} + \vec{\text{женщ�
 - [`notebook.ipynb`](notebook.ipynb) — совстречаемость, PPMI, SVD и обучение SGNS с нуля; проверка связи с PMI, аналогии и полисемия
 - [`generate_visuals.py`](generate_visuals.py) — код диаграмм; корпус порождается шаблонами, поэтому правильный ответ известен заранее
 - [TF-IDF и представление текста числами](../tf-idf-and-text-representation/lesson.md) — разреженная альтернатива и её потолок
-- [Self-Attention and Transformers](../../architectures/Self-Attention%20and%20Transformers.md) — на чём стоят контекстные представления
+- [Self-Attention and Transformers](../../architectures/self-attention-and-transformers/lesson.md) — на чём стоят контекстные представления
 
 ---
 *Источник: [MLIB](https://huyenchip.com/ml-interviews-book/)*

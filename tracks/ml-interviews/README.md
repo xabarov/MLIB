@@ -37,6 +37,7 @@
 - [`ml-algorithms/deep-learning/computer-vision/ocr/`](ml-algorithms/deep-learning/computer-vision/ocr/)
 - [`ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/`](ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/)
 - [`ml-algorithms/deep-learning/nlp/word-embeddings/`](ml-algorithms/deep-learning/nlp/word-embeddings/)
+- [`ml-algorithms/deep-learning/architectures/self-attention-and-transformers/`](ml-algorithms/deep-learning/architectures/self-attention-and-transformers/)
 
 ## Соответствие главам книги
 
