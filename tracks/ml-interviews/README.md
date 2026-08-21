@@ -34,6 +34,7 @@
 - [`ml-algorithms/deep-learning/computer-vision/detection-metrics/`](ml-algorithms/deep-learning/computer-vision/detection-metrics/)
 - [`ml-algorithms/deep-learning/computer-vision/segmentation-architectures/`](ml-algorithms/deep-learning/computer-vision/segmentation-architectures/)
 - [`ml-algorithms/deep-learning/computer-vision/segmentation-metrics/`](ml-algorithms/deep-learning/computer-vision/segmentation-metrics/)
+- [`ml-algorithms/deep-learning/computer-vision/ocr/`](ml-algorithms/deep-learning/computer-vision/ocr/)
 
 ## Соответствие главам книги
 

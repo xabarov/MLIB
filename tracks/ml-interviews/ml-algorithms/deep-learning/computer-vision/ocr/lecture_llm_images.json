@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "ocr-hero-strokes-become-sequence",
+      "filename_base": "hero_ocr",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on optical character recognition. Visual metaphor only: a sheet of warm paper covered with soft blurred illegible strokes arranged in slightly tilted and gently curved lines, like unreadable handwriting seen out of focus. A single highlighted horizontal band sweeps across the middle of the sheet; inside this band the blurry strokes resolve into a crisp, evenly spaced row of small clean abstract marks — simple geometric dashes and dots in a strict rhythm, clearly ordered like beads on a string, but not forming any real letters. Below and above the band the lines remain smudged and unresolved. The band itself is tinted with a pale terracotta glow and one small terracotta rectangle frames a single mark inside it. Warm paper background, deep warm ink for the resolved marks, muted warm gray for the blurred strokes, terracotta accent used only for the band and frame. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no real text, no letters, no digits, no words, no logos, no magnifying glass cliche."
+    }
+  ]
+}

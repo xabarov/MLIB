@@ -178,4 +178,5 @@ $$\mathcal{L}_{\text{Dice}} = 1 - \frac{2|P \cap G|}{|P| + |G|}$$
 - [`generate_visuals.py`](generate_visuals.py) — код диаграмм; потеря разрешения, рецептивные поля и сдвиг RoI считаются на реальных сетках
 - [Метрики сегментации: mIoU, Dice и PQ](../segmentation-metrics/lesson.md) — как измерять то, что здесь строится
 - [Архитектуры детекции объектов](../object-detection-architectures/lesson.md) — откуда Mask R-CNN берёт регионы и почему DETR важен для Mask2Former
+- [OCR: детекция и распознавание текста](../ocr/lesson.md) — EAST, CRAFT и DBNet стоят на сегментации
 - Смежное: [CNN Filter Pooling](../../architectures/CNN%20Filter%20Pooling.md), [Self-Attention and Transformers](../../architectures/Self-Attention%20and%20Transformers.md)
