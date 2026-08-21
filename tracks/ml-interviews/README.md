@@ -36,6 +36,7 @@
 - [`ml-algorithms/deep-learning/computer-vision/segmentation-metrics/`](ml-algorithms/deep-learning/computer-vision/segmentation-metrics/)
 - [`ml-algorithms/deep-learning/computer-vision/ocr/`](ml-algorithms/deep-learning/computer-vision/ocr/)
 - [`ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/`](ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/)
+- [`ml-algorithms/deep-learning/nlp/word-embeddings/`](ml-algorithms/deep-learning/nlp/word-embeddings/)
 
 ## Соответствие главам книги
 

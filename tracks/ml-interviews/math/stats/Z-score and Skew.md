@@ -24,7 +24,7 @@ Z-score определён формально: \(z = (x-\mu)/\sigma\). При а
 
 **Log-трансформация:** \(y = \log(x)\) или \(y = \log(1+x)\). Уменьшает правый хвост (зарплаты, доходы, время отклика). Пример: зарплаты [30k, 50k, 100k, 500k] — после log распределение ближе к нормальному.
 
-**Box-Cox:** \(y = \frac{x^\lambda - 1}{\lambda}\) при λ≠0; \(\log(x)\) при λ=0. λ подбирается по данным (максимизация log-likelihood). Работает только для x > 0. Для x с нулями — Yeo-Johnson (см. [Bayes and Conditional](../5.2%20Probability/Bayes%20and%20Conditional.md)). После Box-Cox данные часто подходят для z-score и параметрических тестов.
+**Box-Cox:** \(y = \frac{x^\lambda - 1}{\lambda}\) при λ≠0; \(\log(x)\) при λ=0. λ подбирается по данным (максимизация log-likelihood). Работает только для x > 0. Для x с нулями — Yeo-Johnson (см. [Bayes and Conditional](../probability/Bayes%20and%20Conditional.md)). После Box-Cox данные часто подходят для z-score и параметрических тестов.
 
 ---
 *Источник: [MLIB](https://huyenchip.com/ml-interviews-book/)*

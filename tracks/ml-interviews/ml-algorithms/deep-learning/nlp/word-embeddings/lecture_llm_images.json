@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "embeddings-hero-scatter-clusters",
+      "filename_base": "hero_embeddings",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on word vector representations. Visual metaphor only: on the left side, many small solid dots scattered in a flat even grid, evenly spaced and completely unstructured, all the same muted warm gray. Moving toward the right, the same dots drift out of the grid and gather into three or four distinct loose clusters separated by clear empty space, each cluster a different tone — one deep warm ink, one dusty blue, one sage green — while a single dot rendered in terracotta sits alone in the gap between two clusters, belonging to neither. Very faint thin lines connect a few dots inside each cluster to suggest proximity. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no words, no digits, no labels, no axes, no coordinate grid lines, no charts."
+    }
+  ]
+}

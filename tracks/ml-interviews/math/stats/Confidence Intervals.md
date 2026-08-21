@@ -13,7 +13,7 @@ CI = \bar{x} \pm z_{0.975} \frac{\sigma}{\sqrt{n}} = 1 \pm 1.96 \cdot \frac{0.12
 
 ### t-интервал при неизвестной σ и малой выборке
 
-Когда σ неизвестна, используем выборочное стандартное отклонение s и t-распределение Стьюдента (см. [Bayes and Conditional](../5.2%20Probability/Bayes%20and%20Conditional.md)):
+Когда σ неизвестна, используем выборочное стандартное отклонение s и t-распределение Стьюдента (см. [Bayes and Conditional](../probability/Bayes%20and%20Conditional.md)):
 \[
 CI = \bar{x} \pm t_{n-1,\, 0.975} \frac{s}{\sqrt{n}}
 \]
