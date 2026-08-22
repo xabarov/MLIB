@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "agent-loop-hero-circular-trace",
+      "filename_base": "hero_agent_loop",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on the agent loop in software systems. Visual metaphor only: a single wide circular track drawn as a clean ring, with three simple solid geometric markers spaced evenly around it — a circle, a square and a triangle — suggesting three stages of one repeating cycle. Inside the ring, a growing spiral of thin concentric arcs accumulates toward the centre, each successive arc slightly longer and denser than the last, so the picture reads as repetition that leaves an accumulating trace. The ring and markers are deep warm ink, the accumulating inner arcs shade from pale warm gray at the outside to terracotta at the innermost few. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no arrowheads, no clock faces, no gears, no robots."
+    }
+  ]
+}

@@ -26,7 +26,7 @@
 
 ## Интерактивная миссия
 
-В миссии [Графовый диспетчер](../../interactive/#/combinatorics/graphs/dispatcher)
+В миссии [Графовый диспетчер](../../../../apps/interactive/#/combinatorics/graphs/dispatcher)
 можно пройти BFS и DFS как trace: выбирать вершины из очереди или стека,
 следить за visited-множеством и видеть, где нарушается инвариант обхода.
 

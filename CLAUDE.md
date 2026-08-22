@@ -8,6 +8,7 @@
 tracks/          учебные планы (контент)
   shad/          лекции для поступления в ШАД: <раздел>/<N_Тема>/{lesson.md,qa.md,assets/}
   ml-interviews/ Q&A по книге huyenchip.com/ml-interviews-book: math/ computer-science/ ml/ ml-algorithms/
+  agent-harness/ инженерия систем вокруг LLM: агентный цикл, контекст, инструменты, изоляция
   networks/      компьютерные сети
 apps/
   interactive/   React/Vite-тренажёр по темам ШАД
@@ -64,6 +65,17 @@ essays/          не учебное: эссе о спирали, шаблон P
 `computer-vision/`, `nlp/`, `reinforcement-learning/` (применения) — по образцу
 самой главы 8.2. Темы вне списка вопросов книги допустимы.
 Нумерация глав книги — в `tracks/ml-interviews/README.md`.
+
+### tracks/agent-harness — инженерия харнессов
+
+Формат тот же, что в `ml-interviews` (лекция + код + иллюстрации). Темы
+привязаны к инженерным задачам, а не к конкретным инструментам: область
+быстро меняется, и лекция про отдельный харнесс устареет.
+
+Источники примеров — шесть открытых харнессов в
+`/home/roman/pyprojects/agent-driver-gitlab/agent-driver/reference/`.
+
+Готово: `agent-loop`.
 
 ### tracks/networks — компьютерные сети
 

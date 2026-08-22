@@ -8,5 +8,6 @@
 | [`shad/`](shad/) | Подготовка к вступительному экзамену ШАД | `<раздел>/<N_Тема>/{lesson.md, qa.md, assets/}` |
 | [`ml-interviews/`](ml-interviews/) | Разбор вопросов книги *ML Interviews* (huyenchip) | один `.md` на вопрос/группу вопросов |
 | [`networks/`](networks/) | Компьютерные сети | пока один файл с Q&A |
+| [`agent-harness/`](agent-harness/) | Инженерия систем вокруг LLM: цикл, контекст, инструменты, изоляция | `<тема-слаг>/lesson.md` + ассеты |
 
 Definition of Done лекции описан в корневом `CLAUDE.md` и относится **только к треку `shad`**.
