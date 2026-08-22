@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "protocols-hero-connectors",
+      "filename_base": "hero_protocols",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on interoperability standards. Visual metaphor only: on the left, six abstract connector shapes of clearly different geometries — a square tab, a rounded tab, a triangular tab, a notched bar, a cross, a half-circle — arranged loosely and each drawn as a flat solid silhouette. In the middle of the frame, a single vertical plate with one uniform slot cut into it. On the right side of the plate, six identical simple bars emerge cleanly and in parallel, showing that everything past the plate is uniform. One connector on the left, rendered terracotta, is aligned with the slot. The plate and bars are deep warm ink, the other connectors muted warm gray. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no cables, no realistic USB shapes, no brand marks."
+    }
+  ]
+}
