@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "context-hero-masonry-gaps",
+      "filename_base": "hero_context",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on managing a long conversation history. Visual metaphor only: a dense horizontal wall of small rectangular blocks laid like tight masonry, filling most of the frame. From the left portion of the wall a number of blocks have been carefully removed, leaving clean empty gaps, and the wall still stands because the removals follow a pattern — whole vertical groups of two or three blocks taken together rather than single blocks pulled at random. A few blocks near one gap are terracotta, marking a group that was kept intact. The remaining blocks are deep warm ink and pale warm gray in alternating subtle tones. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no arrows, no charts."
+    }
+  ]
+}
