@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "tools-hero-keys-and-keyhole",
+      "filename_base": "hero_tools",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on tool interfaces between a language model and executable code. Visual metaphor only: on the left, a loose scattered cloud of many small abstract key-like shapes, all slightly different from one another, drawn as simple flat silhouettes with varied bit patterns, suggesting many imprecise attempts. On the right, a single crisp keyhole cut cleanly into a solid vertical plate, its outline sharp and exact. One key from the cloud, rendered in terracotta, is aligned mid-flight toward the keyhole and matches its shape precisely, while the others drift past in muted warm gray. The plate and the exact keyhole are deep warm ink. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no brand marks, no realistic padlocks."
+    }
+  ]
+}
