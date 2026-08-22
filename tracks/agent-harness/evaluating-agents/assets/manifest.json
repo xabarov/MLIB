@@ -1,0 +1,17 @@
+{
+  "model": "google/gemini-3.1-flash-image-preview",
+  "style_suffix_file": "/home/roman/Documents/ML/MLIB/shared/lecture_visual_generation/lecture_visual_prompt_suffix.txt",
+  "generated_at_epoch": 1787412582,
+  "jobs": [
+    {
+      "slug": "evaluation-hero-coarse-scale",
+      "filename_base": "hero_evaluation",
+      "append_style_suffix": true
+    }
+  ],
+  "job_file_metadata": {
+    "defaults": {
+      "append_style_suffix": true
+    }
+  }
+}

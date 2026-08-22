@@ -76,7 +76,8 @@ essays/          не учебное: эссе о спирали, шаблон P
 `/home/roman/pyprojects/agent-driver-gitlab/agent-driver/reference/`.
 
 Готово: `agent-loop`, `context-management`, `tools-and-function-calling`,
-`sandbox-and-permissions`, `subagents-and-delegation`, `protocols-mcp-and-acp`.
+`sandbox-and-permissions`, `subagents-and-delegation`, `protocols-mcp-and-acp`,
+`evaluating-agents`.
 
 ### tracks/networks — компьютерные сети
 

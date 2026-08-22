@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "evaluation-hero-coarse-scale",
+      "filename_base": "hero_evaluation",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on measuring an uncertain quantity. Visual metaphor only: a long horizontal measuring bar spanning the frame, marked with only a few very widely spaced tick divisions, drawn as clean deep warm ink. Below the bar, a band of fine irregular wavy lines ripples across the whole width, dense and restless, clearly finer in scale than the gaps between the ticks. A single terracotta marker sits on the bar, and a pale wide translucent band extends generously to both sides of it, overlapping several tick gaps, showing how little the position is actually pinned down. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no numerals on the scale, no labels, no charts."
+    }
+  ]
+}
