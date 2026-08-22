@@ -75,7 +75,8 @@ essays/          не учебное: эссе о спирали, шаблон P
 Источники примеров — шесть открытых харнессов в
 `/home/roman/pyprojects/agent-driver-gitlab/agent-driver/reference/`.
 
-Готово: `agent-loop`, `context-management`, `tools-and-function-calling`.
+Готово: `agent-loop`, `context-management`, `tools-and-function-calling`,
+`sandbox-and-permissions`.
 
 ### tracks/networks — компьютерные сети
 

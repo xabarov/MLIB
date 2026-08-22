@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "sandbox-hero-nested-shells",
+      "filename_base": "hero_sandbox",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on isolating an autonomous process. Visual metaphor only: three nested rounded rectangular shells drawn as clean open outlines, one inside another with generous space between them, like concentric containment layers seen flat-on. At the very centre sits a small solid terracotta shape with a few short straight lines radiating outward from it — the lines stop cleanly at the innermost shell, none crossing it, while one line reaches a small deliberate gap in the middle shell and passes through. The shells are deep warm ink, progressively thinner from outside in. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no padlocks, no shields, no warning symbols."
+    }
+  ]
+}
