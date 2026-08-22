@@ -1,0 +1,10 @@
+{
+  "defaults": { "append_style_suffix": true },
+  "jobs": [
+    {
+      "slug": "subagents-hero-enclosed-loops",
+      "filename_base": "hero_subagents",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on delegating work to sub-processes. Visual metaphor only: one large open horizontal arc sweeping across the frame, drawn as a clean deep warm ink line. Beneath it hang three small self-contained closed circles, each connected to the arc by a single short thin stem. Inside each small circle a dense tangle of fine gray scribbled lines is packed tightly, entirely contained within its own boundary — none of the tangle escapes onto the arc above. Where each stem meets the arc there is a single small solid terracotta dot, tiny compared to the tangle below it. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no arrowheads, no org-chart boxes."
+    }
+  ]
+}
