@@ -1,0 +1,13 @@
+{
+  "checked_on": "2026-09-26",
+  "repositories": [
+    {"name": "laya", "repository": "NandhaKishorM/laya", "commit": "4066d5d5fbf08b66c6757ddeedbd797bd7655bc0", "license": "Apache-2.0"},
+    {"name": "kev", "repository": "jaredpalmer/kev", "commit": "5920c5fe4ca8e0970ed4209ac2c9b8e18bea5109", "license": "Apache-2.0"},
+    {"name": "semif", "repository": "TheoLeeCJ/SemIf-OpenJev", "commit": "23cf1f39fc9534fe81437200959b6dfc7106e45a", "license": "MIT"},
+    {"name": "nimble", "repository": "bespokelabsai/nimble", "commit": "62076b4f2d365b5879dafcf7f6dd072a1fe76df7", "license": null}
+  ],
+  "teaching_references": [
+    {"repository": "karpathy/nanoGPT", "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291"},
+    {"repository": "rasbt/LLMs-from-scratch", "commit": "f49cad747931fe6af0a7d2802cd480d1c1a0ec8e"}
+  ]
+}

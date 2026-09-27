@@ -7,6 +7,7 @@ that generates and renders them.
 tracks/shad/            SHAD entrance-exam lectures (lesson.md + qa.md + assets/)
 tracks/ml-interviews/   Q&A notes for huyenchip.com/ml-interviews-book
 tracks/networks/        computer networking notes
+tracks/decision-models/ Jev-like open models: small PyTorch implementations and walkthrough
 apps/interactive/       React/Vite trainer built on the SHAD material
 tools/                  generate_lecture.py, generate_images.py
 shared/                 authoring guide and visual design system (all tracks)
@@ -15,6 +16,9 @@ essays/                 non-study writing (spiral essay, bootstrap template)
 
 Each track has its own `README.md` describing its scope and format.
 The most active area is `tracks/shad/`. All commands below run from the repo root.
+
+For the executable architecture lab covering SemIf, Kev, Laya and Nimble, start with
+[`tracks/decision-models/README.md`](tracks/decision-models/README.md).
 
 ## Local Environment
 

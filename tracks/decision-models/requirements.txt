@@ -1,0 +1,8 @@
+# CPU / Apple Silicon is enough for the teaching models. No HF weights needed.
+torch>=2.5,<3
+numpy>=2.0,<3
+matplotlib>=3.9,<4
+nbformat>=5.10,<6
+nbclient>=0.10,<1
+ipykernel>=6.29,<8
+

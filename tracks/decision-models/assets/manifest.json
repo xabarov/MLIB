@@ -1,0 +1,11 @@
+{
+  "generator": "generate_visuals.py",
+  "palette": "MLIB shared visual design system",
+  "figures": {
+    "architectures.png": "schematic of the local teaching models",
+    "attention_masks.png": "actual masks returned by model.py",
+    "cache_equivalence.png": "measured FP32 hidden-state differences",
+    "learning.png": "measured synthetic training/test results",
+    "calibration.png": "measured held-out reliability bins"
+  }
+}
