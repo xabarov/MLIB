@@ -433,6 +433,99 @@ def draw_ctc_decoding():
     return p_empty, p_a
 
 
+def min_T(text):
+    """Минимальная длина пути CTC: длина строки плюс число соседних повторов."""
+    return len(text) + sum(1 for a, b in zip(text, text[1:]) if a == b)
+
+
+def normalize_crop(w, h, target_h=32, stride=4):
+    """Как препроцессинг превращает вырезку в T столбцов: h→32, ширина ∝ аспекту."""
+    W = int(round(target_h * w / h))
+    return W, W // stride
+
+
+CROPS = [
+    ("1С", 90, 30),
+    ("ванна", 214, 34),
+    ("ИНН 7701234567", 470, 28),
+]
+
+
+def draw_time_axis():
+    """Откуда берётся T: ширина вырезки → число столбцов → паддинг в батче."""
+    _apply_style()
+
+    rows = []
+    for text, w, h in CROPS:
+        W, T = normalize_crop(w, h)
+        need = min_T(text)
+        assert T >= need, (text, T, need)
+        rows.append((text, w, h, W, T, need))
+
+    T_max = max(r[4] for r in rows)
+    scale = 5.6 / T_max
+    strip_h = 0.5
+    x0 = 4.2
+
+    fig, (axA, axB) = plt.subplots(2, 1, figsize=(12.6, 6.0))
+
+    # --- A: вырезка → нормализация по высоте → T столбцов
+    for i, (text, w, h, W, T, need) in enumerate(rows):
+        y = 2 - i
+        yc = y + strip_h / 2
+        axA.text(0.0, yc, f"«{text}»", fontsize=10.5, va="center")
+        axA.text(2.25, yc, f"{w}×{h} px", fontsize=9.5, va="center", color=C_GRAY)
+        axA.add_patch(FancyArrowPatch((3.45, yc), (x0 - 0.12, yc), arrowstyle="-|>",
+                                      mutation_scale=11, color=C_GRAY, lw=1.1))
+        width = T * scale
+        axA.add_patch(Rectangle((x0, y), width, strip_h, facecolor=C_PANEL,
+                                edgecolor=C_INK, lw=1.0))
+        for t in range(1, T):
+            axA.plot([x0 + t * scale] * 2, [y, y + strip_h], color=C_GRAY,
+                     lw=0.35, zorder=1)
+        _text_lines(axA, x0 + 0.08, yc, width - 0.16, 1, color=C_ORANGE, lw=1.8,
+                    seed=7 + i)
+        axA.text(x0 + width + 0.18, yc, f"32×{W} → T = {T}   (нужно ≥ {need})",
+                 fontsize=9.5, va="center")
+
+    axA.set_title("высота фиксирована (32), ширина свободна: T = W / 4 столбцов",
+                  fontsize=11.5, loc="left")
+    _clean(axA, (-0.2, 13.4), (-0.35, 2.95))
+    axA.set_aspect("auto")
+
+    # --- B: батч — паддинг до общей ширины и input_lengths
+    for i, (text, w, h, W, T, need) in enumerate(rows):
+        y = 2 - i
+        yc = y + strip_h / 2
+        width = T * scale
+        axB.add_patch(Rectangle((x0, y), T_max * scale, strip_h, facecolor=C_BG,
+                                edgecolor=C_GRAY, lw=0.9, hatch="///"))
+        axB.add_patch(Rectangle((x0, y), width, strip_h, facecolor=C_PANEL,
+                                edgecolor=C_INK, lw=1.0))
+        _text_lines(axB, x0 + 0.08, yc, width - 0.16, 1, color=C_ORANGE, lw=1.8,
+                    seed=7 + i)
+        axB.text(0.0, yc, f"«{text}»", fontsize=10.5, va="center")
+        axB.text(x0 + T_max * scale + 0.18, yc, f"input_length = {T}",
+                 fontsize=9.5, va="center", color=C_INK if T == T_max else C_GRAY)
+
+    axB.annotate("", xy=(x0, -0.25), xytext=(x0 + T_max * scale, -0.25),
+                 arrowprops=dict(arrowstyle="<->", color=C_BLUE, lw=1.2))
+    axB.text(x0 + T_max * scale / 2, -0.45,
+             f"тензор батча: T = {T_max}; заштрихованное — паддинг, "
+             "в лосс он не попадает благодаря input_lengths",
+             fontsize=9.5, ha="center", va="top", color=C_BLUE)
+    axB.set_title("батч: полосы дополняются до общей ширины, длины передаются в лосс",
+                  fontsize=11.5, loc="left")
+    _clean(axB, (-0.2, 13.4), (-1.1, 2.95))
+    axB.set_aspect("auto")
+
+    fig.suptitle("T не гиперпараметр: он вычисляется из ширины вырезки",
+                 fontsize=13, y=1.0)
+    fig.tight_layout()
+    _save(fig, "ctc_time_axis.png")
+    return rows, T_max
+
+
 def draw_cer_wer():
     """Матрица Левенштейна и контраст CER против WER на одной паре строк."""
     _apply_style()
@@ -486,6 +579,7 @@ def main():
     fill_aabb, fill_rot = draw_text_geometry()
     p_cat, n_paths, p_best, best_path, greedy_str = draw_ctc_alignment()
     p_empty, p_a = draw_ctc_decoding()
+    crops, T_batch = draw_time_axis()
     dist, cer_v, wer_v = draw_cer_wer()
 
     print("\nЧисла для текста лекции:")
@@ -496,6 +590,9 @@ def main():
     print(f"  лучший путь                      : «{best_path}» с p={p_best:.4f}")
     print(f"  жадный путь                      : «{greedy_str}»")
     print(f"  жадный пример: P(∅)={p_empty:.2f}, P('a')={p_a:.2f}")
+    for text, w, h, W, T, need in crops:
+        print(f"  «{text}»: {w}×{h} → 32×{W} → T={T} (минимум {need})")
+    print(f"  общая длина батча                : {T_batch}")
     print(f"  Левенштейн={dist}, CER={cer_v:.3f}, WER={wer_v:.3f}")
 
 
