@@ -1,10 +1,17 @@
 {
-  "defaults": { "append_style_suffix": true },
+  "defaults": {
+    "append_style_suffix": true
+  },
   "jobs": [
     {
       "slug": "attention-hero-weighted-threads",
       "filename_base": "hero_attention",
       "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on the attention mechanism. Visual metaphor only: a single horizontal row of eight evenly spaced solid dots along the lower third of the frame. From one particular dot near the right, thin curved threads arch upward and over to every other dot in the row, and the threads differ dramatically in weight — two of them are thick and solid terracotta, one is medium dusty blue, and the rest are barely visible hairlines in pale warm gray, so the picture reads as one point drawing unequally from all the others. The dots themselves are deep warm ink and identical in size. Warm paper background, soft diffuse light, generous negative space, calm geometric composition, premium academic magazine style. Absolutely no text, no letters, no digits, no labels, no axes, no arrowheads, no charts."
+    },
+    {
+      "slug": "self-attention-hero-chain-versus-fan",
+      "filename_base": "hero_self_attention",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture contrasting two ways information travels along a sequence. The canvas is split into two halves by generous empty paper, no divider line. LEFT HALF: a long horizontal chain of about sixteen identical small circles, each joined to the next by a single short link, like beads on a taut string; a faint glow starts at the leftmost circle and fades steadily along the chain until the last few circles are barely tinted — the signal has to walk every step and arrives worn out. All in muted warm gray with the glow in pale terracotta that weakens to nothing. RIGHT HALF: the same sixteen circles in the same straight row, but now one single circle near the middle is connected directly to every other circle at once by thin curved threads that arc above and below the row; the threads have visibly different weights — three or four are thick and terracotta, a few are medium warm gray, and most are hair-thin and almost invisible, so the picture reads as a weighted fan rather than a uniform web. The chosen circle is deep warm ink; the circles its thick threads reach are tinted terracotta. Warm paper background, soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no arrowheads, no brain imagery, no neural-network diagram cliches, no grid lines, no logos."
     }
   ]
 }

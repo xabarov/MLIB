@@ -5,6 +5,7 @@ sqrt(d) и перестановочная эквивариантность из�
 а карта внимания получается обучением настоящего слоя градиентным спуском.
 """
 
+import runpy
 from pathlib import Path
 
 import matplotlib
@@ -462,3 +463,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    runpy.run_path(str(ROOT / "generate_extended_visuals.py"), run_name="__main__")
