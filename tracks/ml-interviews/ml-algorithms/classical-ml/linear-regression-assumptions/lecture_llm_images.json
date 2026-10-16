@@ -1,0 +1,10 @@
+{
+  "defaults": {"append_style_suffix": true},
+  "jobs": [
+    {
+      "slug": "linear-regression-assumptions-hero",
+      "filename_base": "hero_linear_regression_assumptions",
+      "prompt": "16:9 abstract editorial illustration about a simple straight model resting on several statistical assumptions. A long slender deep warm ink rod floats diagonally across warm ivory paper, supported at four points by small translucent paper folded structures. Some supports are neat and stable, another has a slight ripple, and another is softly tilted, suggesting that a simple result depends on the structure beneath it. A sparse scattering of small muted blue and terracotta flecks surrounds the rod, with generous negative space. Elegant physical paper sculpture, soft diffuse daylight, subtle natural shadows, warm paper background #faf9f5, ink #141413, muted gray #b0aea5, terracotta #d97757, muted blue #6a9bcc. Conceptual visual metaphor only, not a chart or mathematical diagram. No text, no letters, no numbers, no axes, no logos, no equations."
+    }
+  ]
+}

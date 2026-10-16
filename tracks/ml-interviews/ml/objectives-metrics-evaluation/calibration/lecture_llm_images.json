@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "calibration-hero-declared-level-versus-actual",
+      "filename_base": "hero_calibration",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture about whether a stated confidence matches how often it turns out true. A single row of about fourteen tall narrow rectangular vessels standing side by side on an invisible baseline, evenly spaced across the canvas with generous empty paper above and below. Each vessel is outlined in thin deep warm ink and partly filled from the bottom with a soft muted warm gray fill — the actual level. Across each vessel, a single crisp horizontal terracotta line marks a declared level. In most of the vessels the terracotta line sits exactly at the surface of the gray fill, and the fills rise smoothly from low on the left to high on the right, like a calm staircase. In three or four vessels the terracotta line floats clearly ABOVE the gray fill, leaving a visible empty gap between claim and reality; in one vessel the line sits below the fill. No vessel is completely full or completely empty. Warm paper background, deep warm ink outlines, muted warm gray fills, terracotta used only for the declared lines. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no percentage signs, no scales or tick marks, no axis, no gauges or dials, no logos."
+    }
+  ]
+}

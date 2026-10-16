@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "fraud-detection-hero-rare-marks-in-a-stream",
+      "filename_base": "hero_fraud_detection",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on finding very rare events inside an enormous ordinary flow. A wide dense horizontal stream of many hundreds of small identical rounded marks drifts from left to right across the whole canvas, packed in loose rows like grain or beads, all in muted warm gray — calm, uniform, unremarkable. Scattered sparsely among them, no more than a dozen marks are terracotta and very slightly larger; three of those terracotta marks in the middle are joined to each other by thin hairlines into a small triangle, as if quietly related. Near the right side a single fine horizontal line crosses the stream, like a raised bar; a small handful of marks sits lifted just above that line — most of them terracotta, but two or three of them plain gray, lifted by mistake — while the entire rest of the stream flows past beneath it undisturbed. Warm paper background, deep warm ink for the thin line, muted warm gray for the crowd, terracotta as the only accent. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no currency symbols, no credit cards, no padlocks, no magnifying glass, no fingerprints, no hooded figures, no charts, no grid lines, no logos."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "kmeans-knn-gmm-hero-centroids-neighbors-mixture",
+      "filename_base": "hero_kmeans_knn_gmm",
+      "prompt": "16:9 editorial illustration for a graduate-level machine-learning lecture about three geometric methods. Show a coherent left-to-right triptych without dividers: LEFT, colored data clouds with three large centroids and faint Voronoi-like regions for k-means; CENTER, a query point with a small circle of nearest neighbors among scattered labeled points for k-nearest neighbors; RIGHT, three overlapping translucent tilted Gaussian ellipses with dense centers for a Gaussian mixture model. Warm off-white paper background, restrained academic palette of muted blue, terracotta orange, sage green, and ink black, subtle paper texture, calm precise composition, generous margins. Absolutely no text, labels, letters, digits, equations, logos, watermarks, UI, or photorealistic people."
+    }
+  ]
+}

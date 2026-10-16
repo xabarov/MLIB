@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "svm-gradient-boosting-hero-street-and-steps",
+      "filename_base": "hero_svm_gradient_boosting",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture comparing two ways to draw a boundary between two groups. The canvas is split into two halves by generous empty paper, no divider line. LEFT HALF: two loose crowds of small round dots, muted warm gray dots on the lower left and terracotta dots on the upper right, separated by a single wide empty diagonal corridor, like a clean street between two neighbourhoods; the corridor is bounded by two thin parallel dashed lines and has one crisp deep-ink line exactly along its middle; exactly three dots — two gray and one terracotta — sit touching the dashed edges of the corridor and are ringed by thin ink circles, and every other dot keeps its distance. RIGHT HALF: the same two crowds of dots, but the boundary between them is built from many small axis-aligned rectangular steps in soft terracotta and warm gray, stacked like a staircase of thin blocks, each block smaller than the one before, together tracing a gently curving frontier that hugs the shape of the crowds. Warm paper background, deep warm ink, muted warm gray, terracotta as the only accent. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no axes, no grid lines, no trees or forests, no charts, no logos."
+    }
+  ]
+}

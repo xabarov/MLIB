@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "bagging-vs-boosting-hero-parallel-and-chain",
+      "filename_base": "hero_bagging_vs_boosting",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture contrasting two ways of combining many simple models. The canvas is split into two halves by generous empty space, no divider line. LEFT HALF: a dense fan of many identical translucent curved strokes, all starting from the same baseline and drawn on top of each other at slightly different angles, like many independent guesses laid over one another; where they overlap the tone deepens and one single crisp smooth curve emerges from the blur — the average of the crowd. The strokes are muted warm gray, the emergent averaged curve is deep warm ink with a soft dusty blue glow. RIGHT HALF: a single chain of shapes arranged left to right in a stepped sequence — a large terracotta arc, then a noticeably smaller arc starting exactly where the previous one ended, then smaller and smaller ones, each nudging the path closer to a thin straight horizontal target line at the top; the shapes shrink geometrically and the last few are tiny dots hugging the target line. Terracotta accent used only on this chain. Warm paper background, soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no numbers, no axes labels, no logos, no tree or forest imagery, no arrows with heads, no charts with gridlines."
+    }
+  ]
+}

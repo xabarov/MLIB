@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "typed-decision-hero-interchangeable-stencils",
+      "filename_base": "hero_typed_decision",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture about a single fixed mechanism that answers questions whose answer set is supplied from outside. Lower third of the canvas: one wide, solid, unchanging horizontal slab drawn in deep warm ink outline with a soft warm gray fill — the fixed mechanism, identical everywhere along its length. Above it, three separate thin rectangular cards float at the same height, evenly spaced with generous empty paper between them; each card is pierced by a DIFFERENT number of small round holes — the left card has two holes, the middle card has five, the right card has eleven tiny ones. From the slab below, a soft column of pale light rises through each card, and in each card exactly one hole is filled with solid terracotta while the others stay empty outline — the chosen option. The cards are clearly removable and interchangeable: they cast thin shadows onto the slab and are not attached to it. Warm paper background, deep warm ink outlines, muted warm gray fills, terracotta only for the single chosen hole in each card. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no arrows, no gears or machinery details, no charts, no grid lines, no logos."
+    }
+  ]
+}

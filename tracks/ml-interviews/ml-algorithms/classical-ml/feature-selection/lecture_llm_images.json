@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "feature-selection-hero-thinning-a-field",
+      "filename_base": "hero_feature_selection",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture on choosing a few useful variables out of many. LEFT TWO THIRDS: a wide dense field of about two hundred thin vertical strokes standing on an invisible baseline, like a forest of tall grass or a spectrum; almost all of them are short, pale warm gray and slightly irregular in height, packed close together. Scattered among them, perhaps eight strokes are noticeably taller, crisp and deep warm ink, and a couple of those are tinted terracotta — they read as the ones that matter, but they are not the tallest by much, and several pale strokes are almost as tall, so the choice looks genuinely difficult. A soft horizontal band of light sweeps across the field at the height where tall meets short. RIGHT THIRD, separated by generous empty paper: only those few chosen strokes, redrawn cleanly and evenly spaced with calm rhythm, standing alone in the whitespace — the same shapes, now legible. No connecting arrows, no funnel, no sieve, no machinery. Warm paper background, deep warm ink, muted warm gray, terracotta as the only accent. Soft diffuse light, generous negative space, premium academic magazine style. Absolutely no text, no letters, no digits, no axis labels, no grid lines, no charts, no logos."
+    }
+  ]
+}

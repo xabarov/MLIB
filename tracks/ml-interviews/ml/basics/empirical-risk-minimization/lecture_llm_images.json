@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "append_style_suffix": true
+  },
+  "jobs": [
+    {
+      "slug": "erm-hero-smooth-landscape-and-sampled-sketch",
+      "filename_base": "hero_erm",
+      "prompt": "16:9 abstract editorial illustration for a graduate-level lecture about optimising a quantity you can only estimate from a sample. A single wide side-view cross-section of hilly terrain drawn as two overlaid curves on warm paper. The first curve is smooth, calm and continuous, dipping to one clearly lowest valley slightly right of centre — drawn as a soft muted warm gray band, like distant hills seen through haze. The second curve follows roughly the same shape but is jagged and restless, built from many short straight segments whose corners sit exactly on a scattering of small terracotta dots sprinkled along it; this jagged curve dips to its own lowest point noticeably to the LEFT of the smooth curve's valley, in a narrow accidental notch. A small deep-ink circle rests at the bottom of that narrow jagged notch, and a thin vertical hairline drops from it down past the smooth curve, showing it is not the true lowest place; a second, fainter hairline marks the smooth curve's real valley some distance to the right, with nothing resting there. Warm paper background, deep warm ink for the resting circle and hairlines, muted warm gray for the smooth curve, terracotta only for the sample dots and the jagged line. Soft diffuse light, generous negative space, calm editorial composition, premium academic magazine style. Absolutely no text, no letters, no digits, no axis labels, no numbers, no grid lines, no arrows, no logos."
+    }
+  ]
+}
