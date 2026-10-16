@@ -38,6 +38,15 @@
 - [`ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/`](ml-algorithms/deep-learning/nlp/tf-idf-and-text-representation/)
 - [`ml-algorithms/deep-learning/nlp/word-embeddings/`](ml-algorithms/deep-learning/nlp/word-embeddings/)
 - [`ml-algorithms/deep-learning/architectures/self-attention-and-transformers/`](ml-algorithms/deep-learning/architectures/self-attention-and-transformers/)
+- [`ml-algorithms/classical-ml/bagging-vs-boosting/`](ml-algorithms/classical-ml/bagging-vs-boosting/)
+- [`ml-algorithms/classical-ml/feature-selection/`](ml-algorithms/classical-ml/feature-selection/)
+- [`ml-algorithms/classical-ml/fraud-detection/`](ml-algorithms/classical-ml/fraud-detection/)
+- [`ml-algorithms/classical-ml/svm-and-gradient-boosting/`](ml-algorithms/classical-ml/svm-and-gradient-boosting/)
+- [`ml-algorithms/classical-ml/linear-regression-assumptions/`](ml-algorithms/classical-ml/linear-regression-assumptions/)
+- [`ml-algorithms/classical-ml/k-means-knn-gmm/`](ml-algorithms/classical-ml/k-means-knn-gmm/)
+- [`ml/basics/empirical-risk-minimization/`](ml/basics/empirical-risk-minimization/)
+- [`ml/objectives-metrics-evaluation/calibration/`](ml/objectives-metrics-evaluation/calibration/)
+- [`ml-algorithms/deep-learning/architectures/typed-decision-models/`](ml-algorithms/deep-learning/architectures/typed-decision-models/)
 
 ## Соответствие главам книги
 

@@ -6,7 +6,7 @@
 | Трек | Про что | Формат единицы материала |
 |---|---|---|
 | [`shad/`](shad/) | Подготовка к вступительному экзамену ШАД | `<раздел>/<N_Тема>/{lesson.md, qa.md, assets/}` |
-| [`ml-interviews/`](ml-interviews/) | Разбор вопросов книги *ML Interviews* (huyenchip) | один `.md` на вопрос/группу вопросов |
+| [`ml-interviews/`](ml-interviews/) | Разбор вопросов книги *ML Interviews* (huyenchip) | конспект `.md` или `<тема-слаг>/{lesson.md, assets/, notebook.ipynb}` |
 | [`networks/`](networks/) | Компьютерные сети | пока один файл с Q&A |
 | [`agent-harness/`](agent-harness/) | Инженерия систем вокруг LLM: цикл, контекст, инструменты, изоляция | `<тема-слаг>/lesson.md` + ассеты |
 | [`decision-models/`](decision-models/) | Открытые аналоги Jev: SemIf, Kev, Laya, Nimble; архитектуры и обучение | PyTorch-код + исполняемый notebook + схемы + upstream-карта |

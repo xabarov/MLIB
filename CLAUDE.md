@@ -59,7 +59,16 @@ essays/          не учебное: эссе о спирали, шаблон P
 `ml-algorithms/deep-learning/computer-vision/detection-metrics`,
 `…/segmentation-architectures`, `…/segmentation-metrics`, `…/ocr`,
 `nlp/tf-idf-and-text-representation`, `nlp/word-embeddings`,
-`architectures/self-attention-and-transformers`.
+`architectures/self-attention-and-transformers`,
+`ml-algorithms/classical-ml/bagging-vs-boosting`,
+`ml-algorithms/classical-ml/feature-selection`,
+`ml-algorithms/classical-ml/fraud-detection`,
+`ml-algorithms/classical-ml/svm-and-gradient-boosting`,
+`ml-algorithms/classical-ml/linear-regression-assumptions`,
+`ml-algorithms/classical-ml/k-means-knn-gmm`,
+`ml/basics/empirical-risk-minimization`,
+`ml/objectives-metrics-evaluation/calibration`,
+`ml-algorithms/deep-learning/architectures/typed-decision-models`.
 
 `deep-learning/` разбит на блоки `architectures/` (строительные блоки) и
 `computer-vision/`, `nlp/`, `reinforcement-learning/` (применения) — по образцу
